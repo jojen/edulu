@@ -35,9 +35,14 @@ body {
     width: 111px;
 }
 
-
 .box-shadow {
-  -webkit-box-shadow: 0 1px 3px rgba(4,4,4,4);
-     -moz-box-shadow: 0 1px 3px rgba(4,4,4,4);
-          box-shadow: 0 1px 3px rgba(4,4,4,4);
+    -webkit-box-shadow: 0 1px 3px rgba(4, 4, 4, 4);
+    -moz-box-shadow: 0 1px 3px rgba(4, 4, 4, 4);
+    box-shadow: 0 1px 3px rgba(4, 4, 4, 4);
+}
+
+.close {
+    font-size: 26px;
+    float: right;
+    margin: 5px;
 }

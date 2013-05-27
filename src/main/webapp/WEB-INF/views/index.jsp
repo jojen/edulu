@@ -21,6 +21,7 @@
 
                 <div class="media-body">
                     <a class="right more-margin btn btn-primary" href="#">Start Course</a>
+
                     <h3 class="update" data-id="${course.id}" data-key="title">${course.title}</h3>
                     <h4>Level: Beginner</h4>
                     <!-- TODO darf der user das -->
@@ -32,7 +33,7 @@
                         <li>|</li>
                         <li><span>56</span> Exercises</li>
                     </ul>
-                    <a data-id="${course.id}" class="edit right btn btn-warning" href="#">Edit</a>
+                    <a data-id="${course.id}" class="edit right btn btn-warning">Edit</a>
                 </div>
 
             </div>
