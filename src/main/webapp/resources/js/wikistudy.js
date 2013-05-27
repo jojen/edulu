@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     $(".edit").click(function () {
         var id = $(this).attr("data-id");
-        $.get("/course/edit", {
+        $.get("/ajax/course/edit", {
             id: id
         }, function (result) {
             // hier machen machen wir das editierbar

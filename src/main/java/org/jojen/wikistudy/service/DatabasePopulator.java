@@ -33,12 +33,13 @@ public class DatabasePopulator {
     @Transactional
     public List<Course> populateDatabase() {
 
-        List<String> ids = asList("Einführungskurs","Erweiterungskurs","Fortgeschritten");
-        List<Course> result=new ArrayList<Course>(ids.size());
+        List<String> titles = asList("Einführungskurs","Erweiterungskurs","Fortgeschritten");
+        List<Course> result=new ArrayList<Course>(titles.size());
 
-        for (String id : ids) {
-			Course c = new Course(id,"Title - "+id);
-			c.setDescription("Description - "+id);
+        for (String title : titles) {
+			Course c = new Course();
+			c.setDescription("Description - "+title);
+			c.setTitle("Title - "+title);
             result.add(c);
 			courseRepository.save(c);
         }

@@ -52,8 +52,8 @@ public class Course {
     public Course() {
     }
 
-    public Course(String id, String title) {
-        this.id = id;
+    public Course(String title) {
+
         this.title = title;
     }
 
@@ -72,8 +72,8 @@ public class Course {
         return cal.get(Calendar.YEAR);
     }
 
-    public String getId() {
-        return id;
+    public Long getId() {
+        return nodeId;
     }
 
     public String getTitle() {

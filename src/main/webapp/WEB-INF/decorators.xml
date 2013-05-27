@@ -1,8 +1,13 @@
 <decorators defaultdir="/WEB-INF/views/decorators">
-    <decorator name="frontpage" page="frontpage.jsp">
-          <pattern>/</pattern>
+    <decorator name="json" page="json.jsp">
+        <pattern>/json/*</pattern>
     </decorator>
+    <decorator name="ajax" page="ajax.jsp">
+        <pattern>/ajax/*</pattern>
+    </decorator>
+
     <decorator name="main" page="main.jsp">
           <pattern>/*</pattern>
     </decorator>
+
 </decorators>

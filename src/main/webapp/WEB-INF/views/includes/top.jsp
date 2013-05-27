@@ -8,7 +8,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="brand" href="#">Wiki Study</a>
+        <a class="brand" href="/">Wiki Study</a>
         <div class="nav-collapse collapse">
             <p class="navbar-text pull-right">
                 <c:choose>
@@ -23,8 +23,8 @@
                 </c:choose>
             </p>
             <ul class="nav">
-                <li class="active"><a href="#">Courses</a></li>
-                <li><a href="#about">About</a></li>
+                <li class="active"><a href="/">Courses</a></li>
+                <li><a href="/static/about">About</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>

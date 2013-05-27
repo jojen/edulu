@@ -114,13 +114,13 @@ public class CourseController {
     //@RequestMapping(value = "/admin/populate", method = RequestMethod.GET)
     @RequestMapping(value = "/populate", method = RequestMethod.GET)
     public String populateDatabase(Model model) {
-        Collection<Course> courses=populator.populateDatabase();
-        model.addAttribute("courses",courses);
+        populator.populateDatabase();
+
         addUser(model);
-        return "index";
+        return "redirect:/";
     }
 
-    @RequestMapping(value = "/admin/clean", method = RequestMethod.GET)
+    @RequestMapping(value = "/clean", method = RequestMethod.GET)
     public String clean(Model model) {
         populator.cleanDb();
         return "movies/list";
@@ -133,14 +133,14 @@ public class CourseController {
         return "index";
     }
 
-	@RequestMapping(value = "/course/edit", method = RequestMethod.GET)
+	@RequestMapping(value = "/ajax/course/edit", method = RequestMethod.GET)
 	public String getEdit(Model model,
-							   @RequestParam(value = "id",required = true) String id
+							   @RequestParam(value = "id",required = true) Long id
 							   ) {
 		addUser(model);
-		model.addAttribute("self",courseRepository.findById(id));
+		model.addAttribute("self",courseRepository.findOne(id));
 
-		return "course/course.edit";
+		return "ajax/course.edit";
 	}
 
     @RequestMapping(value = "/course/update", method = RequestMethod.GET)
