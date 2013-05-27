@@ -1,0 +1,43 @@
+body {
+    padding-top: 60px;
+    background-color: #aeaeae;
+}
+
+.course {
+    padding: 10px;
+    border: 1px solid black;
+    margin: 10px;
+    background-color: #fff;
+}
+
+.right {
+    float: right;
+}
+
+.more-margin {
+    margin: 20px;
+}
+
+.course div > ul {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.course div > ul li {
+    display: inline-block;
+    font-weight: bold;
+}
+
+.course img {
+    float: left;
+    margin: 0 1em 1em 0;
+    width: 111px;
+}
+
+
+.box-shadow {
+  -webkit-box-shadow: 0 1px 3px rgba(4,4,4,4);
+     -moz-box-shadow: 0 1px 3px rgba(4,4,4,4);
+          box-shadow: 0 1px 3px rgba(4,4,4,4);
+}
