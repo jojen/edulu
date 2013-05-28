@@ -10,10 +10,20 @@ $(document).ready(function () {
             $("body").prepend(result);
             var dialog = $("#course-update");
             dialog.modal('show');
-            // TODO das müssen wir noch für revert korrekt machen
+
+            $("#save").click(function () {
+                dialog.modal('hide');
+            });
+            var revert = false;
+            $("#revert").click(function () {
+                revert = true;
+                dialog.modal('hide');
+            });
 
             dialog.on('hidden', function () {
-                $('#form-framework').submit();
+                if (!revert) {
+                    $('#form-framework').submit();
+                }
             });
 
         });

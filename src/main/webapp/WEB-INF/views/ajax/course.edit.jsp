@@ -7,7 +7,7 @@
 <div id="course-update" class="modal hide fade">
     <form action="course/update" class="navbar-form pull-left" method="post" id="form-framework">
         <c:if test="${not empty self}">
-            <input type="hidden" name="id" value="${self.id}" />
+            <input type="hidden" name="id" value="${self.id}"/>
         </c:if>
 
         <div class="modal-header">
@@ -16,7 +16,8 @@
         </div>
         <div class="modal-body">
 
-            <input type="text" placeholder="Title" name="title" value="<c:if test="${!empty self}"><c:out value="${self.title}" /></c:if>"/>
+            <input type="text" placeholder="Title" name="title"
+                   value="<c:if test="${!empty self}"><c:out value="${self.title}" /></c:if>"/>
 
             <label>Level:</label>
             <select name="level">
@@ -32,8 +33,8 @@
 
         </div>
         <div class="modal-footer">
-            <a href="#" class="btn">TODO Revert</a>
-            <a href="#" class="btn btn-primary">Save</a>
+            <a id="revert" class="btn">Revert</a>
+            <a id="save" class="btn btn-primary">Save</a>
         </div>
     </form>
 </div>
