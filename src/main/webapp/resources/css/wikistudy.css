@@ -3,19 +3,12 @@ body {
     background-color: #aeaeae;
 }
 
-.course {
+.light-box {
+    margin: 20px;
     padding: 10px;
     border: 1px solid black;
-    margin: 10px;
     background-color: #fff;
-}
-
-.right {
-    float: right;
-}
-
-.more-margin {
-    margin: 20px;
+    border-radius: 5px;
 }
 
 .course div > ul {
@@ -29,20 +22,21 @@ body {
     font-weight: bold;
 }
 
-.course img {
-    float: left;
-    margin: 0 1em 1em 0;
-    width: 111px;
+.right {
+    float: right;
+}
+
+.more-margin {
+    margin: 20px;
 }
 
 .box-shadow {
-    -webkit-box-shadow: 0 1px 3px rgba(4, 4, 4, 4);
-    -moz-box-shadow: 0 1px 3px rgba(4, 4, 4, 4);
-    box-shadow: 0 1px 3px rgba(4, 4, 4, 4);
+    box-shadow: 0 0 3em #888888;
 }
 
-.close {
-    font-size: 26px;
-    float: right;
-    margin: 5px;
+.centred {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    float: none !important;
+    text-align: center;
 }

@@ -1,5 +1,6 @@
 package org.jojen.wikistudy.controller;
 
+
 import org.jojen.wikistudy.domain.Actor;
 import org.jojen.wikistudy.domain.Course;
 import org.jojen.wikistudy.domain.Rating;
@@ -49,7 +50,7 @@ public class CourseController {
     @RequestMapping(value = "/movies/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
     public
     @ResponseBody
-	Course getMovie(@PathVariable String id) {
+    Course getMovie(@PathVariable String id) {
         return courseRepository.findById(id);
     }
 
@@ -64,23 +65,23 @@ public class CourseController {
             final int stars = course.getStars();
             model.addAttribute("stars", stars);
             Rating rating = null;
-            if (user!=null) rating = template.getRelationshipBetween(course, user, Rating.class, "RATED");
-            if (rating == null) rating = new Rating().rate(stars,null);
-            model.addAttribute("userRating",rating);
+            if (user != null) rating = template.getRelationshipBetween(course, user, Rating.class, "RATED");
+            if (rating == null) rating = new Rating().rate(stars, null);
+            model.addAttribute("userRating", rating);
         }
         return "/movies/show";
     }
 
     @RequestMapping(value = "/movies/{movieId}", method = RequestMethod.POST, headers = "Accept=text/html")
-    public String updateMovie(Model model, @PathVariable String movieId, @RequestParam(value = "rated",required = false) Integer stars, @RequestParam(value = "comment",required = false) String comment) {
+    public String updateMovie(Model model, @PathVariable String movieId, @RequestParam(value = "rated", required = false) Integer stars, @RequestParam(value = "comment", required = false) String comment) {
         Course course = courseRepository.findById(movieId);
         User user = userRepository.getUserFromSession();
         if (user != null && course != null) {
-            int stars1 = stars==null ? -1 : stars;
-            String comment1 = comment!=null ? comment.trim() : null;
+            int stars1 = stars == null ? -1 : stars;
+            String comment1 = comment != null ? comment.trim() : null;
             userRepository.rate(course, user, stars1, comment1);
         }
-        return singleMovieView(model,movieId);
+        return singleMovieView(model, movieId);
     }
 
     private User addUser(Model model) {
@@ -91,7 +92,7 @@ public class CourseController {
 
     @RequestMapping(value = "/movies", method = RequestMethod.GET, headers = "Accept=text/html")
     public String findMovies(Model model, @RequestParam("q") String query) {
-        if (query!=null && !query.isEmpty()) {
+        if (query != null && !query.isEmpty()) {
             Page<Course> movies = courseRepository.findByTitleLike(query, new PageRequest(0, 20));
             model.addAttribute("movies", movies.getContent());
         } else {
@@ -107,7 +108,7 @@ public class CourseController {
         Actor actor = actorRepository.findById(id);
         model.addAttribute("actor", actor);
         model.addAttribute("id", id);
-        model.addAttribute("roles",  IteratorUtil.asCollection(actor.getRoles()));
+        model.addAttribute("roles", IteratorUtil.asCollection(actor.getRoles()));
         addUser(model);
         return "/actors/show";
     }
@@ -129,50 +130,53 @@ public class CourseController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model) {
-		// TODO das kann noch ins Rep wandern
+        // TODO das kann noch ins Rep wandern
         List result = new ArrayList();
-        for(Course c:courseRepository.findAll()){
+        for (Course c : courseRepository.findAll()) {
             result.add(c);
         }
-        model.addAttribute("courses",result);
+        model.addAttribute("courses", result);
         addUser(model);
         return "index";
     }
 
-	@RequestMapping(value = "/ajax/course/edit", method = RequestMethod.GET)
-	public String getEdit(Model model,
-							   @RequestParam(value = "id",required = true) Long id
-							   ) {
-		addUser(model);
-		model.addAttribute("self",courseRepository.findOne(id));
-
-		return "ajax/course.edit";
-	}
-
-    @RequestMapping(value = "/course/update", method = RequestMethod.GET)
-    public String updateCourse(Model model,
-                               @RequestParam(value = "id",required = false) String id,
-                               @RequestParam(value = "key",required = true) String key,
-                               @RequestParam(value = "value",required = true) String value) {
-        Course c;
+    @RequestMapping(value = "/ajax/course/edit", method = RequestMethod.GET)
+    public String getEdit(Model model,
+                          @RequestParam(value = "id", required = false) Long id
+    ) {
+        addUser(model);
         if(id != null){
-            c = courseRepository.findById(id);
+            model.addAttribute("self", courseRepository.findOne(id));
+        }
 
-        } else{
+        return "ajax/course.edit";
+    }
+
+    @RequestMapping(value = "/course/update", method = RequestMethod.POST)
+    public String updateCourse(Model model,
+                               @RequestParam(value = "id", required = false) Long id,
+                               @RequestParam(value = "title", required = false) String title,
+                               @RequestParam(value = "level", required = false) String level,
+                               @RequestParam(value = "description", required = false) String description) {
+        Course c;
+        if (id != null) {
+            c = courseRepository.findOne(id);
+
+        } else {
             c = new Course();
         }
-
-        // TODO das ist nur zum testen
-        if(key.equals("description")){
-            c.setDescription(value);
-        }else if(key.equals("title")){
-            c.setTitle(value);
+        if (c != null) {
+            if (title != null) {
+                c.setTitle(title);
+            }
+            if (description != null) {
+                c.setDescription(description);
+            }
         }
-        courseRepository.save(c);
 
-        model.addAttribute("self",c.getId());
+        courseRepository.save(c);
         addUser(model);
 
-        return "json/id";
+        return "redirect:/";
     }
 }

@@ -3,27 +3,37 @@
 <%@ taglib uri="http://ckeditor.com" prefix="ckeditor" %>
 <jsp:useBean id="self" class="org.jojen.wikistudy.domain.Course" scope="request"/>
 
-<div id="${self.id}-edit" class="course box-shadow media">
+<!-- TODO darf der user das -->
+<div id="course-update" class="modal hide fade">
+    <form action="course/update" class="navbar-form pull-left" method="post" id="form-framework">
+        <c:if test="${not empty self}">
+            <input type="hidden" name="id" value="${self.id}" />
+        </c:if>
 
-    <img src="http://static.learnstreet.com/commons/static/images/icons/icon_javascript_medium.png?20130521">
+        <div class="modal-header">
+            <a href="#" class="close" data-dismiss="modal">&times;</a>
+            Edit Course
+        </div>
+        <div class="modal-body">
 
-    <div class="media-body">
-        <a data-id="${self.id}" class="close close-edit">×</a>
+            <input type="text" placeholder="Title" name="title" value="<c:if test="${!empty self}"><c:out value="${self.title}" /></c:if>"/>
 
-        <input class="update" data-id="${self.id}" data-key="title" value="${self.title}"/>
+            <label>Level:</label>
+            <select name="level">
+                <option>Beginner</option>
+                <option>Advanced</option>
+            </select>
 
-        <h4>Level: Beginner</h4>
-        <!-- TODO darf der user das -->
+            <div>Description:</div>
+            <c:url value="/resources/ckeditor/" var="ckeditorpath"/>
+            <c:set value="${self.description}" var="value"/>
 
-        <div class="course-description" data-id="${self.id}" data-key="description">
-            <textarea class="rte" cols="80" name="editor1" rows="5"><c:out value="${self.description}"/></textarea>
+            <ckeditor:editor basePath="${ckeditorpath}" editor="description" value="${value}"/>
 
         </div>
-
-    </div>
-
+        <div class="modal-footer">
+            <a href="#" class="btn">TODO Revert</a>
+            <a href="#" class="btn btn-primary">Save</a>
+        </div>
+    </form>
 </div>
-
-
-<c:url value="/resources/ckeditor/" var="ckeditorpath"/>
-<ckeditor:replaceAll basePath="${ckeditorpath}" className="rte"/>

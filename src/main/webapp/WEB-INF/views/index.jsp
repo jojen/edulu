@@ -3,43 +3,63 @@
 <%@ taglib uri="http://ckeditor.com" prefix="ckeditor" %>
 <%@page trimDirectiveWhitespaces="true" %>
 
+
 <!-- TODO darf der user das -->
-<div class="row">
+<div class="container-fluid">
+    <div class="row-fluid">
 
 
-    <div class="span3 bs-docs-sidebar">
-        <ul class="nav nav-list bs-docs-sidenav affix-top">
-            <c:forEach items="${courses}" var="course">
-                <li class="active"><a href="#${course.id}"><i class="icon-chevron-right"></i>${course.title}</a></li>
-            </c:forEach>
-        </ul>
-    </div>
-    <div class="span9">
-        <c:forEach items="${courses}" var="course" varStatus="status">
-            <div id="${course.id}" class="course box-shadow media">
+        <div class="span3 bs-docs-sidebar">
+            <ul class="nav nav-list bs-docs-sidenav affix-top">
+                <c:forEach items="${courses}" var="course">
+                    <li class="active"><a href="#${course.id}"><i class="icon-chevron-right"></i>${course.title}</a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
+        <div class="span7">
+            <div class="row">
+                <c:forEach items="${courses}" var="course" varStatus="status">
+                    <div class="course light-box mini-layout box-shadow">
+                        <div class="row-fluid">
+                            <div class="span2">
+                                <img src="http://static.learnstreet.com/commons/static/images/icons/icon_javascript_medium.png?20130521">
+                            </div>
+                            <div class="span10">
+                                <a class="right more-margin btn btn-primary" href="#">Start Course</a>
 
-                <img src="http://static.learnstreet.com/commons/static/images/icons/icon_javascript_medium.png?20130521">
-
-                <div class="media-body">
-                    <a class="right more-margin btn btn-primary" href="#">Start Course</a>
-
-                    <h3 class="update" data-id="${course.id}" data-key="title">${course.title}</h3>
-                    <h4>Level: Beginner</h4>
+                                <h3 class="update" data-id="${course.id}" data-key="title">${course.title}</h3>
+                                <h4>Level: Beginner</h4>
 
 
-                    <p><c:out value="${course.description}"/></p>
+                                <p><c:out value="${course.description}" escapeXml="false"/></p>
 
-                    <ul>
-                        <li><span>7</span> Lessons</li>
-                        <li>|</li>
-                        <li><span>56</span> Exercises</li>
-                    </ul>
-                    <a data-id="${course.id}" class="edit right btn btn-warning">Edit</a>
-                </div>
+                                <ul>
+                                    <li><span>7</span> Lessons</li>
+                                    <li>|</li>
+                                    <li><span>56</span> Exercises</li>
+                                </ul>
+                                <div class="btn-group right">
+                                    <c:if test="${course.hasDraft}">
+                                        <a data-id="${course.id}" class="btn btn-danger">Revert</a>
+                                    </c:if>
+                                    <a data-id="${course.id}" class="update-course btn btn-warning">Edit</a>
+                                    <c:if test="${course.hasDraft}">
+                                        <a data-id="${course.id}" class="btn btn-success">Publish</a>
+                                    </c:if>
+                                </div>
+                            </div>
+                        </div>
 
+                    </div>
+                </c:forEach>
             </div>
-        </c:forEach>
+            <div class="row">
+                <div class="light-box span2 box-shadow centred update-course btn" id="add-course">
+                    Add Course
+                </div>
+            </div>
 
+        </div>
     </div>
 </div>
-

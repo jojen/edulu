@@ -79,14 +79,31 @@ public class Course {
     public String getTitle() {
         return title;
     }
-
-    @Override
-    public String toString() {
-        return String.format("%s (%s) [%s]", title, releaseDate, id);
+    public void setTitle(String title) {
+        this.title=title;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean getHasDraft(){
+        // TODO Versionsmanagement implementieren
+         return true;
+    }
+
+
+
+
+
+
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     public int getStars() {
@@ -101,14 +118,52 @@ public class Course {
         return count==0 ? 0 : stars / count;
     }
 
+
     public Collection<Rating> getRatings() {
         Iterable<Rating> allRatings = ratings;
         return allRatings == null ? Collections.<Rating>emptyList() : IteratorUtil.asCollection(allRatings);
     }
 
-    public void setTitle(String title) {
-        this.title=title;
+
+
+    @Override
+    public String toString() {
+        return String.format("%s (%s) [%s]", title, releaseDate, id);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Course course = (Course) o;
+        if (nodeId == null) return super.equals(o);
+        return nodeId.equals(course.nodeId);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return nodeId != null ? nodeId.hashCode() : super.hashCode();
+    }
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     *  das brauch wir hier eigentlich nicht mehr
+      *
+     **/
+
+
+
 
     public void setLanguage(String language) {
         this.language = language;
@@ -120,10 +175,6 @@ public class Course {
 
     public void setTagline(String tagline) {
         this.tagline = tagline;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public void setReleaseDate(Date releaseDate) {
@@ -150,9 +201,7 @@ public class Course {
         this.studio = studio;
     }
 
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
+
 
     public void setLastModified(Date lastModified) {
         this.lastModified = lastModified;
@@ -216,22 +265,6 @@ public class Course {
         String[] parts = trailerUrl.split("[=/]");
         int numberOfParts = parts.length;
         return numberOfParts > 0 ? parts[numberOfParts-1] : null;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Course course = (Course) o;
-        if (nodeId == null) return super.equals(o);
-        return nodeId.equals(course.nodeId);
-
-    }
-
-    @Override
-    public int hashCode() {
-        return nodeId != null ? nodeId.hashCode() : super.hashCode();
     }
 
     public Set<Director> getDirectors() {
