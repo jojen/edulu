@@ -3,14 +3,15 @@
 <%@ taglib uri="http://ckeditor.com" prefix="ckeditor" %>
 <%@page trimDirectiveWhitespaces="true" %>
 
+<!-- TODO darf der user das -->
 <div class="row">
 
 
     <div class="span3 bs-docs-sidebar">
         <ul class="nav nav-list bs-docs-sidenav affix-top">
-            <%--c:forEach items="${courses}" var="course">
+            <c:forEach items="${courses}" var="course">
                 <li class="active"><a href="#${course.id}"><i class="icon-chevron-right"></i>${course.title}</a></li>
-            </c:forEach--%>
+            </c:forEach>
         </ul>
     </div>
     <div class="span9">
@@ -24,7 +25,7 @@
 
                     <h3 class="update" data-id="${course.id}" data-key="title">${course.title}</h3>
                     <h4>Level: Beginner</h4>
-                    <!-- TODO darf der user das -->
+
 
                     <p><c:out value="${course.description}"/></p>
 

@@ -4,9 +4,9 @@ import org.jojen.wikistudy.domain.Actor;
 import org.jojen.wikistudy.domain.Course;
 import org.jojen.wikistudy.domain.Rating;
 import org.jojen.wikistudy.domain.User;
-import org.jojen.wikistudy.repository.UserRepository;
-import org.jojen.wikistudy.repository.CourseRepository;
 import org.jojen.wikistudy.repository.ActorRepository;
+import org.jojen.wikistudy.repository.CourseRepository;
+import org.jojen.wikistudy.repository.UserRepository;
 import org.jojen.wikistudy.service.DatabasePopulator;
 import org.neo4j.helpers.collection.IteratorUtil;
 import org.slf4j.Logger;
@@ -19,8 +19,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author mh
@@ -128,7 +129,12 @@ public class CourseController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model) {
-		model.addAttribute("courses",courseRepository.findAll().iterator());
+		// TODO das kann noch ins Rep wandern
+        List result = new ArrayList();
+        for(Course c:courseRepository.findAll()){
+            result.add(c);
+        }
+        model.addAttribute("courses",result);
         addUser(model);
         return "index";
     }
