@@ -1,5 +1,9 @@
 <div id="footer">
-This site is running on SpringFramework and Spring Data Neo4j powered by the Neo4j graph database. All course data is provided by <a href="http://themoviedb.org">themoviedb.org</a>.<br/>
-    <br/>
-    <a href="http://springsource.org"><img src="/images/logo/springsource.png"/></a><a href="http://springsource.org/spring-data"><img src="/images/logo/springdata.jpg"/></a><a href="http://github.com/springsource/spring-data-graph"><img src="/images/logo/springdatagraph.png"/></a><a href="http://neo4j.org"><img src="/images/logo/neo4j.png"/></a>
+    <p>
+        Designed and build by for educational usage
+    </p>
+
+    <p>
+        &copy; JoJen 2013. All rights reserved.
+    </p>
 </div>

@@ -1,8 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" session="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://ckeditor.com" prefix="ckeditor" %>
-<%@page trimDirectiveWhitespaces="true" %>
-
 
 <!-- TODO darf der user das -->
 <div class="container-fluid">
@@ -26,7 +23,8 @@
                                 <img src="http://static.learnstreet.com/commons/static/images/icons/icon_javascript_medium.png?20130521">
                             </div>
                             <div class="span10">
-                                <a class="right more-margin btn btn-primary" href="#">Start Course</a>
+                                <a class="right more-margin btn btn-primary" href="/course/${course.id}">Start
+                                    Course</a>
 
                                 <h3 class="update" data-id="${course.id}" data-key="title">${course.title}</h3>
                                 <h4>Level: Beginner</h4>

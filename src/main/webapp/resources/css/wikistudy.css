@@ -1,6 +1,6 @@
 body {
     padding-top: 60px;
-    background-color: #aeaeae;
+    background-color: #d9d9d9;
 }
 
 .light-box {
@@ -38,5 +38,13 @@ body {
     margin-left: auto !important;
     margin-right: auto !important;
     float: none !important;
+    text-align: center;
+}
+
+#footer {
+    background-color: #C4C4C4;
+    border-top: 1px solid #a5a5a5;
+    margin-top: 60px;
+    padding: 30px 0;
     text-align: center;
 }
