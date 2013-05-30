@@ -1,5 +1,6 @@
-package org.jojen.wikistudy.domain;
+package org.jojen.wikistudy.domain.dep;
 
+import org.jojen.wikistudy.domain.Course;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
 import java.util.HashSet;

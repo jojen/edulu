@@ -1,5 +1,9 @@
 package org.jojen.wikistudy.domain;
 
+import org.jojen.wikistudy.domain.dep.Actor;
+import org.jojen.wikistudy.domain.dep.Director;
+import org.jojen.wikistudy.domain.dep.Rating;
+import org.jojen.wikistudy.domain.dep.Role;
 import org.neo4j.graphdb.Direction;
 import org.neo4j.helpers.collection.IteratorUtil;
 import org.springframework.data.neo4j.annotation.*;
@@ -17,44 +21,9 @@ import static org.neo4j.graphdb.Direction.INCOMING;
 @NodeEntity
 public class Course implements Cloneable {
 
-	private enum state {
-		UNPUBLISHED, PUBLISHED
-	}
 
 	@GraphId
 	Long nodeId;
-
-	@Indexed
-	String id;
-
-
-	@RelatedTo(type = "DIRECTED", direction = INCOMING)
-	Set<Director> directors;
-
-	@RelatedTo(type = "ACTS_IN", direction = INCOMING)
-	Set<Actor> actors;
-
-	@RelatedToVia(type = "ACTS_IN", direction = INCOMING)
-	Iterable<Role> roles;
-
-	@RelatedToVia(type = "RATED", direction = INCOMING)
-	@Fetch
-	Iterable<Rating> ratings;
-	private String language;
-	private String imdbId;
-	private String tagline;
-	private Date releaseDate;
-	private Integer runtime;
-	private String homepage;
-	private String trailer;
-	private String genre;
-	private String studio;
-	private Integer version;
-	private Date lastModified;
-	private String imageUrl;
-
-	public Course() {
-	}
 
 
 	private String description;
@@ -69,6 +38,19 @@ public class Course implements Cloneable {
 	@Fetch
 	@RelatedTo(type = "DRAFT_VERSION", direction = Direction.OUTGOING)
 	Course draftVersion;
+
+	@Fetch
+	@RelatedTo(type = "LESSON", direction = Direction.OUTGOING)
+	Collection<Lesson> lessons;
+
+
+	@RelatedToVia(type = "RATED", direction = INCOMING)
+	@Fetch
+	Iterable<Rating> ratings;
+
+
+	public Course() {
+	}
 
 
 	public Course getDraftVersion() {
@@ -104,19 +86,12 @@ public class Course implements Cloneable {
 	}
 
 
-	public Collection<Actor> getActors() {
-		return actors;
-	}
-
 	public Collection<Role> getRoles() {
 		return IteratorUtil.asCollection(roles);
 	}
 
 	public int getYear() {
-		if (releaseDate == null) return 0;
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(releaseDate);
-		return cal.get(Calendar.YEAR);
+		return 0;
 	}
 
 	public Long getId() {
@@ -125,25 +100,19 @@ public class Course implements Cloneable {
 
 
 	public Boolean getHasDraft() {
-		// TODO Versionsmanagement implementieren
-		return true;
+		return getDraftVersion() != null;
 	}
 
-
-	public void setVersion(Integer version) {
-		this.version = version;
+	public Collection<Lesson> getLessons() {
+		return lessons;
 	}
 
-	public int getStars() {
-		Iterable<Rating> allRatings = ratings;
-
-		if (allRatings == null) return 0;
-		int stars = 0, count = 0;
-		for (Rating rating : allRatings) {
-			stars += rating.getStars();
-			count++;
+	public void addLesson(Lesson l) {
+		// TODO das sollte noch sortiert möglich sein
+		if (lessons == null) {
+			lessons = new HashSet<Lesson>();
 		}
-		return count == 0 ? 0 : stars / count;
+		lessons.add(l);
 	}
 
 
@@ -155,7 +124,7 @@ public class Course implements Cloneable {
 
 	@Override
 	public String toString() {
-		return String.format("%s (%s) [%s]", getTitle(), releaseDate, id);
+		return String.format("%s (%s) [%s]", getTitle(), getLastModified(), id);
 	}
 
 	@Override
@@ -175,115 +144,50 @@ public class Course implements Cloneable {
 	}
 
 
-	/**
-	 * das brauchen wir hier eigentlich nicht mehr
-	 */
-
-
-	public void setLanguage(String language) {
-		this.language = language;
-	}
-
-	public void setImdbId(String imdbId) {
-		this.imdbId = imdbId;
-	}
-
-	public void setTagline(String tagline) {
-		this.tagline = tagline;
-	}
-
-	public void setReleaseDate(Date releaseDate) {
-		this.releaseDate = releaseDate;
-	}
-
-	public void setRuntime(Integer runtime) {
-		this.runtime = runtime;
-	}
-
-	public void setHomepage(String homepage) {
-		this.homepage = homepage;
-	}
-
-	public void setTrailer(String trailer) {
-		this.trailer = trailer;
-	}
-
-	public void setGenre(String genre) {
-		this.genre = genre;
-	}
-
-	public void setStudio(String studio) {
-		this.studio = studio;
-	}
-
-
-	public void setLastModified(Date lastModified) {
-		this.lastModified = lastModified;
-	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
-
 	public String getLanguage() {
-		return language;
+		return null;
 	}
 
 	public String getImdbId() {
-		return imdbId;
+		return null;
 	}
 
 	public String getTagline() {
-		return tagline;
+		return null;
 	}
 
 	public Date getReleaseDate() {
-		return releaseDate;
+		return null;
 	}
 
 	public Integer getRuntime() {
-		return runtime;
+		return 0;
 	}
 
 	public String getHomepage() {
-		return homepage;
+		return null;
 	}
 
 	public String getTrailer() {
-		return trailer;
+		return null;
 	}
 
 	public String getGenre() {
-		return genre;
+		return null;
 	}
 
 	public String getStudio() {
-		return studio;
+		return null;
 	}
 
 	public Integer getVersion() {
-		return version;
+		return 0;
 	}
 
 	public Date getLastModified() {
-		return lastModified;
+		return null;
 	}
 
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	public String getYoutubeId() {
-		String trailerUrl = trailer;
-		if (trailerUrl == null || !trailerUrl.contains("youtu")) return null;
-		String[] parts = trailerUrl.split("[=/]");
-		int numberOfParts = parts.length;
-		return numberOfParts > 0 ? parts[numberOfParts - 1] : null;
-	}
-
-	public Set<Director> getDirectors() {
-		return directors;
-	}
 
 	@Override
 	public Course clone() {
@@ -294,5 +198,18 @@ public class Course implements Cloneable {
 		}
 		return null;
 	}
+
+
+	@Indexed
+	String id;
+
+	@RelatedTo(type = "DIRECTED", direction = INCOMING)
+	Set<Director> directors;
+
+	@RelatedTo(type = "ACTS_IN", direction = INCOMING)
+	Set<Actor> actors;
+
+	@RelatedToVia(type = "ACTS_IN", direction = INCOMING)
+	Iterable<Role> roles;
 }
 

@@ -53,7 +53,7 @@ public class CourseController {
 	@RequestMapping(value = "/clean", method = RequestMethod.GET)
 	public String clean(Model model) {
 		populator.cleanDb();
-		return "movies/list";
+		return "redirect:/";
 	}
 
 

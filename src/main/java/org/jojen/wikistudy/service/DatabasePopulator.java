@@ -2,9 +2,9 @@ package org.jojen.wikistudy.service;
 
 import org.jojen.wikistudy.domain.Container;
 import org.jojen.wikistudy.domain.Course;
-import org.jojen.wikistudy.repository.ContainerRepository;
-import org.jojen.wikistudy.repository.CourseRepository;
-import org.jojen.wikistudy.repository.UserRepository;
+import org.jojen.wikistudy.domain.Lesson;
+import org.jojen.wikistudy.domain.TextModule;
+import org.jojen.wikistudy.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +30,10 @@ public class DatabasePopulator {
 	@Autowired
 	ContainerRepository containerRepository;
 	@Autowired
+	LessonRepository lessonRepository;
+	@Autowired
+	ModuleRepository moduleRepository;
+	@Autowired
 	Neo4jOperations template;
 
 
@@ -53,6 +57,25 @@ public class DatabasePopulator {
 			courseRepository.save(c);
 			container.addContent(c);
 		}
+		// Jetzt fügen wir noch ein draft hinzu
+		Course c = container.getContent().iterator().next();
+		Course draft = c.clone();
+		draft.setDescription("new draft description");
+		c.setDraftVersion(draft);
+
+		courseRepository.save(draft);
+
+		Lesson l = new Lesson();
+		TextModule tm = new TextModule();
+		tm.setTitle("Hello World Module");
+		l.addContent(tm);
+		c.addLesson(l);
+		moduleRepository.save(tm);
+		lessonRepository.save(l);
+
+		courseRepository.save(c);
+
+
 		containerRepository.save(container);
 
 

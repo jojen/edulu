@@ -1,6 +1,6 @@
 package org.jojen.wikistudy.repository;
 
-import org.jojen.wikistudy.domain.Director;
+import org.jojen.wikistudy.domain.dep.Director;
 import org.springframework.data.neo4j.repository.GraphRepository;
 
 /**
@@ -8,5 +8,5 @@ import org.springframework.data.neo4j.repository.GraphRepository;
  * @since 02.04.11
  */
 public interface DirectorRepository extends GraphRepository<Director> {
-    Director findById(String id);
+	Director findById(String id);
 }

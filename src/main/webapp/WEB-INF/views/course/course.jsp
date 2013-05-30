@@ -8,9 +8,12 @@
         <div class="span3">
             <h3><c:out value="${self.title}"/></h3>
 
-            <div class="progress">
-                <div class="bar" style="width: 10%;"></div>
+            <div class="btn-group">
+                <c:forEach var="lesson" items="${self.lessons}" varStatus="status">
+                    <button class="btn"><c:out value="${status.count}"/></button>
+                </c:forEach>
             </div>
+
             <ul class="nav nav-tabs">
                 <li class="active">
                     <a href="#">Content</a>
@@ -20,7 +23,19 @@
             </ul>
         </div>
         <div class="span9">
-            <!--Body content-->
+            <div id="lesson-content">
+                <c:if test="${!empty self.lessons}">
+                    <c:forEach var="l" items="${self.lessons}">
+
+                        <c:forEach var="m" items="${l.content}">
+                            <c:out value="${m.title}"/>
+                        </c:forEach>
+
+                    </c:forEach>
+
+                </c:if>
+            </div>
+
         </div>
     </div>
 </div>
