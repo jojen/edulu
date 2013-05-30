@@ -1,7 +1,9 @@
 package org.jojen.wikistudy.domain;
 
+import org.neo4j.graphdb.Direction;
 import org.neo4j.helpers.collection.IteratorUtil;
 import org.springframework.data.neo4j.annotation.*;
+import org.springframework.data.neo4j.support.index.IndexType;
 
 import java.util.*;
 
@@ -13,7 +15,12 @@ import static org.neo4j.graphdb.Direction.INCOMING;
  * @since 04.03.11
  */
 @NodeEntity
-public class Course extends CourseContent {
+public class Course implements Cloneable {
+
+	private enum state {
+		UNPUBLISHED, PUBLISHED
+	}
+
 	@GraphId
 	Long nodeId;
 
@@ -49,9 +56,53 @@ public class Course extends CourseContent {
 	public Course() {
 	}
 
-	public Course(String title) {
-		setTitle(title);
+
+	private String description;
+
+	@Indexed(indexType = IndexType.FULLTEXT, indexName = "search")
+	private String title;
+
+	@Fetch
+	@RelatedTo(type = "OLD_VERSION", direction = Direction.OUTGOING)
+	Course oldVersion;
+
+	@Fetch
+	@RelatedTo(type = "DRAFT_VERSION", direction = Direction.OUTGOING)
+	Course draftVersion;
+
+
+	public Course getDraftVersion() {
+		return draftVersion;
 	}
+
+	public void setDraftVersion(Course draftVersion) {
+		this.draftVersion = draftVersion;
+	}
+
+	public Course getOldVersion() {
+		return oldVersion;
+	}
+
+	public void setOldVersion(Course oldVersion) {
+		this.oldVersion = oldVersion;
+	}
+
+	public String getDescription() {
+		return this.description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getTitle() {
+		return this.title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 
 	public Collection<Actor> getActors() {
 		return actors;
@@ -232,6 +283,16 @@ public class Course extends CourseContent {
 
 	public Set<Director> getDirectors() {
 		return directors;
+	}
+
+	@Override
+	public Course clone() {
+		try {
+			return (Course) super.clone();    //To change body of overridden methods use File | Settings | File Templates.
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+		}
+		return null;
 	}
 }
 

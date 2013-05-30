@@ -10,26 +10,27 @@ import java.util.Set;
  * @since 10.11.11
  */
 public class Director extends Person {
-    public Director(String id, String name) {
-        super(id, name);
-    }
+	public Director(String id, String name) {
+		super(id, name);
+	}
 
-    public Director() {
-    }
+	public Director() {
+	}
 
-    @RelatedTo(elementClass = Course.class, type = "DIRECTED")
-    private Set<Course> directedMovies=new HashSet<Course>();
 
-    public Director(String id) {
-        super(id,null);
-    }
+	@RelatedTo(elementClass = Course.class, type = "DIRECTED")
+	private Set<Course> directedMovies = new HashSet<Course>();
 
-    public Set<Course> getDirectedMovies() {
-        return directedMovies;
-    }
+	public Director(String id) {
+		super(id, null);
+	}
 
-    public void directed(Course course) {
-        this.directedMovies.add(course);
-    }
+	public Set<Course> getDirectedMovies() {
+		return directedMovies;
+	}
+
+	public void directed(Course course) {
+		this.directedMovies.add(course);
+	}
 
 }
