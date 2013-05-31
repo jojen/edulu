@@ -7,12 +7,13 @@ import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 @NodeEntity
 public class Lesson {
+
+
 	@GraphId
 	Long nodeId;
 
@@ -25,7 +26,10 @@ public class Lesson {
 	}
 
 
-	public Collection<Module> getContent() {
+	public Set<Module> getContent() {
+		if (content == null) {
+			content = new HashSet<Module>();
+		}
 		return content;
 	}
 
@@ -35,6 +39,10 @@ public class Lesson {
 			content = new HashSet<Module>();
 		}
 		content.add(c);
+	}
+
+	public Long getId() {
+		return nodeId;
 	}
 
 

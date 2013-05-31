@@ -3,11 +3,14 @@ package org.jojen.wikistudy.controller;
 
 import org.jojen.wikistudy.domain.Container;
 import org.jojen.wikistudy.domain.Course;
+import org.jojen.wikistudy.domain.Lesson;
 import org.jojen.wikistudy.domain.User;
 import org.jojen.wikistudy.repository.ContainerRepository;
 import org.jojen.wikistudy.repository.CourseRepository;
+import org.jojen.wikistudy.repository.LessonRepository;
 import org.jojen.wikistudy.repository.UserRepository;
 import org.jojen.wikistudy.service.DatabasePopulator;
+import org.neo4j.graphdb.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,8 @@ public class CourseController {
 
 	@Autowired
 	private CourseRepository courseRepository;
+	@Autowired
+	private LessonRepository lessonRepository;
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -122,6 +127,41 @@ public class CourseController {
 		Course c = courseRepository.findOne(id);
 		model.addAttribute("self", c);
 		return "course/course";
+	}
+
+	@RequestMapping(value = "/course/{id}/{lesson}", method = RequestMethod.GET)
+	public String getCourse(Model model, @PathVariable Long id, @PathVariable Long lesson) {
+		Course c = courseRepository.findOne(id);
+		Lesson l = lessonRepository.findOne(lesson);
+		model.addAttribute("self", c);
+		model.addAttribute("lesson", l);
+		return "course/course";
+	}
+
+	@RequestMapping(value = "/course/{id}/{lesson}/new-lesson", method = RequestMethod.GET)
+	public String newLesson(Model model, @PathVariable Long id, @PathVariable Long lesson) {
+		Course c = courseRepository.findOne(id);
+		Lesson newLesson = new Lesson();
+
+		Transaction t = template.getGraphDatabase().beginTx();
+		c.addLesson(newLesson);
+
+		lessonRepository.save(newLesson);
+		courseRepository.save(c);
+		t.success();
+		t.finish();
+
+
+		Lesson l = lessonRepository.findOne(lesson);
+		model.addAttribute("self", c);
+		model.addAttribute("lesson", l);
+
+		return "course/course";
+	}
+
+	@RequestMapping(value = "/static/{page}", method = RequestMethod.GET)
+	public String getStaticPage(Model model, @PathVariable String page) {
+		return "static/" + page;
 	}
 
 

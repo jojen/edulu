@@ -41,7 +41,7 @@ public class Course implements Cloneable {
 
 	@Fetch
 	@RelatedTo(type = "LESSON", direction = Direction.OUTGOING)
-	Collection<Lesson> lessons;
+	Set<Lesson> lessons;
 
 
 	@RelatedToVia(type = "RATED", direction = INCOMING)
@@ -103,8 +103,12 @@ public class Course implements Cloneable {
 		return getDraftVersion() != null;
 	}
 
-	public Collection<Lesson> getLessons() {
+	public Set<Lesson> getLessons() {
 		return lessons;
+	}
+
+	public Lesson getFirstLesson() {
+		return lessons.iterator().next();
 	}
 
 	public void addLesson(Lesson l) {
@@ -113,6 +117,7 @@ public class Course implements Cloneable {
 			lessons = new HashSet<Lesson>();
 		}
 		lessons.add(l);
+
 	}
 
 
