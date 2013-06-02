@@ -29,6 +29,38 @@ public class CourseController {
 	protected static final Logger LOGGER = LoggerFactory
 												   .getLogger(CourseController.class);
 
+
+	@RequestMapping(value = "/{courseId}/lesson/{id}")
+	public String listLesson(
+									@PathVariable("courseId") Integer cid,
+									@PathVariable("id") Integer id,
+									@RequestParam(value = "page", required = false) Integer page,
+									Model model) {
+		Course c = courseService.findById(cid);
+		Lesson l = lessonService.findById(id);
+
+		model.addAttribute("course", c);
+		model.addAttribute("lesson", l);
+
+		return "/course/course";
+	}
+
+	@RequestMapping(value = "/{courseId}/lesson/delete/{id}")
+	public String deleteLesson(
+									  @PathVariable("courseId") Integer cid,
+									  @RequestParam(value = "page", required = false) Integer page,
+									  @PathVariable("id") Integer id,
+									  Model model) {
+		LOGGER.debug("delete id={}", id);
+		lessonService.deleteById(id);
+
+		Course c = courseService.findById(cid);
+		model.addAttribute("course", c);
+
+		return "/course/" + cid;
+	}
+
+
 	@RequestMapping(value = "/{id}")
 	public String list(
 							  @PathVariable("id") Integer id,
@@ -38,6 +70,22 @@ public class CourseController {
 		Integer lesson = 1;
 		return "redirect:/course/" + id + "/lesson/" + lesson;
 	}
+
+	@RequestMapping(value = "/{id}/add-lesson")
+	public String addLesson(
+								   @PathVariable("id") Integer id,
+								   Model model) {
+		Course c = courseService.findById(id);
+		Lesson l = new Lesson();
+		lessonService.insert(l);
+		c.addLessons(l);
+		courseService.update(c);
+
+		model.addAttribute("course", c);
+		model.addAttribute("lesson", l);
+		return "redirect:/course/" + id + "/lesson/" + l.getId();
+	}
+
 
 	@RequestMapping(value = "/form", method = RequestMethod.GET)
 	public
@@ -69,15 +117,21 @@ public class CourseController {
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public String editOnSubmit(@Valid Course course,
-							   BindingResult bindingResult, Model model) {
+							   BindingResult bindingResult,
+							   @RequestParam(value = "id", required = true) Integer id
+									  , Model model) {
 		LOGGER.debug("edit course={}", course);
 		if (bindingResult.hasErrors()) {
 			LOGGER.warn("validation error={}", bindingResult.getModel());
 			model.addAllAttributes(bindingResult.getModel());
 			return "/course/form";
 		}
-		courseService.update(course);
-		return "redirect:/course/list";
+		Course oldCourse = courseService.findById(id);
+		// TODO hier vielleicht noch ein bisschen reflections
+		oldCourse.setName(course.getName());
+		oldCourse.setDescription(course.getDescription());
+		courseService.update(oldCourse);
+		return "redirect:/";
 	}
 
 	@RequestMapping(value = "/delete/{id}")
@@ -88,40 +142,6 @@ public class CourseController {
 		courseService.deleteById(id);
 
 		return "redirect:/";
-	}
-
-	/**
-	 * Lesson
-	 */
-
-	@RequestMapping(value = "/{courseId}/lesson/{pos}")
-	public String listLesson(
-									@PathVariable("courseId") Integer cid,
-									@PathVariable("pos") Integer pos,
-									@RequestParam(value = "page", required = false) Integer page,
-									Model model) {
-		Course c = courseService.findById(cid);
-		Lesson l = c.getLessons().get(pos - 1);
-
-		model.addAttribute("course", c);
-		model.addAttribute("lesson", l);
-
-		return "/course/course";
-	}
-
-	@RequestMapping(value = "/{courseId}/lesson/delete/{id}")
-	public String deleteLesson(
-									  @PathVariable("courseId") Integer cid,
-									  @RequestParam(value = "page", required = false) Integer page,
-									  @PathVariable("id") Integer id,
-									  Model model) {
-		LOGGER.debug("delete id={}", id);
-		lessonService.deleteById(id);
-
-		Course c = courseService.findById(cid);
-		model.addAttribute("course", c);
-
-		return "/course/" + cid;
 	}
 
 

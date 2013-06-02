@@ -14,11 +14,11 @@
                     <div class="btn-group">
                         <c:forEach var="l" items="${course.lessons}" varStatus="status">
 
-                            <a href="/course/${course.id}/lesson/${status.count}"
+                            <a href="<c:url value="/course/${course.id}/lesson/${l.id}"/>"
                                class="btn <c:if test="${l.id eq lesson.id}">active</c:if>"><c:out
                                     value="${status.count}"/></a>
                         </c:forEach>
-                        <a href="<c:url value="/course/${course.id}/${lesson.id}/form" />" class="btn">+</a>
+                        <a href="<c:url value="/course/${course.id}/add-lesson" />" class="btn">+</a>
                     </div>
 
                     <ul class="nav nav-tabs">
@@ -36,7 +36,7 @@
                         <c:if test="${!empty lesson}">
 
 
-                            <c:forEach var="m" items="${lesson.modules}">
+                            <c:forEach var="m" items="${lesson.learnContents}">
                                 <h2><c:out value="${m.name}"/></h2>
                             </c:forEach>
 

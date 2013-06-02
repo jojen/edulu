@@ -2,10 +2,8 @@ $(document).ready(function () {
 
     $(".update-course").click(function () {
         var id = $(this).data("id");
-
-        $.get("/ajax/course/edit", {
-            id: id
-        }, function (result) {
+        // TODO URL muss übergeben werden -> JQ Plugin draus machen
+        $.get("/wikistudy/course/edit/" + id, function (result) {
             // hier machen machen wir das editierbar
             $("body").prepend(result);
             var dialog = $("#course-update");

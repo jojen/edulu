@@ -58,4 +58,7 @@
 </div>
 
 </body>
+<script src="<c:url value='/resources/js/jquery-2.0.0.min.js' />"></script>
+<script src="<c:url value='/resources/js/bootstrap.min.js' />"></script>
+<script src="<c:url value='/resources/js/wikistudy.js' />"></script>
 </html>

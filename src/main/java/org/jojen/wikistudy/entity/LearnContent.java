@@ -4,9 +4,10 @@ package org.jojen.wikistudy.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity
-public class LearnContent {
+public class LearnContent implements Serializable {
 
 	private String name;
 	private String text;

@@ -1,47 +1,44 @@
-<c:import url="/WEB-INF/views/common/layout.jsp" charEncoding="UTF-8">
-    <c:param name="title" value="PERSON FORM" />
-    <c:param name="body">
-        <spring:hasBindErrors name="course">
-            <script type="text/javascript">
-                $(document).ready(function() {
-                    $("div.control-group>div.controls>.error").parent().parent().addClass("error");
-                });
-            </script>
-        </spring:hasBindErrors>
-        <form:form method="post" action="." modelAttribute="course"
-            cssClass="form-horizontal">
-            <fieldset>
-                <legend>Person</legend>
-                <div class="control-group">
-                    <label class="control-label" for="name">name</label>
-                    <div class="controls">
-                        <form:input path="name" cssClass="span5"
-                            cssErrorClass="error" />
-                        <form:errors path="name"
-                            cssClass="error help-inline inline"
-                            element="span" />
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="age">age</label>
-                    <div class="controls">
-                        <form:input path="age" cssClass="span3"
-                            cssErrorClass="error" />
-                        <form:errors path="age"
-                            cssClass="error help-inline inline"
-                            element="span" />
-                    </div>
-                </div>
-                <form:hidden path="id" />
-                <div class="form-actions">
-                    <input type="submit" class="btn btn-primary"
-                        value="Submit">&nbsp;
-                    <button type="reset" class="btn">Cancel</button>
-                </div>
-            </fieldset>
-        </form:form>
-        <hr>
-        <a href='${pageContext.request.contextPath}/course/list' class="btn">list</a>
-    </c:param>
-</c:import>
+<%@ taglib uri="http://ckeditor.com" prefix="ckeditor" %>
+<div id="course-update" class="modal hide fade">
+    <spring:hasBindErrors name="course">
+        <!-- ERROR - TODO show error-->
+    </spring:hasBindErrors>
+    <c:url var="action" value="/course/edit"/>
+    <form:form method="post" action="${action}" modelAttribute="course"
+               cssClass="form-horizontal">
+        <div class="modal-header">
+            <a href="#" class="close" data-dismiss="modal">&times;</a>
+            Edit Course
+        </div>
+        <div class="modal-body">
+
+
+            <form:input path="name" cssClass="span5"
+                        cssErrorClass="error"/>
+            <form:errors path="name"
+                         cssClass="error help-inline inline"
+                         element="span"/>
+
+            <label>Level:</label>
+            <select name="level">
+                <option>Beginner</option>
+                <option>Advanced</option>
+            </select>
+
+            <div>Description:</div>
+            <c:url value="/resources/ckeditor/" var="ckeditorpath"/>
+            <c:set value="${course.description}" var="value"/>
+            <ckeditor:editor basePath="${ckeditorpath}" editor="description" value="${value}"/>
+
+        </div>
+        <form:hidden path="id"/>
+        <div class="modal-footer">
+
+            <button id="revert" class="btn">Drop changes</button>
+            <button id="save" type="submit" class="btn btn-primary">Save</button>
+        </div>
+
+    </form:form>
+</div>
+
 
