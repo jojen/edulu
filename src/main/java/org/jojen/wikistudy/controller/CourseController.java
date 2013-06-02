@@ -1,92 +1,128 @@
 package org.jojen.wikistudy.controller;
 
-import javax.inject.Inject;
-import javax.validation.Valid;
-
 import org.jojen.wikistudy.entity.Course;
+import org.jojen.wikistudy.entity.Lesson;
 import org.jojen.wikistudy.service.CourseService;
+import org.jojen.wikistudy.service.LessonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/course")
 public class CourseController {
-    protected static final int DEFAULT_PAGE_NUM = 0;
-    protected static final int DEFAULT_PAGE_SIZE = 5;
+	protected static final int DEFAULT_PAGE_NUM = 0;
+	protected static final int DEFAULT_PAGE_SIZE = 5;
 
-    @Inject
-    protected CourseService personService;
+	@Inject
+	protected CourseService courseService;
 
-    protected static final Logger LOGGER = LoggerFactory
-            .getLogger(CourseController.class);
+	@Inject
+	protected LessonService lessonService;
 
-    @RequestMapping(value = "/list")
-    public String list(
-            @RequestParam(value = "page", required = false) Integer page,
-            Model model) {
-        int pageNum = page != null ? page : DEFAULT_PAGE_NUM;
-        Page<Course> paging = personService.findAll(pageNum, DEFAULT_PAGE_SIZE);
-        model.addAttribute("page", paging);
-        return "/course/list";
-    }
+	protected static final Logger LOGGER = LoggerFactory
+												   .getLogger(CourseController.class);
 
-    @RequestMapping(value = "/form", method = RequestMethod.GET)
-    public @ModelAttribute
+	@RequestMapping(value = "/{id}")
+	public String list(
+							  @PathVariable("id") Integer id,
+							  @RequestParam(value = "page", required = false) Integer page,
+							  Model model) {
+		// TODO aktuelle lesson des benutzers
+		Integer lesson = 1;
+		return "redirect:/course/" + id + "/lesson/" + lesson;
+	}
+
+	@RequestMapping(value = "/form", method = RequestMethod.GET)
+	public
+	@ModelAttribute
 	Course create(Model model) {
-        Course course = new Course();
-        return course;
-    }
+		Course course = new Course();
+		return course;
+	}
 
-    @RequestMapping(value = "/form", method = RequestMethod.POST)
-    public String createOnSubmit(@Valid Course course,
-            BindingResult bindingResult, Model model) {
-        LOGGER.debug("create course={}", course);
-        if (bindingResult.hasErrors()) {
-            LOGGER.warn("validation error={}", bindingResult.getModel());
-            model.addAllAttributes(bindingResult.getModel());
-            return "/course/form";
-        }
-        personService.insert(course);
-        return "redirect:/course/list";
-    }
+	@RequestMapping(value = "/form", method = RequestMethod.POST)
+	public String createOnSubmit(@Valid Course course,
+								 BindingResult bindingResult, Model model) {
+		LOGGER.debug("create course={}", course);
+		if (bindingResult.hasErrors()) {
+			LOGGER.warn("validation error={}", bindingResult.getModel());
+			model.addAllAttributes(bindingResult.getModel());
+			return "/course/form";
+		}
+		courseService.insert(course);
+		return "redirect:/";
+	}
 
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-    public String edit(@PathVariable("id") Integer id, Model model) {
-        Course course = personService.findById(id);
-        model.addAttribute(course);
-        return "/course/form";
-    }
+	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+	public String edit(@PathVariable("id") Integer id, Model model) {
+		Course course = courseService.findById(id);
+		model.addAttribute(course);
+		return "/course/form";
+	}
 
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public String editOnSubmit(@Valid Course course,
-            BindingResult bindingResult, Model model) {
-        LOGGER.debug("edit course={}", course);
-        if (bindingResult.hasErrors()) {
-            LOGGER.warn("validation error={}", bindingResult.getModel());
-            model.addAllAttributes(bindingResult.getModel());
-            return "/course/form";
-        }
-        personService.update(course);
-        return "redirect:/course/list";
-    }
+	@RequestMapping(value = "/edit", method = RequestMethod.POST)
+	public String editOnSubmit(@Valid Course course,
+							   BindingResult bindingResult, Model model) {
+		LOGGER.debug("edit course={}", course);
+		if (bindingResult.hasErrors()) {
+			LOGGER.warn("validation error={}", bindingResult.getModel());
+			model.addAllAttributes(bindingResult.getModel());
+			return "/course/form";
+		}
+		courseService.update(course);
+		return "redirect:/course/list";
+	}
 
-    @RequestMapping(value = "/delete/{id}")
-    public String delete(
-            @RequestParam(value = "page", required = false) Integer page,
-            @PathVariable("id") Integer id) {
-        LOGGER.debug("delete id={}", id);
-        personService.deleteById(id);
+	@RequestMapping(value = "/delete/{id}")
+	public String delete(
+								@RequestParam(value = "page", required = false) Integer page,
+								@PathVariable("id") Integer id) {
+		LOGGER.debug("delete id={}", id);
+		courseService.deleteById(id);
 
-        return "redirect:/course/list";
-    }
+		return "redirect:/";
+	}
+
+	/**
+	 * Lesson
+	 */
+
+	@RequestMapping(value = "/{courseId}/lesson/{pos}")
+	public String listLesson(
+									@PathVariable("courseId") Integer cid,
+									@PathVariable("pos") Integer pos,
+									@RequestParam(value = "page", required = false) Integer page,
+									Model model) {
+		Course c = courseService.findById(cid);
+		Lesson l = c.getLessons().get(pos - 1);
+
+		model.addAttribute("course", c);
+		model.addAttribute("lesson", l);
+
+		return "/course/course";
+	}
+
+	@RequestMapping(value = "/{courseId}/lesson/delete/{id}")
+	public String deleteLesson(
+									  @PathVariable("courseId") Integer cid,
+									  @RequestParam(value = "page", required = false) Integer page,
+									  @PathVariable("id") Integer id,
+									  Model model) {
+		LOGGER.debug("delete id={}", id);
+		lessonService.deleteById(id);
+
+		Course c = courseService.findById(cid);
+		model.addAttribute("course", c);
+
+		return "/course/" + cid;
+	}
+
 
 }

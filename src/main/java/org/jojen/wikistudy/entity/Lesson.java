@@ -13,25 +13,25 @@ public class Lesson {
 
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Integer id;
 
 
 	@OneToMany
-	private List<Module> modules;
+	private List<LearnContent> learnContents;
 
 
 	public Lesson() {
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public List<Module> getModules() {
-		return modules;
+	public List<LearnContent> getLearnContents() {
+		return learnContents;
 	}
 
-	public void setModules(List<Module> modules) {
-		this.modules = modules;
+	public void setLearnContents(List<LearnContent> learnContents) {
+		this.learnContents = learnContents;
 	}
 }

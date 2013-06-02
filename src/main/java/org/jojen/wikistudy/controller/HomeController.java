@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -24,18 +25,24 @@ public class HomeController {
 	@Inject
 	protected CourseService personService;
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(HomeController.class);
+	private static final Logger logger = LoggerFactory
+												 .getLogger(HomeController.class);
 
 
 	@RequestMapping(value = "/")
-	public String home(
-							  @RequestParam(value = "page", required = false) Integer page,
-							  Model model) {
+	public String home(@RequestParam(value = "page", required = false) Integer page,
+					   Model model) {
 		int pageNum = page != null ? page : DEFAULT_PAGE_NUM;
 		Page<Course> paging = personService.findAll(pageNum, DEFAULT_PAGE_SIZE);
 		model.addAttribute("page", paging);
-        return "home";
-    }
+		return "home";
+	}
+
+	@RequestMapping(value = "/static/{key}")
+	public String staticController(@PathVariable(value = "key") String key,
+								   Model model) {
+
+		return "/static/" + key;
+	}
 
 }

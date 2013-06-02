@@ -1,7 +1,7 @@
 package org.jojen.wikistudy.service.impl;
 
-import org.jojen.wikistudy.entity.Module;
-import org.jojen.wikistudy.repository.ModuleRepository;
+import org.jojen.wikistudy.entity.LearnContent;
+import org.jojen.wikistudy.repository.LearnContentRepository;
 import org.jojen.wikistudy.service.ModuleService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,35 +16,35 @@ import javax.inject.Inject;
 @Service
 public class ModuleServiceImpl implements ModuleService {
 	@Inject
-	protected ModuleRepository moduleRepository;
+	protected LearnContentRepository moduleRepository;
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<Module> findAll(int page, int size) {
+	public Page<LearnContent> findAll(int page, int size) {
 		Pageable pageable = new PageRequest(page, size, new Sort(
 																		Direction.DESC, "id"));
-		Page<Module> module = moduleRepository.findAll(pageable);
-		return module;
+		Page<LearnContent> learnContent = moduleRepository.findAll(pageable);
+		return learnContent;
 	}
 
 
 	@Override
 	@Transactional(readOnly = true)
-	public Module findById(Integer id) {
-		Module lesson = moduleRepository.findOne(id);
-		return lesson;
+	public LearnContent findById(Integer id) {
+		LearnContent learnContent = moduleRepository.findOne(id);
+		return learnContent;
 	}
 
 	@Override
 	@Transactional
-	public Module insert(Module module) {
-		return moduleRepository.save(module);
+	public LearnContent insert(LearnContent learnContent) {
+		return moduleRepository.save(learnContent);
 	}
 
 	@Override
 	@Transactional
-	public Module update(Module module) {
-		return moduleRepository.save(module);
+	public LearnContent update(LearnContent learnContent) {
+		return moduleRepository.save(learnContent);
 	}
 
 	@Override

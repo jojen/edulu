@@ -1,13 +1,15 @@
 package org.jojen.wikistudy.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -16,9 +18,9 @@ public class Course implements Serializable {
 
 	@Id
 	@GeneratedValue
-	private Long id;
+	private Integer id;
 
-	@Column(name = "COURSE_NAME")
+
 	@Size(min = 1, max = 50)
 	@NotNull
 	private String name;
@@ -34,12 +36,8 @@ public class Course implements Serializable {
 	@OneToMany
 	private List<Lesson> lessons;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 
@@ -65,7 +63,11 @@ public class Course implements Serializable {
 
 	public List<Lesson> getLessons() {
 		if (lessons == null) {
-			return Collections.EMPTY_LIST;
+			Lesson l = new Lesson();
+			lessons = new ArrayList<Lesson>();
+			lessons.add(l);
+		} else if (lessons.isEmpty()) {
+			lessons.add(new Lesson());
 		}
 		return lessons;
 	}

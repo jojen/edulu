@@ -1,5 +1,5 @@
 <c:import url="/WEB-INF/views/common/layout.jsp" charEncoding="UTF-8">
-    <c:param name="title" value="HOME" />
+    <c:param name="title" value="HOME"/>
     <c:param name="body">
 
         <div class="container-fluid">
@@ -9,7 +9,8 @@
                     <div class="span3 bs-docs-sidebar">
                         <ul class="nav nav-list bs-docs-sidenav affix-top">
                             <c:forEach items="${page.content}" var="course">
-                                <li class="active"><a href="#${course.id}"><i class="icon-chevron-right"></i>${course.name}</a>
+                                <li class="active"><a href="#${course.id}"><i
+                                        class="icon-chevron-right"></i>${course.name}</a>
                                 </li>
                             </c:forEach>
                         </ul>
@@ -23,10 +24,12 @@
                                             <img src="http://static.learnstreet.com/commons/static/images/icons/icon_javascript_medium.png?20130521">
                                         </div>
                                         <div class="span10">
-                                            <a class="right more-margin btn btn-primary" href="/course/${course.id}">Start
+                                            <a class="right more-margin btn btn-primary"
+                                               href="<c:url value="/course/${course.id}" />">Start
                                                 Course</a>
 
-                                            <h3 class="update" data-id="${course.id}" data-key="title">${course.name}</h3>
+                                            <h3 class="update" data-id="${course.id}"
+                                                data-key="title">${course.name}</h3>
                                             <h4>Level: Beginner</h4>
 
 

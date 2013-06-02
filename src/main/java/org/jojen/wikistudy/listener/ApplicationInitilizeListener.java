@@ -37,7 +37,7 @@ public class ApplicationInitilizeListener implements ServletContextListener {
 			c.setDescription("Description - " + i);
 			courses.add(c);
 		}
-		Course course = courses.iterator().next();
+		Course course = courses.get(0);
 		Lesson l = new Lesson();
 		course.addLessons(l);
 

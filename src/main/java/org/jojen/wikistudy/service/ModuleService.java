@@ -1,17 +1,17 @@
 package org.jojen.wikistudy.service;
 
-import org.jojen.wikistudy.entity.Module;
+import org.jojen.wikistudy.entity.LearnContent;
 import org.springframework.data.domain.Page;
 
 public interface ModuleService {
-	Page<Module> findAll(int page, int size);
+	Page<LearnContent> findAll(int page, int size);
 
 
-	Module findById(Integer id);
+	LearnContent findById(Integer id);
 
-	Module insert(Module module);
+	LearnContent insert(LearnContent module);
 
-	Module update(Module module);
+	LearnContent update(LearnContent module);
 
 	void deleteById(Integer id);
 
