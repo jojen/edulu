@@ -87,6 +87,17 @@ public class CourseController {
 	}
 
 
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public String edit(@RequestParam(value = "id", required = false) Integer id, Model model) {
+		if (id == null) {
+			model.addAttribute(new Course());
+		} else {
+			model.addAttribute(courseService.findById(id));
+		}
+
+		return "/course/form";
+	}
+
 	@RequestMapping(value = "/form", method = RequestMethod.GET)
 	public
 	@ModelAttribute
@@ -108,17 +119,11 @@ public class CourseController {
 		return "redirect:/";
 	}
 
-	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
-	public String edit(@PathVariable("id") Integer id, Model model) {
-		Course course = courseService.findById(id);
-		model.addAttribute(course);
-		return "/course/form";
-	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
 	public String editOnSubmit(@Valid Course course,
 							   BindingResult bindingResult,
-							   @RequestParam(value = "id", required = true) Integer id
+							   @RequestParam(value = "id", required = false) Integer id
 									  , Model model) {
 		LOGGER.debug("edit course={}", course);
 		if (bindingResult.hasErrors()) {
@@ -126,11 +131,17 @@ public class CourseController {
 			model.addAllAttributes(bindingResult.getModel());
 			return "/course/form";
 		}
-		Course oldCourse = courseService.findById(id);
+		Course modelCourse;
+		if (id == null) {
+			modelCourse = new Course();
+		} else {
+			modelCourse = courseService.findById(id);
+		}
+
 		// TODO hier vielleicht noch ein bisschen reflections
-		oldCourse.setName(course.getName());
-		oldCourse.setDescription(course.getDescription());
-		courseService.update(oldCourse);
+		modelCourse.setName(course.getName());
+		modelCourse.setDescription(course.getDescription());
+		courseService.update(modelCourse);
 		return "redirect:/";
 	}
 
