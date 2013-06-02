@@ -26,8 +26,9 @@ public class CourseController {
 	@Inject
 	protected LessonService lessonService;
 
-	protected static final Logger LOGGER = LoggerFactory
-												   .getLogger(CourseController.class);
+
+	protected static final Logger log = LoggerFactory
+												.getLogger(CourseController.class);
 
 
 	@RequestMapping(value = "/{courseId}/lesson/{id}")
@@ -51,7 +52,7 @@ public class CourseController {
 									  @RequestParam(value = "page", required = false) Integer page,
 									  @PathVariable("id") Integer id,
 									  Model model) {
-		LOGGER.debug("delete id={}", id);
+		log.debug("delete id={}", id);
 		lessonService.deleteById(id);
 
 		Course c = courseService.findById(cid);
@@ -62,7 +63,7 @@ public class CourseController {
 
 
 	@RequestMapping(value = "/{id}")
-	public String list(
+	public String show(
 							  @PathVariable("id") Integer id,
 							  @RequestParam(value = "page", required = false) Integer page,
 							  Model model) {
@@ -109,9 +110,9 @@ public class CourseController {
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
 	public String createOnSubmit(@Valid Course course,
 								 BindingResult bindingResult, Model model) {
-		LOGGER.debug("create course={}", course);
+		log.debug("create course={}", course);
 		if (bindingResult.hasErrors()) {
-			LOGGER.warn("validation error={}", bindingResult.getModel());
+			log.warn("validation error={}", bindingResult.getModel());
 			model.addAllAttributes(bindingResult.getModel());
 			return "/course/form";
 		}
@@ -125,9 +126,9 @@ public class CourseController {
 							   BindingResult bindingResult,
 							   @RequestParam(value = "id", required = false) Integer id
 									  , Model model) {
-		LOGGER.debug("edit course={}", course);
+		log.debug("edit course={}", course);
 		if (bindingResult.hasErrors()) {
-			LOGGER.warn("validation error={}", bindingResult.getModel());
+			log.warn("validation error={}", bindingResult.getModel());
 			model.addAllAttributes(bindingResult.getModel());
 			return "/course/form";
 		}
@@ -149,7 +150,7 @@ public class CourseController {
 	public String delete(
 								@RequestParam(value = "page", required = false) Integer page,
 								@PathVariable("id") Integer id) {
-		LOGGER.debug("delete id={}", id);
+		log.debug("delete id={}", id);
 		courseService.deleteById(id);
 
 		return "redirect:/";

@@ -14,9 +14,9 @@ public class LearnContent implements Serializable {
 
 	@Id
 	@GeneratedValue
-	Long id;
+	Integer id;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -26,5 +26,13 @@ public class LearnContent implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 }

@@ -25,8 +25,8 @@ public class HomeController {
 	@Inject
 	protected CourseService personService;
 
-	private static final Logger logger = LoggerFactory
-												 .getLogger(HomeController.class);
+	private static final Logger log = LoggerFactory
+											  .getLogger(HomeController.class);
 
 
 	@RequestMapping(value = "/")

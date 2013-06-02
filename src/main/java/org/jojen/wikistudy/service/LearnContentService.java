@@ -3,7 +3,7 @@ package org.jojen.wikistudy.service;
 import org.jojen.wikistudy.entity.LearnContent;
 import org.springframework.data.domain.Page;
 
-public interface ModuleService {
+public interface LearnContentService {
 	Page<LearnContent> findAll(int page, int size);
 
 

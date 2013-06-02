@@ -2,7 +2,7 @@ package org.jojen.wikistudy.service.impl;
 
 import org.jojen.wikistudy.entity.LearnContent;
 import org.jojen.wikistudy.repository.LearnContentRepository;
-import org.jojen.wikistudy.service.ModuleService;
+import org.jojen.wikistudy.service.LearnContentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.inject.Inject;
 
 @Service
-public class ModuleServiceImpl implements ModuleService {
+public class LearnContentServiceImpl implements LearnContentService {
 	@Inject
 	protected LearnContentRepository moduleRepository;
 

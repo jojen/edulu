@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,7 +33,10 @@ public class Lesson implements Serializable {
 		return learnContents;
 	}
 
-	public void setLearnContents(List<LearnContent> learnContents) {
-		this.learnContents = learnContents;
+	public void addContent(LearnContent l) {
+		if (learnContents == null) {
+			learnContents = new ArrayList<LearnContent>();
+		}
+		learnContents.add(l);
 	}
 }
