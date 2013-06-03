@@ -26,19 +26,40 @@
             <ckeditor:editor basePath="${ckeditorpath}" editor="text" value="${value}"/>
 
         </div>
+
+
         <form:hidden path="id"/>
         <!-- TODO wir sterben hier nicht in schönheit -->
         <input name="lessonid" type="hidden" value="${lessonid}">
         <input name="courseid" type="hidden" value="${courseid}">
+    </form:form>
+
+    <c:url var="action" value="/content/fileupload"/>
+    <form:form method="post" action="${fileupload}" modelAttribute="fileUpload"
+               cssClass="form-horizontal">
+
+        <span class="btn fileinput-button" style="clear: both;">
+            <i class="icon-plus"></i>
+            <span>Select file : </span>
+            <form:input id="fileupload" data-url="${action}" path="fileData" type="file" multiple="true"/>
+            <span> or drop it here</span>
+         </span>
 
 
-        <div class="modal-footer">
-
-            <button id="revert" class="btn">Drop changes</button>
-            <button id="save" type="submit" class="btn btn-primary">Save</button>
+        <div id="progress" class="progress progress-success progress-striped">
+            <div class="bar"></div>
         </div>
 
     </form:form>
+
+
+    <div class="modal-footer">
+
+        <button id="revert" class="btn">Drop changes</button>
+        <button id="save" type="submit" class="btn btn-primary">Save</button>
+    </div>
+
+
 </div>
 
 

@@ -23,7 +23,7 @@ public class HomeController {
 	protected static final int DEFAULT_PAGE_SIZE = 5;
 
 	@Inject
-	protected CourseService personService;
+	protected CourseService courseService;
 
 	private static final Logger log = LoggerFactory
 											  .getLogger(HomeController.class);
@@ -33,7 +33,7 @@ public class HomeController {
 	public String home(@RequestParam(value = "page", required = false) Integer page,
 					   Model model) {
 		int pageNum = page != null ? page : DEFAULT_PAGE_NUM;
-		Page<Course> paging = personService.findAll(pageNum, DEFAULT_PAGE_SIZE);
+		Page<Course> paging = courseService.findAll(pageNum, DEFAULT_PAGE_SIZE);
 		model.addAttribute("page", paging);
 		return "home";
 	}

@@ -5,6 +5,7 @@ import org.jojen.wikistudy.entity.Lesson;
 import org.jojen.wikistudy.service.CourseService;
 import org.jojen.wikistudy.service.LearnContentService;
 import org.jojen.wikistudy.service.LessonService;
+import org.jojen.wikistudy.util.FileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -46,6 +47,7 @@ public class ContentController {
 		}
 		model.addAttribute("lessonid", lessonid);
 		model.addAttribute("courseid", courseid);
+        model.addAttribute(new FileUpload());
 
 		return "/content/content.edit";
 	}
@@ -79,6 +81,12 @@ public class ContentController {
 		}
 		return "redirect:/course/" + courseid + "/lesson/" + lessonid;
 	}
+
+
+    @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
+    public String uploadFile(Model model,FileUpload fileUpload) {
+         return "json/boolean";
+    }
 
 
 }

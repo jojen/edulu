@@ -156,11 +156,24 @@
         </pluginRepository>
     </pluginRepositories>
     <dependencies>
+        <!-- File Upload -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <!-- Editor -->
         <dependency>
             <groupId>com.ckeditor</groupId>
             <artifactId>ckeditor-java-core</artifactId>
             <version>3.5.3</version>
         </dependency>
+
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
