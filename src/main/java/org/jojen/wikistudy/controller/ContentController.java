@@ -1,9 +1,12 @@
 package org.jojen.wikistudy.controller;
 
+import org.apache.commons.io.FileUtils;
+import org.jojen.wikistudy.entity.Content;
+import org.jojen.wikistudy.entity.Image;
 import org.jojen.wikistudy.entity.LearnContent;
 import org.jojen.wikistudy.entity.Lesson;
+import org.jojen.wikistudy.service.ContentService;
 import org.jojen.wikistudy.service.CourseService;
-import org.jojen.wikistudy.service.LearnContentService;
 import org.jojen.wikistudy.service.LessonService;
 import org.jojen.wikistudy.util.FileUpload;
 import org.slf4j.Logger;
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/content")
@@ -31,7 +36,7 @@ public class ContentController {
     protected LessonService lessonService;
 
     @Inject
-    protected LearnContentService learnContentService;
+    protected ContentService contentService;
 
     protected static final Logger log = LoggerFactory
             .getLogger(ContentController.class);
@@ -43,7 +48,7 @@ public class ContentController {
         if (id == null) {
             model.addAttribute(new LearnContent());
         } else {
-            model.addAttribute(learnContentService.findById(id));
+            model.addAttribute(contentService.findById(id));
         }
         model.addAttribute("lessonid", lessonid);
         model.addAttribute("courseid", courseid);
@@ -69,13 +74,13 @@ public class ContentController {
             l.addContent(modelContent);
 
         } else {
-            modelContent = learnContentService.findById(id);
+            modelContent = (LearnContent) contentService.findById(id);
         }
 
         // TODO hier vielleicht noch ein bisschen reflections
         modelContent.setName(learnContent.getName());
         modelContent.setText(learnContent.getText());
-        learnContentService.update(modelContent);
+        contentService.update(modelContent);
         if (l != null) {
             lessonService.update(l);
         }
@@ -84,8 +89,33 @@ public class ContentController {
 
 
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
-    public String uploadFile(Model model, FileUpload fileUpload) {
+    public String uploadFile(Model model, FileUpload fileUpload, @RequestParam(value = "id", required = false) Integer id) {
         log.debug("upload content={}", fileUpload);
+        Lesson l = lessonService.findById(id);
+        try {
+            if (fileUpload.getFileData() != null) {
+                Content c = null;
+                if (fileUpload.getFileData().getContentType().startsWith("image")) {
+                    // TODO wir müssen das in einen store packen
+                    File tempfile = File.createTempFile("file", ".tmp");
+                    FileUtils.copyInputStreamToFile(fileUpload.getFileData().getInputStream(), tempfile);
+                    Image image = new Image();
+                    image.setName(fileUpload.getFileData().getName());
+                    image.setPath(tempfile.getPath());
+                    c = image;
+                }
+
+                if (c != null) {
+                    contentService.insert(c);
+                    l.addContent(c);
+                    lessonService.update(l);
+                }
+
+            }
+        } catch (IOException e) {
+            log.error("Cannot process file", e);
+
+        }
         return "json/boolean";
     }
 

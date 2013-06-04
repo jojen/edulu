@@ -1,24 +1,15 @@
 package org.jojen.wikistudy.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-public class LearnContent implements Serializable {
+public class LearnContent extends Content implements Serializable {
+    private static final long serialVersionUID = 1L;
 
 	private String name;
 	private String text;
-
-	@Id
-	@GeneratedValue
-	Integer id;
-
-	public Integer getId() {
-		return id;
-	}
 
 	public String getName() {
 		return name;

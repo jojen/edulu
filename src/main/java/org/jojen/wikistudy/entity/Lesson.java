@@ -11,6 +11,7 @@ import java.util.List;
 
 @Entity
 public class Lesson implements Serializable {
+    private static final long serialVersionUID = 1L;
 
 
 	@Id
@@ -19,7 +20,7 @@ public class Lesson implements Serializable {
 
 
 	@OneToMany
-	private List<LearnContent> learnContents;
+	private List<Content> content;
 
 
 	public Lesson() {
@@ -29,14 +30,15 @@ public class Lesson implements Serializable {
 		return id;
 	}
 
-	public List<LearnContent> getLearnContents() {
-		return learnContents;
+	public List<Content> getContent() {
+		return content;
 	}
 
-	public void addContent(LearnContent l) {
-		if (learnContents == null) {
-			learnContents = new ArrayList<LearnContent>();
+    // TODO typisieren
+	public void addContent(Content c) {
+		if (content == null) {
+			content = new ArrayList<Content>();
 		}
-		learnContents.add(l);
+		content.add(c);
 	}
 }

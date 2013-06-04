@@ -1,8 +1,8 @@
 package org.jojen.wikistudy.service.impl;
 
-import org.jojen.wikistudy.entity.LearnContent;
-import org.jojen.wikistudy.repository.LearnContentRepository;
-import org.jojen.wikistudy.service.LearnContentService;
+import org.jojen.wikistudy.entity.Content;
+import org.jojen.wikistudy.repository.ContentRepository;
+import org.jojen.wikistudy.service.ContentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,43 +14,43 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.inject.Inject;
 
 @Service
-public class LearnContentServiceImpl implements LearnContentService {
+public class ContentServiceImpl implements ContentService {
 	@Inject
-	protected LearnContentRepository moduleRepository;
+	protected ContentRepository contentRepository;
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<LearnContent> findAll(int page, int size) {
+	public Page<Content> findAll(int page, int size) {
 		Pageable pageable = new PageRequest(page, size, new Sort(
 																		Direction.DESC, "id"));
-		Page<LearnContent> learnContent = moduleRepository.findAll(pageable);
+		Page<Content> learnContent = contentRepository.findAll(pageable);
 		return learnContent;
 	}
 
 
 	@Override
 	@Transactional(readOnly = true)
-	public LearnContent findById(Integer id) {
-		LearnContent learnContent = moduleRepository.findOne(id);
+	public Content findById(Integer id) {
+        Content learnContent = contentRepository.findOne(id);
 		return learnContent;
 	}
 
 	@Override
 	@Transactional
-	public LearnContent insert(LearnContent learnContent) {
-		return moduleRepository.save(learnContent);
+	public Content insert(Content learnContent) {
+		return contentRepository.save(learnContent);
 	}
 
 	@Override
 	@Transactional
-	public LearnContent update(LearnContent learnContent) {
-		return moduleRepository.save(learnContent);
+	public Content update(Content learnContent) {
+		return contentRepository.save(learnContent);
 	}
 
 	@Override
 	@Transactional
 	public void deleteById(Integer id) {
-		moduleRepository.delete(id);
+		contentRepository.delete(id);
 	}
 
 }

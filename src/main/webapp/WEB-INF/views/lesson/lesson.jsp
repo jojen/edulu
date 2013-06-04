@@ -5,11 +5,14 @@
     <c:if test="${!empty lesson}">
 
 
-        <c:forEach var="m" items="${lesson.learnContents}">
-            <h2><c:out value="${m.name}"/></h2>
-            <c:if test="${!empty m.text}">
-                <p><c:out escapeXml="false" value="${m.text}"/></p>
+        <c:forEach var="c" items="${lesson.content}">
+            <img src="${c.path}">
+            <%--
+            <h2><c:out value="${c.name}"/></h2>
+            <c:if test="${!empty c.text}">
+                <p><c:out escapeXml="false" value="${c.text}"/></p>
             </c:if>
+            --%>
         </c:forEach>
 
         <div class="well span8">
@@ -46,7 +49,7 @@
                             <span class="btn fileinput-button">
                             <i class="icon-plus"></i>
                             <span>Upload Media</span>
-                            <input id="fileupload" data-url="<c:url value="/content/fileupload" />" name="fileData" type="file"
+                            <input id="fileupload" data-url="<c:url value="/content/fileupload" />?id=${lesson.id}" name="fileData" type="file"
                                     />
                        </span>
 
