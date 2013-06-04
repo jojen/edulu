@@ -34,24 +34,6 @@
         <input name="courseid" type="hidden" value="${courseid}">
     </form:form>
 
-    <c:url var="action" value="/content/fileupload"/>
-    <form:form method="post" action="${fileupload}" modelAttribute="fileUpload"
-               cssClass="form-horizontal">
-
-        <span class="btn fileinput-button" style="clear: both;">
-            <i class="icon-plus"></i>
-            <span>Select file : </span>
-            <form:input id="fileupload" data-url="${action}" path="fileData" type="file" multiple="true"/>
-            <span> or drop it here</span>
-         </span>
-
-
-        <div id="progress" class="progress progress-success progress-striped">
-            <div class="bar"></div>
-        </div>
-
-    </form:form>
-
 
     <div class="modal-footer">
 

@@ -57,3 +57,28 @@ body {
 }
 
 
+#progress {
+    margin-top: 20px;
+}
+
+#dropzone {
+    margin-top: 20px;
+    background: #e5e5e5;
+    line-height: 50px;
+    text-align: center;
+    background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+}
+
+#dropzone.hover {
+    background: #ffffff;
+}
+#dropzone.fade {
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+    opacity: 1;
+}
+
+

@@ -31,7 +31,7 @@ public class CourseController {
 												.getLogger(CourseController.class);
 
 
-	@RequestMapping(value = "/{courseId}/lesson/{id}")
+	@RequestMapping(value = "/{courseId}/lesson/{id}", method = RequestMethod.GET)
 	public String listLesson(
 									@PathVariable("courseId") Integer cid,
 									@PathVariable("id") Integer id,
@@ -45,6 +45,7 @@ public class CourseController {
 
 		return "/course/course";
 	}
+
 
 	@RequestMapping(value = "/{courseId}/lesson/delete/{id}")
 	public String deleteLesson(

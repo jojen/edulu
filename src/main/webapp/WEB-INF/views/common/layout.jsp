@@ -5,6 +5,7 @@
 
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/bootstrap.min.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/bootstrap-responsive.min.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/jquery.fileupload-ui.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/wikistudy.css'/>">
 
 </head>
@@ -62,8 +63,6 @@
 
 <script src="<c:url value='/resources/js/jquery.fileupload.js' />"></script>
 <script src="<c:url value='/resources/js/jquery.iframe-transport.js' />"></script>
-
-
 
 <script src="<c:url value='/resources/js/wikistudy.js' />"></script>
 

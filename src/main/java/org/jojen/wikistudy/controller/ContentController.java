@@ -21,71 +21,72 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/content")
 public class ContentController {
-	protected static final int DEFAULT_PAGE_NUM = 0;
-	protected static final int DEFAULT_PAGE_SIZE = 5;
+    protected static final int DEFAULT_PAGE_NUM = 0;
+    protected static final int DEFAULT_PAGE_SIZE = 5;
 
-	@Inject
-	protected CourseService courseService;
+    @Inject
+    protected CourseService courseService;
 
-	@Inject
-	protected LessonService lessonService;
+    @Inject
+    protected LessonService lessonService;
 
-	@Inject
-	protected LearnContentService learnContentService;
+    @Inject
+    protected LearnContentService learnContentService;
 
-	protected static final Logger log = LoggerFactory
-												.getLogger(ContentController.class);
+    protected static final Logger log = LoggerFactory
+            .getLogger(ContentController.class);
 
-	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public String editContent(@RequestParam(value = "id", required = false) Integer id,
-							  @RequestParam(value = "lessonid", required = false) Integer lessonid,
-							  @RequestParam(value = "courseid", required = false) Integer courseid, Model model) {
-		if (id == null) {
-			model.addAttribute(new LearnContent());
-		} else {
-			model.addAttribute(learnContentService.findById(id));
-		}
-		model.addAttribute("lessonid", lessonid);
-		model.addAttribute("courseid", courseid);
+    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+    public String editContent(@RequestParam(value = "id", required = false) Integer id,
+                              @RequestParam(value = "lessonid", required = false) Integer lessonid,
+                              @RequestParam(value = "courseid", required = false) Integer courseid, Model model) {
+        if (id == null) {
+            model.addAttribute(new LearnContent());
+        } else {
+            model.addAttribute(learnContentService.findById(id));
+        }
+        model.addAttribute("lessonid", lessonid);
+        model.addAttribute("courseid", courseid);
         model.addAttribute(new FileUpload());
 
-		return "/content/content.edit";
-	}
+        return "/content/content.edit";
+    }
 
-	@RequestMapping(value = "/edit", method = RequestMethod.POST)
-	public String editContent(@Valid LearnContent learnContent,
-							  BindingResult bindingResult,
-							  @RequestParam(value = "id", required = false) Integer id,
-							  @RequestParam(value = "lessonid", required = true) Integer lessonid,
-							  @RequestParam(value = "courseid", required = true) Integer courseid,
-							  Model model) {
-		log.debug("edit content={}", learnContent);
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public String editContent(@Valid LearnContent learnContent,
+                              BindingResult bindingResult,
+                              @RequestParam(value = "id", required = false) Integer id,
+                              @RequestParam(value = "lessonid", required = true) Integer lessonid,
+                              @RequestParam(value = "courseid", required = true) Integer courseid,
+                              Model model) {
+        log.debug("edit content={}", learnContent);
 
-		LearnContent modelContent;
-		Lesson l = null;
-		if (id == null) {
-			modelContent = new LearnContent();
-			l = lessonService.findById(lessonid);
-			l.addContent(modelContent);
+        LearnContent modelContent;
+        Lesson l = null;
+        if (id == null) {
+            modelContent = new LearnContent();
+            l = lessonService.findById(lessonid);
+            l.addContent(modelContent);
 
-		} else {
-			modelContent = learnContentService.findById(id);
-		}
+        } else {
+            modelContent = learnContentService.findById(id);
+        }
 
-		// TODO hier vielleicht noch ein bisschen reflections
-		modelContent.setName(learnContent.getName());
-		modelContent.setText(learnContent.getText());
-		learnContentService.update(modelContent);
-		if (l != null) {
-			lessonService.update(l);
-		}
-		return "redirect:/course/" + courseid + "/lesson/" + lessonid;
-	}
+        // TODO hier vielleicht noch ein bisschen reflections
+        modelContent.setName(learnContent.getName());
+        modelContent.setText(learnContent.getText());
+        learnContentService.update(modelContent);
+        if (l != null) {
+            lessonService.update(l);
+        }
+        return "redirect:/course/" + courseid + "/lesson/" + lessonid;
+    }
 
 
     @RequestMapping(value = "/fileupload", method = RequestMethod.POST)
-    public String uploadFile(Model model,FileUpload fileUpload) {
-         return "json/boolean";
+    public String uploadFile(Model model, FileUpload fileUpload) {
+        log.debug("upload content={}", fileUpload);
+        return "json/boolean";
     }
 
 
