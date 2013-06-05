@@ -1,6 +1,7 @@
 package org.jojen.wikistudy.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * User: jochen
@@ -9,7 +10,9 @@ import javax.persistence.*;
  */
 @Entity
 @Inheritance(strategy= InheritanceType.SINGLE_TABLE)
-public class Content {
+public class Content implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue
     private Integer id;
