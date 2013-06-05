@@ -13,4 +13,12 @@ public class Content {
     @Id
     @GeneratedValue
     private Integer id;
+
+    public String getType(){
+        return this.getClass().getSimpleName();
+    }
+
+    public Integer getId() {
+        return id;
+    }
 }

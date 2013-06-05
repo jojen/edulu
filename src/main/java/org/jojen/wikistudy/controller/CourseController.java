@@ -83,8 +83,6 @@ public class CourseController {
 		c.addLessons(l);
 		courseService.update(c);
 
-		model.addAttribute("course", c);
-		model.addAttribute("lesson", l);
 		return "redirect:/course/" + id + "/lesson/" + l.getId();
 	}
 

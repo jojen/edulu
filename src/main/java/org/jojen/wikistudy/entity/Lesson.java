@@ -1,10 +1,7 @@
 package org.jojen.wikistudy.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +17,7 @@ public class Lesson implements Serializable {
 
 
 	@OneToMany
+    @OrderBy
 	private List<Content> content;
 
 
@@ -34,7 +32,7 @@ public class Lesson implements Serializable {
 		return content;
 	}
 
-    // TODO typisieren
+
 	public void addContent(Content c) {
 		if (content == null) {
 			content = new ArrayList<Content>();

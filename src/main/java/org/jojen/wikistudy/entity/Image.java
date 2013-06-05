@@ -15,7 +15,7 @@ public class Image extends Content implements Serializable {
 
     private String name;
     // TODO evtl blob
-    private String path;
+    private String key;
 
     public String getName() {
         return name;
@@ -25,11 +25,11 @@ public class Image extends Content implements Serializable {
         this.name = name;
     }
 
-    public String getPath() {
-        return path;
+    public String getKey() {
+        return key;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setKey(String key) {
+        this.key = key;
     }
 }

@@ -4,7 +4,7 @@
         <!-- ERROR - TODO show error-->
     </spring:hasBindErrors>
     <c:url var="action" value="/content/edit"/>
-    <form:form method="post" action="${action}" modelAttribute="learnContent"
+    <form:form id="form-framework" method="post" action="${action}" modelAttribute="learnContent"
                cssClass="form-horizontal">
         <div class="modal-header">
             <a href="#" class="close" data-dismiss="modal">&times;</a>
