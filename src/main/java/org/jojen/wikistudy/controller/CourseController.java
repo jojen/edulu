@@ -68,8 +68,22 @@ public class CourseController {
 							  @PathVariable("id") Integer id,
 							  @RequestParam(value = "page", required = false) Integer page,
 							  Model model) {
-		// TODO aktuelle lesson des benutzers
-		Integer lesson = 1;
+
+		Integer lesson;
+        Course c = courseService.findById(id);
+
+        if(c.getLessons().isEmpty()){
+            Lesson l = new Lesson();
+            l = lessonService.insert(l);
+            c.addLessons(l);
+            courseService.update(c);
+            lesson = l.getId();
+
+        }else{
+            lesson = c.getLessons().iterator().next().getId();
+        }
+        // TODO aktuelle lesson des benutzers
+
 		return "redirect:/course/" + id + "/lesson/" + lesson;
 	}
 

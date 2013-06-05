@@ -36,9 +36,8 @@
                                             <p><c:out value="${course.description}" escapeXml="false"/></p>
 
                                             <ul>
-                                                <li><span>7</span> Lessons</li>
-                                                <li>|</li>
-                                                <li><span>56</span> Exercises</li>
+                                                <li><span>${fn:length(course.lessons)}</span> Lessons</li>
+
                                             </ul>
                                             <div class="btn-group right">
                                                 <c:if test="${course.hasDraft}">

@@ -33,7 +33,9 @@
                         </div>
                         <div class="span6">
                             <div class="btn-group">
-                                <button data-toggle="dropdown" class="btn btn-large dropdown-toggle">Add Module<span
+                                <button data-toggle="dropdown" class="btn btn-large dropdown-toggle">
+                                    <i class="icon-th"></i>
+                                    Add Module&nbsp;<span
                                         class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">

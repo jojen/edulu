@@ -63,11 +63,7 @@ public class Course implements Serializable {
 
 	public List<Lesson> getLessons() {
 		if (lessons == null) {
-			Lesson l = new Lesson();
-			lessons = new ArrayList<Lesson>();
-			lessons.add(l);
-		} else if (lessons.isEmpty()) {
-			lessons.add(new Lesson());
+		   lessons = new ArrayList();
 		}
 		return lessons;
 	}
