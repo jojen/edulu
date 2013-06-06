@@ -69,7 +69,7 @@
 <script>
     videojs.options.flash.swf = "<c:url value='/resources/etc/video-js.swf' />"
 </script>
-
+<script src="<c:url value='/resources/js/slickQuiz.js' />"></script>
 <script src="<c:url value='/resources/js/wikistudy.js' />"></script>
 
 </html>

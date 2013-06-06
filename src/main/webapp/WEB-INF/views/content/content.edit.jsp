@@ -1,9 +1,6 @@
 <%@ taglib uri="http://ckeditor.com" prefix="ckeditor" %>
 <div id="content-update" class="modal hide fade">
-    <spring:hasBindErrors name="learnContent">
-        <!-- ERROR - TODO show error-->
-    </spring:hasBindErrors>
-    <c:url var="action" value="/content/edit"/>
+    <c:url var="action" value="/content/text/edit"/>
     <form:form id="form-framework" method="post" action="${action}" modelAttribute="learnContent"
                cssClass="form-horizontal">
         <div class="modal-header">

@@ -33,7 +33,37 @@
                         <a href="${link}">
                             <button class="btn"><i class="icon-download"></i>&nbsp;${c.name}</button>
                         </a>
+                    </c:if>
+                    <c:if test="${c.type eq 'Quiz'}">
+                        <div id="slickQuiz">
 
+
+                            <c:if test="${!empty c.name}">
+                                <h3 class="quizName"><c:out value="${c.name}"/></h3>
+                            </c:if>
+
+
+                            <div class="quizArea">
+                                <div class="quizHeader">
+                                    <!-- where the quiz main copy goes -->
+
+                                    <a class="button startQuiz" href="#">Get Started!</a>
+                                </div>
+
+                                <!-- where the quiz gets built -->
+                            </div>
+
+                            <div class="quizResults">
+                                <h4 class="quizScore">You Scored: <span><!-- where the quiz score goes --></span></h4>
+
+                                <h4 class="quizLevel"><strong>Ranking:</strong> <span><!-- where the quiz ranking level goes --></span>
+                                </h4>
+
+                                <div class="quizResultsCopy">
+                                    <!-- where the quiz result copy goes -->
+                                </div>
+                            </div>
+                        </div>
                     </c:if>
                 </div>
             </c:forEach>
@@ -55,7 +85,8 @@
                                         class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#">Quiz</a></li>
+                                    <li><a href="#" class="update-quiz" data-courseid="${course.id}"
+                                           data-lessonid="${lesson.id}">Quiz</a></li>
                                     <li><a href="#">Survey</a></li>
                                     <li><a href="#">Hot Potato</a></li>
                                     <li class="divider"></li>
