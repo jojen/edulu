@@ -56,6 +56,9 @@ body {
 
 }
 
+#lesson-content .container .row-fluid {
+    margin-bottom: 20px;
+}
 
 #progress {
     margin-top: 20px;
@@ -72,6 +75,7 @@ body {
 #dropzone.hover {
     background: #ffffff;
 }
+
 #dropzone.fade {
     -webkit-transition: all 0.3s ease-out;
     -moz-transition: all 0.3s ease-out;

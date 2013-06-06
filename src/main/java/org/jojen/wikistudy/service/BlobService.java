@@ -1,16 +1,21 @@
 package org.jojen.wikistudy.service;
 
 
+import org.apache.commons.io.FilenameUtils;
+import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 @Service
 public class BlobService {
+    public static final int MAX_IMAGE_WIDTH = 770;
     // TODO das noch aus den properties holen
     private ServletContext context;
 
@@ -40,7 +45,18 @@ public class BlobService {
                     }
                 }
             }
-            file.transferTo(f);
+            if (file.getContentType().startsWith("image")) {
+                BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
+                if (bufferedImage.getWidth() > MAX_IMAGE_WIDTH) {
+                    ImageIO.write(Scalr.resize(bufferedImage, MAX_IMAGE_WIDTH), FilenameUtils.getExtension(file.getFileItem().getName()), f);
+                } else {
+                    file.transferTo(f);
+                }
+
+            } else {
+                file.transferTo(f);
+            }
+
 
         } catch (IOException e) {
             e.printStackTrace();

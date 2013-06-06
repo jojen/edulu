@@ -141,6 +141,10 @@
             <name>Spring Maven MILESTONE Repository</name>
             <url>http://maven.springframework.org/milestone</url>
         </repository>
+        <repository>
+            <id>oss-sonatype</id>
+            <url>http://oss.sonatype.org/content/repositories/releases/</url>
+        </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
@@ -157,9 +161,9 @@
     </pluginRepositories>
     <dependencies>
         <dependency>
-            <groupId>com.mortennobel</groupId>
-            <artifactId>java-image-scaling</artifactId>
-            <version>0.8.5</version>
+            <groupId>org.imgscalr</groupId>
+            <artifactId>imgscalr-lib</artifactId>
+            <version>4.2</version>
         </dependency>
 
         <!-- File Upload -->
