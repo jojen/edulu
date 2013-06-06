@@ -1,7 +1,8 @@
 package org.jojen.wikistudy.entity;
 
-import javax.activation.MimeType;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import java.io.Serializable;
 
 /**
@@ -10,14 +11,13 @@ import java.io.Serializable;
  * Time: 3:11 PM
  */
 @Entity
-@Inheritance(strategy= InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Blobbased extends Content implements Serializable {
     private static final long serialVersionUID = 1L;
 
 
     private String name;
-    private String storageKey;
-    private MimeType mimeType;
+    private String contentType;
 
 
     public String getName() {
@@ -28,11 +28,11 @@ public class Blobbased extends Content implements Serializable {
         this.name = name;
     }
 
-    public String getKey() {
-        return storageKey;
+    public String getContentType() {
+        return contentType;
     }
 
-    public void setKey(String key) {
-        this.storageKey = key;
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 }

@@ -1,10 +1,6 @@
 package org.jojen.wikistudy.controller;
 
-import org.apache.commons.io.IOUtils;
-import org.jojen.wikistudy.entity.Content;
-import org.jojen.wikistudy.entity.Image;
-import org.jojen.wikistudy.entity.LearnContent;
-import org.jojen.wikistudy.entity.Lesson;
+import org.jojen.wikistudy.entity.*;
 import org.jojen.wikistudy.service.BlobService;
 import org.jojen.wikistudy.service.ContentService;
 import org.jojen.wikistudy.service.CourseService;
@@ -14,15 +10,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriUtils;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 @Controller
@@ -96,42 +96,57 @@ public class ContentController {
     public String uploadFile(Model model, FileUpload fileUpload, @RequestParam(value = "id", required = false) Integer id) {
         log.debug("upload content={}", fileUpload);
         Lesson l = lessonService.findById(id);
+        try {
 
-        if (fileUpload.getFileData() != null) {
-            Content c = null;
-            if (fileUpload.getFileData().getContentType().startsWith("image")) {
-                String key = blobService.save(fileUpload.getFileData());
 
-                Image image = new Image();
-                image.setName(fileUpload.getFileData().getName());
-                image.setKey(key);
-                c = image;
+            if (fileUpload.getFileData() != null) {
+                Blobbased b = null;
+
+                // TODO evt auslagern in construktur von blobbased
+                if (fileUpload.getFileData().getContentType().startsWith("image")) {
+                    Image image = new Image();
+                    b = image;
+                }
+                if (fileUpload.getFileData().getContentType().startsWith("video")) {
+                    Video video = new Video();
+                    b = video;
+                }
+
+                if (b != null) {
+
+                    contentService.insert(b);
+                    blobService.save(fileUpload.getFileData(), b.getId());
+                    b.setContentType(fileUpload.getFileData().getContentType());
+                    b.setName(UriUtils.encodeQuery(fileUpload.getFileData().getFileItem().getName(), "UTF8"));
+
+
+                    contentService.update(b);
+                    l.addContent(b);
+                    lessonService.update(l);
+                }
+
             }
-
-            if (c != null) {
-                contentService.insert(c);
-                l.addContent(c);
-                lessonService.update(l);
-            }
-
+        } catch (Exception e) {
+            log.error("cannot upload file", e);
         }
 
         return "json/boolean";
     }
 
-    @RequestMapping(value = "/media/{id}", method = RequestMethod.GET)
-    public void media(@PathVariable("id") Integer id, HttpServletResponse response) {
+    @RequestMapping(value = "/media/{id}/{name}", method = RequestMethod.GET)
+    public void media(@PathVariable("id") Integer id, HttpServletResponse response) throws IOException {
         Content c = contentService.findById(id);
-        try {
-            if (c instanceof Image) {
-                Image i = (Image) c;
-                IOUtils.copy(blobService.get(i.getKey()), response.getOutputStream());
-                response.flushBuffer();
-            }
+        if (c instanceof Blobbased) {
+            Blobbased b = (Blobbased) c;
+            File f = new File(blobService.get(b.getId()));
+            response.setContentType(b.getContentType());
+            response.setContentLength((int) (f.length() + 0));
+            FileCopyUtils.copy(new FileInputStream(f), response.getOutputStream());
+            //response.setHeader("Content-Disposition", "attachment; filename=\"" + f.getName() + "\"");
 
-        } catch (IOException e) {
-            throw new RuntimeException("IOError writing file to output stream");
         }
+
+
     }
 
 

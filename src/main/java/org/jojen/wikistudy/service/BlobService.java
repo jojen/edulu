@@ -1,46 +1,57 @@
 package org.jojen.wikistudy.service;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import java.io.*;
+import javax.servlet.ServletContext;
+import java.io.File;
+import java.io.IOException;
 
 @Service
 public class BlobService {
     // TODO das noch aus den properties holen
-    String blobstorePath = "/opt/wikistudy/blobstore";
+    private ServletContext context;
+
+    @Autowired
+    public BlobService(ServletContext context) {
+        this.context = context;
+    }
+
+    private String getBasePath() {
+        return context.getRealPath("../../../store");
+    }
 
 
-    public String save(CommonsMultipartFile file) {
-        File path = new File(blobstorePath);
+    public void save(CommonsMultipartFile file, Integer id) {
+        File path = new File(getBasePath());
         if (!path.exists()) {
             path.mkdirs();
         }
         try {
-            String contentPath = getFilePath(System.currentTimeMillis());
-            File f = new File(blobstorePath + File.separatorChar + contentPath);
-            if(!f.exists()){
-                f.mkdirs();
+            String contentPath = getFilePath(id);
+            File f = new File(getBasePath() + File.separatorChar + contentPath);
+            if (!f.exists()) {
+                if (!f.mkdirs()) {
+                    f = new File(System.getProperty("user.home") + File.separatorChar + contentPath);
+                    if (!f.exists()) {
+                        f.mkdirs();
+                    }
+                }
             }
             file.transferTo(f);
-            return contentPath;
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
-    public InputStream get(String key) {
-        try {
-            return new FileInputStream(blobstorePath + File.separatorChar + key);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        return null;
+    public String get(Integer id) {
+        return getBasePath() + File.separatorChar + getFilePath(id);
     }
 
-    private String getFilePath(long id) {
+    private String getFilePath(Integer id) {
         int bits = 10;
         int mask = (1 << bits) - 1;
         int padLen = (bits + 4) / 5;

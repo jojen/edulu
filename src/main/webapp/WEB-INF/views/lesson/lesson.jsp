@@ -7,7 +7,14 @@
                 <div class="row-fluid">
                         <%-- TODO da solllten eigene templates her --%>
                     <c:if test="${c.type eq 'Image'}">
-                        <img src="<c:url value="/content/media/${c.id}"/>">
+                        <img src="<c:url value="/content/media/${c.id}/${c.name}"/>">
+                    </c:if>
+                    <c:if test="${c.type eq 'Video'}">
+                        <video controls>
+                            <source width="320" height="240" src="<c:url value="/content/media/${c.id}/${c.name}"/>"
+                                    type="${c.contentType}">
+                            Your browser does not support the video tag.
+                        </video>
                     </c:if>
                     <c:if test="${c.type eq 'LearnContent'}">
                         <div>
@@ -74,9 +81,6 @@
             </div>
 
         </div>
-
-
-
 
 
     </c:if>
