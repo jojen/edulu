@@ -4,15 +4,17 @@
     <c:if test="${!empty lesson}">
         <div class="container">
             <c:forEach var="c" items="${lesson.content}">
+                <c:url var="link" value="/content/media/${c.id}/${c.name}"/>
                 <div class="row-fluid">
                         <%-- TODO da solllten eigene templates her --%>
                     <c:if test="${c.type eq 'Image'}">
-                        <img src="<c:url value="/content/media/${c.id}/${c.name}"/>" class="img-polaroid">
+                        <img src="${link}" class="img-polaroid">
                     </c:if>
                     <c:if test="${c.type eq 'Video'}">
-                        <video id="${c.id}" class="video-js vjs-default-skin" controls preload="auto"
+                        <video id="${c.id}" width="770" height="480" class="video-js vjs-default-skin" controls
+                               preload="auto"
                                data-setup='{"example_option":true}'>
-                            <source src="<c:url value="/content/media/${c.id}/${c.name}"/>"
+                            <source src="${link}"
                                     type="${c.contentType}">
                             Your browser does not support the video tag.
                         </video>
@@ -25,6 +27,12 @@
 
                             <c:out value="${c.text}" escapeXml="false"/>
                         </div>
+
+                    </c:if>
+                    <c:if test="${c.type eq 'Download'}">
+                        <a href="${link}">
+                            <button class="btn"><i class="icon-download"></i>&nbsp;${c.name}</button>
+                        </a>
 
                     </c:if>
                 </div>

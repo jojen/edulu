@@ -100,30 +100,25 @@ public class ContentController {
 
 
             if (fileUpload.getFileData() != null) {
-                Blobbased b = null;
+                Blobbased b;
 
-                // TODO evt auslagern in construktur von blobbased
+
                 if (fileUpload.getFileData().getContentType().startsWith("image")) {
-                    Image image = new Image();
-                    b = image;
+                    b = new Image();
+                } else if (fileUpload.getFileData().getContentType().startsWith("video")) {
+                    b = new Video();
+                } else {
+                    b = new Download();
                 }
-                if (fileUpload.getFileData().getContentType().startsWith("video")) {
-                    Video video = new Video();
-                    b = video;
-                }
 
-                if (b != null) {
+                contentService.insert(b);
+                blobService.save(fileUpload.getFileData(), b.getId());
+                b.setContentType(fileUpload.getFileData().getContentType());
+                b.setName(UriUtils.encodeQuery(fileUpload.getFileData().getFileItem().getName(), "UTF8"));
 
-                    contentService.insert(b);
-                    blobService.save(fileUpload.getFileData(), b.getId());
-                    b.setContentType(fileUpload.getFileData().getContentType());
-                    b.setName(UriUtils.encodeQuery(fileUpload.getFileData().getFileItem().getName(), "UTF8"));
-
-
-                    contentService.update(b);
-                    l.addContent(b);
-                    lessonService.update(l);
-                }
+                contentService.update(b);
+                l.addContent(b);
+                lessonService.update(l);
 
             }
         } catch (Exception e) {
@@ -141,8 +136,11 @@ public class ContentController {
             File f = new File(blobService.get(b.getId()));
             response.setContentType(b.getContentType());
             response.setContentLength((int) (f.length() + 0));
+            if (b instanceof Download) {
+                response.setHeader("Content-Disposition", "attachment");
+            }
             FileCopyUtils.copy(new FileInputStream(f), response.getOutputStream());
-            //response.setHeader("Content-Disposition", "attachment; filename=\"" + f.getName() + "\"");
+
 
         }
 
