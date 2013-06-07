@@ -56,7 +56,7 @@ body {
 
 }
 
-#lesson-content .container .row-fluid {
+#lesson-content .row-fluid {
     margin-bottom: 20px;
 }
 
@@ -85,13 +85,17 @@ body {
     opacity: 1;
 }
 
+/*
+Quiz
+*/
+
 .startQuiz,
 .nextQuestion,
 .backToQuestion,
 .questions li.question,
 .questions li.question .responses,
-.questions li.question .responses .correct,
-.questions li.question .responses .incorrect,
+.questions li.question .responses .alert-success,
+.questions li.question .responses .alert-error,
 .quizResults {
     display: none;
 }
@@ -108,5 +112,18 @@ ul.answers li,
 ul.responses li {
     list-style-type: none;
 }
+
+ul.answers label {
+    display: inline;
+    margin-bottom: 0;
+    margin-left: 10px;
+    cursor: default;
+    vertical-align: middle;
+}
+
+.checkAnswer {
+    margin-top: 10px;
+}
+
 
 

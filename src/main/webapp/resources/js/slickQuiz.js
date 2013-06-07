@@ -106,7 +106,7 @@
 
                         var questionHTML = $('<li class="question" id="question' + (count - 1) + '"></li>');
                         questionHTML.append('<div class="questionCount">Question <span class="current">' + count + '</span> of <span class="total">' + questionCount + '</span></div>');
-                        questionHTML.append('<h3>' + count + '. ' + question.q + '</h3>');
+                        questionHTML.append('<h4>' + count + '. ' + question.q + '</h4>');
 
                         // Count the number of true values
                         var truths = 0;
@@ -156,8 +156,8 @@
                         if (!plugin.config.disableResponseMessaging) {
                             // Now let's append the correct / incorrect response messages
                             var responseHTML = $('<ul class="responses"></ul>');
-                            responseHTML.append('<li class="correct">' + question.correct + '</li>');
-                            responseHTML.append('<li class="incorrect">' + question.incorrect + '</li>');
+                            responseHTML.append('<li class="alert alert-success">' + question.correct + '</li>');
+                            responseHTML.append('<li class="alert alert-error">' + question.incorrect + '</li>');
 
                             // Append responses to question
                             questionHTML.append(responseHTML);
@@ -165,16 +165,16 @@
 
                         // Appends check answer / back / next question buttons
                         if (plugin.config.backButtonText && plugin.config.backButtonText !== '') {
-                            questionHTML.append('<a href="#" class="button backToQuestion">' + plugin.config.backButtonText + '</a>');
+                            questionHTML.append('<a href="#" class="btn backToQuestion">' + plugin.config.backButtonText + '</a>');
                         }
 
                         // If response messaging is disabled or hidden until the quiz is completed,
                         // make the nextQuestion button the checkAnswer button, as well
                         if (plugin.config.disableResponseMessaging || plugin.config.completionResponseMessaging) {
-                            questionHTML.append('<a href="#" class="button nextQuestion checkAnswer">' + plugin.config.nextQuestionText + '</a>');
+                            questionHTML.append('<a href="#" class="btn nextQuestion checkAnswer">' + plugin.config.nextQuestionText + '</a>');
                         } else {
-                            questionHTML.append('<a href="#" class="button nextQuestion">' + plugin.config.nextQuestionText + '</a>');
-                            questionHTML.append('<a href="#" class="button checkAnswer">' + plugin.config.checkAnswerText + '</a>');
+                            questionHTML.append('<a href="#" class="btn nextQuestion">' + plugin.config.nextQuestionText + '</a>');
+                            questionHTML.append('<a href="#" class="btn checkAnswer"><i class="icon-ok-circle"></i>&nbsp;' + plugin.config.checkAnswerText + '</a>');
                         }
 
                         // Append question & answers to quiz
@@ -252,15 +252,15 @@
                         questionLI.find('.responses').show();
 
                         $(checkButton).hide();
-                        questionLI.find('.nextQuestion').fadeIn(300);
-                        questionLI.find('.backToQuestion').fadeIn(300);
+                        questionLI.find('.nextQuestion').show();
+                        questionLI.find('.backToQuestion').show();
                     }
 
                     // Toggle responses based on submission
                     if (correctResponse) {
-                        questionLI.find('.correct').fadeIn(300);
+                        questionLI.find('.alert-success').show();
                     } else {
-                        questionLI.find('.incorrect').fadeIn(300);
+                        questionLI.find('.alert-error').show();
                     }
                 }
             },
@@ -279,7 +279,7 @@
 
                 if (nextQuestion.length) {
                     currentQuestion.fadeOut(300, function () {
-                        nextQuestion.find('.backToQuestion').show().end().fadeIn(500);
+                        nextQuestion.find('.backToQuestion').show().end().show();
                     });
                 } else {
                     plugin.method.completeQuiz();
@@ -321,7 +321,7 @@
                     questionLI.find('.responses').fadeOut(300, function () {
                         questionLI.removeClass('correctResponse');
                         questionLI.find('.responses li').hide();
-                        answers.fadeIn(500);
+                        answers.show();
                         questionLI.find('.checkAnswer').fadeIn(500);
                         questionLI.find('.nextQuestion').hide();
 

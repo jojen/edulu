@@ -139,7 +139,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#slickQuiz').slickQuiz({json: {
+    $('#slick-quiz').slickQuiz({json: {
         "info": {
             "name": "Test Your Knowledge!!",
             "main": "<p>Think you're smart enough to be on Jeopardy? Find out with this super crazy knowledge quiz!</p>",
