@@ -19,14 +19,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <span class="brand">Wiki Study</span>
+            <span class="brand"><a href="<c:url value="/" />">Wiki Study</a></span>
 
             <div class="nav-collapse collapse">
                 <p class="navbar-text pull-right">
                     <c:choose>
                         <c:when test="${empty user}">
-                            <a href="<c:url value="/auth/login" />">Login</a>
-                            <a href="<c:url value="/auth/registerpage" />">Register</a>
+                            <a href="<c:url value="/auth/login" />">Sign Up</a>
                         </c:when>
                         <c:otherwise>
                             Logged in as <a class="navbar-link" href="<c:url value="/user" />">${user.name}</a>

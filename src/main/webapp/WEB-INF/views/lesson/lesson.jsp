@@ -19,7 +19,7 @@
                         Your browser does not support the video tag.
                     </video>
                 </c:if>
-                <c:if test="${c.type eq 'LearnContent'}">
+                <c:if test="${c.type eq 'Text'}">
                     <div>
                         <c:if test="${!empty c.name}">
                             <h2><c:out value="${c.name}"/></h2>
@@ -35,6 +35,7 @@
                     </a>
                 </c:if>
                 <c:if test="${c.type eq 'Quiz'}">
+                    <!-- TODO sollte in class übergehen -->
                     <div id="slick-quiz">
 
 

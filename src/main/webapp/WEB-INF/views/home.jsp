@@ -2,14 +2,14 @@
     <c:param name="title" value="HOME"/>
     <c:param name="body">
 
-        <div class="container-fluid">
-            <div class="row-fluid">
+        <div class="container">
+            <div class="row">
 
                 <c:if test="${!empty page}">
                     <div class="span3 bs-docs-sidebar">
                         <ul class="nav nav-list bs-docs-sidenav affix-top">
                             <c:forEach items="${page.content}" var="course">
-                                <li class="active"><a href="#${course.id}"><i
+                                <li><a href="#course-${course.id}"><i
                                         class="icon-chevron-right"></i>${course.name}</a>
                                 </li>
                             </c:forEach>
@@ -18,7 +18,7 @@
                     <div class="span7">
                         <div class="row">
                             <c:forEach items="${page.content}" var="course" varStatus="status">
-                                <div class="course light-box mini-layout box-shadow">
+                                <div id="course-${course.id}" class="course light-box mini-layout box-shadow">
                                     <div class="row-fluid">
                                         <div class="span2">
                                             <img src="http://static.learnstreet.com/commons/static/images/icons/icon_javascript_medium.png?20130521">

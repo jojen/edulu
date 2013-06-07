@@ -1,11 +1,11 @@
 <%@ taglib uri="http://ckeditor.com" prefix="ckeditor" %>
 <div id="content-update" class="modal hide fade">
     <c:url var="action" value="/content/text/edit"/>
-    <form:form id="form-framework" method="post" action="${action}" modelAttribute="learnContent"
+    <form:form id="form-framework" method="post" action="${action}" modelAttribute="text"
                cssClass="form-horizontal">
         <div class="modal-header">
             <a href="#" class="close" data-dismiss="modal">&times;</a>
-            Edit Content
+            Edit Text
         </div>
         <div class="modal-body">
 
