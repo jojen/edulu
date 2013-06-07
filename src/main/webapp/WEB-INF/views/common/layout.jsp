@@ -57,18 +57,33 @@
 </div>
 
 </body>
-<script src="<c:url value='/resources/js/jquery-2.0.0.min.js' />"></script>
-<script src="<c:url value='/resources/js/bootstrap.min.js' />"></script>
-<script src="<c:url value='/resources/js/vendor/jquery.ui.widget.js' />"></script>
+<!-- lib -->
+<script type="text/javascript" src="<c:url value='/resources/js/jquery-2.0.0.min.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/bootstrap.min.js' />"></script>
 
-<script src="<c:url value='/resources/js/jquery.fileupload.js' />"></script>
-<script src="<c:url value='/resources/js/jquery.iframe-transport.js' />"></script>
-
-<script src="<c:url value='/resources/js/video.js' />"></script>
+<!-- video -->
+<script type="text/javascript" src="<c:url value='/resources/js/video.js' />"></script>
 <script>
     videojs.options.flash.swf = "<c:url value='/resources/etc/video-js.swf' />"
 </script>
-<script src="<c:url value='/resources/js/slickQuiz.js' />"></script>
-<script src="<c:url value='/resources/js/wikistudy.js' />"></script>
+
+<!-- Quiz -->
+<script type="text/javascript" src="<c:url value='/resources/js/slickQuiz.js' />"></script>
+
+
+<!-- Editor Mode -->
+
+<!-- File Upload -->
+<script type="text/javascript" src="<c:url value='/resources/js/vendor/jquery.ui.widget.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/jquery.fileupload.js' />"></script>
+<script type="text/javascript" src="<c:url value='/resources/js/jquery.iframe-transport.js' />"></script>
+
+<!-- Quiz -->
+<script type="text/javascript" src="<c:url value="/resources/js/jsonform/underscore.js" />"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/jsonform/jsv.js" />"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/jsonform/jsonform.js" />"></script>
+
+
+<script type="text/javascript" src="<c:url value='/resources/js/wikistudy.js' />"></script>
 
 </html>

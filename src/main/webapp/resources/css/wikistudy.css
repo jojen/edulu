@@ -154,5 +154,10 @@ ul.answers label {
     margin-top: 10px;
 }
 
+#quiz-update .controls {
+    margin-left: 10px;
+!important
+}
+
 
 

@@ -88,9 +88,72 @@ $(document).ready(function () {
 
             dialog.on('hidden', function () {
                 if (!revert) {
-                    $('#form-framework').submit();
+                    $('#quiz-form').submit();
                 }
             });
+
+            $('#quiz-form').jsonForm({
+                schema: {
+                    "questions": {
+                        "type": "array",
+                        "required": false,
+                        "items": {
+                            "type": "object",
+                            "required": false,
+                            "properties": {
+                                "q": {
+                                    "type": "string",
+                                    "default": "Question",
+                                    "required": true
+                                },
+                                "a": {
+                                    "type": "array",
+                                    "required": true,
+                                    "items": [
+                                        {
+                                            "type": "object",
+                                            "required": false,
+                                            "properties": {
+                                                "correct": {
+                                                    "type": "boolean",
+                                                    "required": false
+                                                },
+                                                "option": {
+                                                    "type": "string",
+                                                    "required": false
+                                                }
+                                            }
+                                        }
+
+                                    ]
+                                },
+                                "correct": {
+                                    "type": "string",
+                                    "default": "Correct answer",
+                                    "required": true
+                                },
+                                "incorrect": {
+                                    "type": "string",
+                                    "default": "Wrong Answer",
+                                    "required": true
+                                }
+
+                            }
+                        }
+
+
+                    }
+                },
+                onSubmit: function (errors, values) {
+                    if (errors) {
+                        alert("error");
+                    }
+                    else {
+                        console.log(values);
+                    }
+                }
+            });
+
 
         });
     });

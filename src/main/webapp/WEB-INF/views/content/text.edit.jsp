@@ -12,9 +12,6 @@
 
             <form:input path="name" cssClass="span5"
                         cssErrorClass="error"/>
-            <form:errors path="name"
-                         cssClass="error help-inline inline"
-                         element="span"/>
 
 
             <div>Text:</div>
