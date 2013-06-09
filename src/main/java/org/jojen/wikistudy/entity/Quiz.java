@@ -1,6 +1,7 @@
 package org.jojen.wikistudy.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import java.io.Serializable;
 
 /**
@@ -11,33 +12,35 @@ import java.io.Serializable;
  */
 @Entity
 public class Quiz extends Content implements Serializable {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private String name;
-    private String description;
-    private String quizContent;
+	private String name;
+	private String description;
+	@Lob
+	private String quizContent;
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public String getQuizContent() {
-        return quizContent;
-    }
+	public String getQuizContent() {
+		return quizContent;
+	}
 
-    public void setQuizContent(String quizContent) {
-        this.quizContent = quizContent;
-    }
+	public void setQuizContent(String quizContent) {
+		this.quizContent = quizContent;
+	}
+
 }

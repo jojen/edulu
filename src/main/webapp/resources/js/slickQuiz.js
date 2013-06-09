@@ -25,7 +25,15 @@
             randomSortAnswers: false,
             preventUnanswered: false,
             completionResponseMessaging: false,
-            disableResponseMessaging: false
+            disableResponseMessaging: false,
+            level1: "Champion!!",
+            level2: "You did a very good Job",
+            level3: "OK ... you are talented",
+            level4: "Newbie",
+            level5: "Oh no, Please try again...",
+            name: "Test your Knowledge",
+            main: "",
+            results: ""
         };
 
         // Reassign user-submitted deprecated options
@@ -78,11 +86,11 @@
             quizValues.questions;
 
         var levels = {
-            1: quizValues.info.level1, // 80-100%
-            2: quizValues.info.level2, // 60-79%
-            3: quizValues.info.level3, // 40-59%
-            4: quizValues.info.level4, // 20-39%
-            5: quizValues.info.level5  // 0-19%
+            1: plugin.config.level1, // 80-100%
+            2: plugin.config.level2, // 60-79%
+            3: plugin.config.level3, // 40-59%
+            4: plugin.config.level4, // 20-39%
+            5: plugin.config.level5  // 0-19%
         };
 
         // Count the number of questions
@@ -91,9 +99,9 @@
         plugin.method = {
             // Sets up the questions and answers based on above array
             setupQuiz: function () {
-                $(targets.quizName).hide().html(quizValues.info.name).fadeIn(1000);
-                $(targets.quizHeader).hide().prepend(quizValues.info.main).fadeIn(1000);
-                $(targets.quizResultsCopy).append(quizValues.info.results);
+                $(targets.quizName).hide().html(plugin.config.name).fadeIn(1000);
+                $(targets.quizHeader).hide().prepend(plugin.config.main).fadeIn(1000);
+                $(targets.quizResultsCopy).append(plugin.config.results);
 
                 // Setup questions
                 var quiz = $('<ol class="questions"></ol>'),

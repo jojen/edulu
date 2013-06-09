@@ -1087,7 +1087,7 @@
             'template': ' <button <% if (id) { %> id="<%= id %>" <% } %> class="btn <%= elt.htmlClass?elt.htmlClass:"" %>"><%= node.title %></button> '
         },
         'actions': {
-            'template': '<div class="form-actions <%= elt.htmlClass?elt.htmlClass:"" %>"><%= children %></div>'
+            'template': ''//'<div class="form-actions <%= elt.htmlClass?elt.htmlClass:"" %>"><%= children %></div>'
         },
         'hidden': {
             'template': '<input type="hidden" id="<%= id %>" name="<%= node.name %>" value="<%= escape(value) %>" />',

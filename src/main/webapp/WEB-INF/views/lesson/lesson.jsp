@@ -37,12 +37,7 @@
                 <c:if test="${c.type eq 'Quiz'}">
                     <!-- TODO sollte in class übergehen -->
                     <div id="slick-quiz">
-
-
-                        <c:if test="${!empty c.name}">
-                            <h3 class="quizName"><c:out value="${c.name}"/></h3>
-                        </c:if>
-
+                        <h3 class="quizName"></h3>
 
                         <div class="quizArea">
                             <div class="quizHeader">
@@ -66,6 +61,12 @@
                             </div>
                         </div>
                     </div>
+                    <script type="text/javascript">
+                        $('#slick-quiz').slickQuiz({json:
+                            ${c.quizContent}
+                        });
+                    </script>
+
                 </c:if>
             </div>
         </c:forEach>

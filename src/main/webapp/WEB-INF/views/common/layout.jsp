@@ -9,6 +9,13 @@
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/video-js.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/wikistudy.css'/>">
 
+    <!-- lib -->
+    <script type="text/javascript" src="<c:url value='/resources/js/jquery-2.0.0.min.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/js/bootstrap.min.js' />"></script>
+
+    <!-- Quiz -->
+    <script type="text/javascript" src="<c:url value='/resources/js/slickQuiz.js' />"></script>
+
 </head>
 <body>
 <div class="navbar navbar-inverse navbar-fixed-top">
@@ -57,18 +64,13 @@
 </div>
 
 </body>
-<!-- lib -->
-<script type="text/javascript" src="<c:url value='/resources/js/jquery-2.0.0.min.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/js/bootstrap.min.js' />"></script>
+
 
 <!-- video -->
 <script type="text/javascript" src="<c:url value='/resources/js/video.js' />"></script>
 <script>
     videojs.options.flash.swf = "<c:url value='/resources/etc/video-js.swf' />"
 </script>
-
-<!-- Quiz -->
-<script type="text/javascript" src="<c:url value='/resources/js/slickQuiz.js' />"></script>
 
 
 <!-- Editor Mode -->

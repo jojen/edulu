@@ -159,5 +159,32 @@ ul.answers label {
 !important
 }
 
+#quiz-json-form .checkbox {
+    float: left;
+    margin-top: 4px;
+}
+
+#quiz-json-form .control-group {
+    margin-bottom: 5px;
+}
+
+#quiz-json-form div div.control-group div.controls div ul._jsonform-array-ul li fieldset div.control-group {
+    margin-bottom: 10px;
+}
+
+#quiz-json-form div div.control-group div.controls div ul._jsonform-array-ul li fieldset div.control-group div {
+    margin-bottom: 0px;
+!important
+}
+
+#quiz-json-form div div.control-group div.controls div ul._jsonform-array-ul li {
+    border-bottom: 1px solid #aaa;
+    margin-bottom: 10px;
+
+}
+
+#quiz-json-form div div.control-group div.controls div ul._jsonform-array-ul li li {
+    border: none;
+}
 
 
