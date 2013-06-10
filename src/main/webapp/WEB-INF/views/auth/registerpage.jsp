@@ -1,5 +1,5 @@
 <c:import url="/WEB-INF/views/common/layout.jsp" charEncoding="UTF-8">
-    <c:param name="title" value="HOME"/>
+    <c:param name="title" value="Register"/>
     <c:param name="body">
         <h1>Register</h1>
 
