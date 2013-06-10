@@ -29,7 +29,7 @@ $(document).ready(function () {
         });
     });
 
-    $(".update-content").click(function () {
+    $(".update-Text").click(function () {
         var id = $(this).data("id");
         var lessonId = $(this).data("lessonid");
         var courseId = $(this).data("courseid");
@@ -41,14 +41,14 @@ $(document).ready(function () {
         }, function (result) {
             // hier machen machen wir das editierbar
             $("body").prepend(result);
-            var dialog = $("#content-update");
+            var dialog = $("#text-update");
             dialog.modal('show');
 
             $("#save").click(function () {
                 dialog.modal('hide');
             });
             var revert = false;
-            $("#revert").click(function () {
+            $(".close").click(function () {
                 revert = true;
                 dialog.modal('hide');
             });
@@ -108,7 +108,7 @@ $(document).ready(function () {
     });
 
 
-    $(".update-quiz").click(function () {
+    $(".update-Quiz").click(function () {
         var id = $(this).data("id");
         var lessonId = $(this).data("lessonid");
         var courseId = $(this).data("courseid");
@@ -127,81 +127,15 @@ $(document).ready(function () {
                     dialog.modal('hide');
                 });
                 var revert = false;
-                $("#revert").click(function () {
+                $(".close").click(function () {
                     revert = true;
                     dialog.modal('hide');
-                });
-
-
-                var quizcontent = null;
-                $('#quiz-json-form').jsonForm({
-                    schema: {
-                        "questions": {
-                            "type": "array",
-                            "required": false,
-                            "items": {
-                                "type": "object",
-                                "required": false,
-                                "properties": {
-                                    "q": {
-                                        "type": "string",
-                                        "description": "Question",
-                                        "required": true
-                                    },
-                                    "a": {
-                                        "type": "array",
-                                        "required": true,
-                                        "items": [
-                                            {
-                                                "type": "object",
-                                                "required": false,
-                                                "properties": {
-                                                    "correct": {
-                                                        "type": "boolean",
-                                                        "required": false
-                                                    },
-                                                    "option": {
-                                                        "type": "string",
-                                                        "description": "Answer possibility",
-                                                        "required": false
-                                                    }
-                                                }
-                                            }
-
-                                        ]
-                                    },
-                                    "correct": {
-                                        "type": "string",
-                                        "description": "Message for correct answer",
-                                        "required": true
-                                    },
-                                    "incorrect": {
-                                        "type": "string",
-                                        "description": "Message for wrong answer",
-                                        "required": true
-                                    }
-
-                                }
-                            }
-
-
-
-                        }
-                    }, onSubmit: function (errors, values) {
-                        if (errors) {
-                            alert("error");
-                        }
-                        else {
-                            quizcontent = JSON.stringify(values);
-
-                        }
-                    }
                 });
 
                 dialog.on('hidden', function () {
                     if (!revert) {
                         $('#quiz-json-form').submit();
-                        $('#quiz-form').append("<input name='quizcontent' value='" + quizcontent + "'>");
+                        $('#quiz-form').append("<input name='quizcontent' value='" + getQuizContent() + "'>");
                         $('#quiz-form').submit();
                     }
                 });

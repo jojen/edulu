@@ -1,5 +1,5 @@
 <%@ taglib uri="http://ckeditor.com" prefix="ckeditor" %>
-<div id="content-update" class="modal hide fade">
+<div id="text-update" class="modal hide fade">
     <c:url var="action" value="/content/text/edit"/>
     <form:form id="form-framework" method="post" action="${action}" modelAttribute="text"
                cssClass="form-horizontal">
@@ -16,7 +16,7 @@
 
             <div>Text:</div>
             <c:url value="/resources/ckeditor/" var="ckeditorpath"/>
-            <c:set value="${content.text}" var="value"/>
+            <c:set value="${text.text}" var="value"/>
             <ckeditor:editor basePath="${ckeditorpath}" editor="text" value="${value}"/>
 
         </div>

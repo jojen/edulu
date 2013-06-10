@@ -27,3 +27,78 @@
     </div>
 
 </div>
+
+<script type="text/javascript">
+    var quizcontent = null;
+    $('#quiz-json-form').jsonForm({
+        schema: {
+            "questions": {
+                "type": "array",
+                "required": false,
+                "items": {
+                    "type": "object",
+                    "required": false,
+                    "properties": {
+                        "q": {
+                            "type": "string",
+                            "description": "Question",
+                            "required": true
+                        },
+                        "a": {
+                            "type": "array",
+                            "required": true,
+                            "items": [
+                                {
+                                    "type": "object",
+                                    "required": false,
+                                    "properties": {
+                                        "correct": {
+                                            "type": "boolean",
+                                            "required": false
+                                        },
+                                        "option": {
+                                            "type": "string",
+                                            "description": "Answer possibility",
+                                            "required": false
+                                        }
+                                    }
+                                }
+
+                            ]
+                        },
+                        "correct": {
+                            "type": "string",
+                            "description": "Message for correct answer",
+                            "required": true
+                        },
+                        "incorrect": {
+                            "type": "string",
+                            "description": "Message for wrong answer",
+                            "required": true
+                        }
+
+                    }
+                }
+
+
+
+            }
+        },
+        <c:if test="${!empty quiz.quizContent}">
+        "value":
+        ${quiz.quizContent},
+        </c:if>
+        onSubmit: function (errors, values) {
+            if (errors) {
+                alert("error");
+            }
+            else {
+                quizcontent = JSON.stringify(values);
+
+            }
+        }
+    });
+    function getQuizContent() {
+        return quizcontent;
+    }
+</script>

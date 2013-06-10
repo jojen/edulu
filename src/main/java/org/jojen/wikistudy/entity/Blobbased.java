@@ -35,4 +35,9 @@ public class Blobbased extends Content implements Serializable {
     public void setContentType(String contentType) {
         this.contentType = contentType;
     }
+
+    @Override
+    public Boolean getIsEditable() {
+        return false;
+    }
 }

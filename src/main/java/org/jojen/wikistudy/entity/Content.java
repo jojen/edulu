@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Time: 3:45 PM
  */
 @Entity
-@Inheritance(strategy= InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Content implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -17,11 +17,15 @@ public class Content implements Serializable {
     @GeneratedValue
     private Integer id;
 
-    public String getType(){
+    public String getType() {
         return this.getClass().getSimpleName();
     }
 
     public Integer getId() {
         return id;
+    }
+
+    public Boolean getIsEditable() {
+        return true;
     }
 }

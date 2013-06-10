@@ -68,6 +68,19 @@
                     </script>
 
                 </c:if>
+
+                <div class="btn-group right">
+
+                    <a data-id="${c.id}" class="btn btn-danger">Revert</a>
+                    <c:if test="${c.isEditable}">
+                        <a data-id="${c.id}" data-courseid="${course.id}"
+                           data-lessonid="${lesson.id}" class="update-${c.type} btn btn-warning">Edit</a>
+                    </c:if>
+
+                    <a data-id="${c.id}" class="btn btn-success">Publish</a>
+
+                </div>
+
             </div>
         </c:forEach>
         <div class="row-fluid">
@@ -75,7 +88,7 @@
                 <div class="row-fluid">
                     <div class="span6">
                         <button data-courseid="${course.id}" data-lessonid="${lesson.id}"
-                                class="btn btn-large update-content">
+                                class="btn btn-large update-Text">
                             <i class="icon-align-left"></i>
                             Add Text
                         </button>
@@ -88,7 +101,7 @@
                                     class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a href="#" class="update-quiz" data-courseid="${course.id}"
+                                <li><a href="#" class="update-Quiz" data-courseid="${course.id}"
                                        data-lessonid="${lesson.id}">Quiz</a></li>
                                 <li class="disabled"><a href="#">Survey</a></li>
                                 <li class="disabled"><a href="#">Hot Potato</a></li>
