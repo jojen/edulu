@@ -5,7 +5,7 @@
 
         <div class="error">${error}</div>
 
-        <form action="/auth/register" method="post">
+        <form action="<c:url var="/auth/register" />" method="post">
             <p>
                 <label for="j_username">Email:</label>
                 <input id="j_username" name="j_username" type="text" value="${j_username}"/>

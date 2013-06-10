@@ -30,14 +30,19 @@
 
             <div class="nav-collapse collapse">
                 <p class="navbar-text pull-right">
+                    <sec:authorize access="hasRole('ROLE_USER')">
+                        Logged in as
+                        <a class="navbar-link" href="<c:url value="/user" />">
+                            <sec:authentication var="user" property="principal.username"/>
+                            <c:out value="${user}"/>
+                        </a>
+                        <a href="<c:url value="/auth/logout" />">Logout</a>
+                    </sec:authorize>
                     <c:choose>
                         <c:when test="${empty user}">
                             <a href="<c:url value="/auth/login" />">Sign Up</a>
                         </c:when>
-                        <c:otherwise>
-                            Logged in as <a class="navbar-link" href="<c:url value="/user" />">${user.name}</a>
-                            <a href="<c:url value="/auth/logout" />">Logout</a>
-                        </c:otherwise>
+
                     </c:choose>
                 </p>
                 <ul class="nav">

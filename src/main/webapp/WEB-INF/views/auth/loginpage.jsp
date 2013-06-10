@@ -4,10 +4,11 @@
 
 
         <h1>Login</h1>
+        <c:if test="${!empty error}">
+            <div class="alert alert-error">${error}</div>
+        </c:if>
 
-        <div class="error">${error}</div>
-
-        <form action="/j_spring_security_check" method="post">
+        <form action="<c:url value="/j_spring_security_check" />" method="post">
             <p>
                 <label for="j_username">Email:</label>
                 <input id="j_username" name="j_username" type="text"
