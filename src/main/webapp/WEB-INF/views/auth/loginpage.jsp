@@ -23,6 +23,7 @@
                 <p>
                     <input type="checkbox" name="_spring_security_remember_me"/> Remember me
                 </p>
+                <br/>
                 <input class="btn btn-primary" type="submit" value="Login"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
                     class="btn" l href="<c:url value="/auth/registerpage" />">Create Account</a>
             </form>
