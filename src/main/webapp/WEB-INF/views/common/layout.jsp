@@ -58,7 +58,7 @@
 </div>
 
 
-<div class="container">${param.body}</div>
+<div id="maincontainer" class="container">${param.body}</div>
 
 <footer id="footer">
     <p>
