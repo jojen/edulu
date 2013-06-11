@@ -34,13 +34,6 @@ body {
     box-shadow: 0 0 3em #888888;
 }
 
-.centred {
-    margin-left: auto !important;
-    margin-right: auto !important;
-    float: none !important;
-    text-align: center;
-}
-
 .brand a:hover {
     text-decoration: none;
     color: #0088CC;

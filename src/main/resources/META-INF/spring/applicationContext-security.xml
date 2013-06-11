@@ -14,7 +14,9 @@
 
     <security:http auto-config="true" access-denied-page="/auth/denied"> <!-- use-expressions="true" -->
         <security:intercept-url pattern="/admin/*" access="ROLE_ADMIN"/>
-        <security:intercept-url pattern="/import/*" access="ROLE_ADMIN"/>
+        <security:intercept-url pattern="/**/edit/**" access="ROLE_TEACHER"/>
+        <security:intercept-url pattern="/**/add/**" access="ROLE_TEACHER"/>
+        <security:intercept-url pattern="/**/delete/**" access="ROLE_TEACHER"/>
         <security:intercept-url pattern="/user/*" access="ROLE_USER"/>
         <security:intercept-url pattern="/auth/login" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <security:intercept-url pattern="/auth/register" access="IS_AUTHENTICATED_ANONYMOUSLY"/>

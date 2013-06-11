@@ -18,7 +18,10 @@
                                class="btn <c:if test="${l.id eq lesson.id}">active</c:if>"><c:out
                                     value="${status.count}"/></a>
                         </c:forEach>
-                        <a href="<c:url value="/course/${course.id}/add-lesson" />" class="btn">+</a>
+                        <sec:authorize access="hasRole('ROLE_TEACHER')">
+                            <a href="<c:url value="/course/${course.id}/add-lesson" />" class="btn"><i
+                                    class="icon-plus"></i></a>
+                        </sec:authorize>
                     </div>
 
                     <ul class="nav nav-tabs">

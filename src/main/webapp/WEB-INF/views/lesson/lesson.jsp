@@ -68,55 +68,57 @@
                     </script>
 
                 </c:if>
+                <sec:authorize access="hasRole('ROLE_TEACHER')">
+                    <div class="btn-group right">
 
-                <div class="btn-group right">
+                        <a data-id="${c.id}" class="btn btn-danger">Revert</a>
+                        <c:if test="${c.isEditable}">
+                            <a data-id="${c.id}" data-courseid="${course.id}"
+                               data-lessonid="${lesson.id}" class="update-${c.type} btn btn-warning">Edit</a>
+                        </c:if>
 
-                    <a data-id="${c.id}" class="btn btn-danger">Revert</a>
-                    <c:if test="${c.isEditable}">
-                        <a data-id="${c.id}" data-courseid="${course.id}"
-                           data-lessonid="${lesson.id}" class="update-${c.type} btn btn-warning">Edit</a>
-                    </c:if>
+                        <a data-id="${c.id}" class="btn btn-success">Publish</a>
 
-                    <a data-id="${c.id}" class="btn btn-success">Publish</a>
-
-                </div>
+                    </div>
+                </sec:authorize>
 
             </div>
         </c:forEach>
-        <div class="row-fluid">
-            <div class="well">
-                <div class="row-fluid">
-                    <div class="span6">
-                        <button data-courseid="${course.id}" data-lessonid="${lesson.id}"
-                                class="btn btn-large update-Text">
-                            <i class="icon-align-left"></i>
-                            Add Text
-                        </button>
-                    </div>
-                    <div class="span6">
-                        <div class="btn-group">
-                            <button data-toggle="dropdown" class="btn btn-large dropdown-toggle">
-                                <i class="icon-th-large"></i>
-                                Add Module&nbsp;<span
-                                    class="caret"></span>
+        <sec:authorize access="hasRole('ROLE_TEACHER')">
+            <div class="row-fluid">
+                <div class="well">
+                    <div class="row-fluid">
+                        <div class="span6">
+                            <button data-courseid="${course.id}" data-lessonid="${lesson.id}"
+                                    class="btn btn-large update-Text">
+                                <i class="icon-align-left"></i>
+                                Add Text
                             </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#" class="update-Quiz" data-courseid="${course.id}"
-                                       data-lessonid="${lesson.id}">Quiz</a></li>
-                                <li class="disabled"><a href="#">Survey</a></li>
-                                <li class="disabled"><a href="#">Hot Potato</a></li>
-                                <li class="divider"></li>
-                                <li class="disabled"><a href="#">Test</a></li>
-                            </ul>
+                        </div>
+                        <div class="span6">
+                            <div class="btn-group">
+                                <button data-toggle="dropdown" class="btn btn-large dropdown-toggle">
+                                    <i class="icon-th-large"></i>
+                                    Add Module&nbsp;<span
+                                        class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#" class="update-Quiz" data-courseid="${course.id}"
+                                           data-lessonid="${lesson.id}">Quiz</a></li>
+                                    <li class="disabled"><a href="#">Survey</a></li>
+                                    <li class="disabled"><a href="#">Hot Potato</a></li>
+                                    <li class="divider"></li>
+                                    <li class="disabled"><a href="#">Test</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row-fluid">
-                    <div class="span12 centred">
+                    <div class="row-fluid">
+                        <div class="span12 centred">
 
 
-                        <div id="dropzone" class="fade well">
+                            <div id="dropzone" class="fade well">
                             <span class="btn fileinput-button">
                             <i class="icon-plus"></i>
                             <span>Upload Media</span>
@@ -125,17 +127,17 @@
                                     />
                        </span>
 
-                        </div>
-                        <div id="progress" class="progress progress-striped">
-                            <div class="bar"></div>
+                            </div>
+                            <div id="progress" class="progress progress-striped active">
+                                <div class="bar"></div>
+                            </div>
                         </div>
                     </div>
+
+
                 </div>
-
-
             </div>
-        </div>
-
+        </sec:authorize>
 
     </c:if>
 </div>

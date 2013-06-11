@@ -39,26 +39,34 @@
                                                 <li><span>${fn:length(course.lessons)}</span> Lessons</li>
 
                                             </ul>
-                                            <div class="btn-group right">
-                                                <c:if test="${course.hasDraft}">
-                                                    <a data-id="${course.id}" class="btn btn-danger">Revert</a>
-                                                </c:if>
-                                                <a data-id="${course.id}" class="update-course btn btn-warning">Edit</a>
-                                                <c:if test="${course.hasDraft}">
-                                                    <a data-id="${course.id}" class="btn btn-success">Publish</a>
-                                                </c:if>
-                                            </div>
+                                            <sec:authorize access="hasRole('ROLE_TEACHER')">
+                                                <div class="btn-group right">
+                                                    <c:if test="${course.hasDraft}">
+                                                        <a data-id="${course.id}" class="btn btn-danger">Revert</a>
+                                                    </c:if>
+                                                    <a data-id="${course.id}"
+                                                       class="update-course btn btn-warning">Edit</a>
+                                                    <c:if test="${course.hasDraft}">
+                                                        <a data-id="${course.id}" class="btn btn-success">Publish</a>
+                                                    </c:if>
+                                                </div>
+                                            </sec:authorize>
                                         </div>
                                     </div>
 
                                 </div>
                             </c:forEach>
                         </div>
-                        <div class="row">
-                            <div class="light-box span2 box-shadow centred update-course btn" id="add-course">
-                                +
+                        <sec:authorize access="hasRole('ROLE_TEACHER')">
+                            <div class="row">
+                            <span class="span7" style="text-align: center">
+                                  <button class="btn centred update-course btn-large" id="add-course">
+                                      <i class="icon-plus"></i>
+                                  </button>
+                            </span>
+
                             </div>
-                        </div>
+                        </sec:authorize>
 
                     </div>
 

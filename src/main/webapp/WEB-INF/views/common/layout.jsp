@@ -5,7 +5,9 @@
 
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/bootstrap.min.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/bootstrap-responsive.min.css'/>">
-    <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/jquery.fileupload-ui.css'/>">
+    <sec:authorize access="hasRole('ROLE_TEACHER')">
+        <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/jquery.fileupload-ui.css'/>">
+    </sec:authorize>
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/video-js.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/wikistudy.css'/>">
 
@@ -33,7 +35,7 @@
                     <sec:authorize access="hasRole('ROLE_USER')">
                         Logged in as
                         <a class="navbar-link" href="<c:url value="/user" />">
-                            <sec:authentication var="user" property="principal.username"/>
+                            <sec:authentication scope="session" var="user" property="principal.username"/>
                             <c:out value="${user}"/>
                         </a>
                         <a href="<c:url value="/auth/logout" />">Logout</a>
@@ -58,7 +60,7 @@
 
 <div class="container">${param.body}</div>
 
-<div id="footer">
+<footer id="footer">
     <p>
         Designed and build by for educational usage
     </p>
@@ -66,9 +68,7 @@
     <p>
         &copy; JoJen 2013. All rights reserved.
     </p>
-</div>
-
-</body>
+</footer>
 
 
 <!-- video -->
@@ -78,19 +78,18 @@
 </script>
 
 
-<!-- Editor Mode -->
+<sec:authorize access="hasRole('ROLE_TEACHER')">
+    <!-- File Upload -->
+    <script type="text/javascript" src="<c:url value='/resources/js/vendor/jquery.ui.widget.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/js/jquery.fileupload.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/js/jquery.iframe-transport.js' />"></script>
 
-<!-- File Upload -->
-<script type="text/javascript" src="<c:url value='/resources/js/vendor/jquery.ui.widget.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/js/jquery.fileupload.js' />"></script>
-<script type="text/javascript" src="<c:url value='/resources/js/jquery.iframe-transport.js' />"></script>
-
-<!-- Quiz -->
-<script type="text/javascript" src="<c:url value="/resources/js/jsonform/underscore.js" />"></script>
-<script type="text/javascript" src="<c:url value="/resources/js/jsonform/jsv.js" />"></script>
-<script type="text/javascript" src="<c:url value="/resources/js/jsonform/jsonform.js" />"></script>
-
+    <!-- Quiz -->
+    <script type="text/javascript" src="<c:url value="/resources/js/jsonform/underscore.js" />"></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/jsonform/jsv.js" />"></script>
+    <script type="text/javascript" src="<c:url value="/resources/js/jsonform/jsonform.js" />"></script>
+</sec:authorize>
 
 <script type="text/javascript" src="<c:url value='/resources/js/wikistudy.js' />"></script>
-
+</body>
 </html>
