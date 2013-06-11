@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Wiki Study</title>
+    <title>Wiki Study <c:if test="${!empty param.title}">- ${param.title}</c:if></title>
 
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/bootstrap.min.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/bootstrap-responsive.min.css'/>">
@@ -88,8 +88,10 @@
     <script type="text/javascript" src="<c:url value="/resources/js/jsonform/underscore.js" />"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/jsonform/jsv.js" />"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/jsonform/jsonform.js" />"></script>
+
+    <script type="text/javascript" src="<c:url value='/resources/js/wikistudy.js' />"></script>
 </sec:authorize>
 
-<script type="text/javascript" src="<c:url value='/resources/js/wikistudy.js' />"></script>
+
 </body>
 </html>

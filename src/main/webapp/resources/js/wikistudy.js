@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    /**
+     * NOTE - this is only for Edit Mode
+     */
 
     $(".update-course").click(function () {
         var id = $(this).data("id");

@@ -1,19 +1,17 @@
 <c:import url="/WEB-INF/views/common/layout.jsp" charEncoding="UTF-8">
-    <c:param name="title" value="HOME"/>
     <c:param name="body">
 
         <div class="container">
             <div class="row">
 
                 <c:if test="${!empty page}">
-                    <div class="span3 bs-docs-sidebar">
-                        <ul class="nav nav-list bs-docs-sidenav affix-top">
-                            <c:forEach items="${page.content}" var="course">
-                                <li><a href="#course-${course.id}"><i
-                                        class="icon-chevron-right"></i>${course.name}</a>
-                                </li>
-                            </c:forEach>
-                        </ul>
+                    <div class="span3 btn-group btn-group-vertical">
+
+                        <c:forEach items="${page.content}" var="course">
+                            <a class="btn btn-large" href="#course-${course.id}"></i>${course.name}</a>
+
+                        </c:forEach>
+
                     </div>
                     <div class="span7">
                         <div class="row">

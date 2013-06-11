@@ -2,7 +2,7 @@
 <jsp:useBean id="lesson" class="org.jojen.wikistudy.entity.Lesson" scope="request"/>
 
 <c:import url="/WEB-INF/views/common/layout.jsp" charEncoding="UTF-8">
-    <c:param name="title" value="HOME"/>
+    <c:param name="title" value="Course"/>
     <c:param name="body">
 
 
