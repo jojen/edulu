@@ -43,8 +43,8 @@
                             <div class="quizHeader">
                                 <!-- where the quiz main copy goes -->
 
-                                <a class="btn btn-primary startQuiz" href="#"><i
-                                        class="icon-play-circle icon-white"></i>&nbsp;Get Started!</a>
+                                <button class="btn btn-primary startQuiz" href="#"><i
+                                        class="icon-play icon-white pull-right"></i>Get Started&nbsp;</button>
                             </div>
 
                             <!-- where the quiz gets built -->

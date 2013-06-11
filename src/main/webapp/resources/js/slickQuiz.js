@@ -17,7 +17,7 @@
         var plugin = this;
 
         var defaults = {
-            checkAnswerText: 'Check My Answer!',
+            checkAnswerText: 'Check my answer',
             nextQuestionText: 'Next &raquo;',
             backButtonText: '',
             randomSort: false,
@@ -182,7 +182,7 @@
                             questionHTML.append('<a href="#" class="btn nextQuestion checkAnswer">' + plugin.config.nextQuestionText + '</a>');
                         } else {
                             questionHTML.append('<a href="#" class="btn nextQuestion">' + plugin.config.nextQuestionText + '</a>');
-                            questionHTML.append('<a href="#" class="btn checkAnswer"><i class="icon-ok-circle"></i>&nbsp;' + plugin.config.checkAnswerText + '</a>');
+                            questionHTML.append('<a href="#" class="btn checkAnswer"><i class="icon-ok"></i>&nbsp;' + plugin.config.checkAnswerText + '</a>');
                         }
 
                         // Append question & answers to quiz

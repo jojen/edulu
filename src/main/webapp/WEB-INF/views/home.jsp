@@ -19,7 +19,7 @@
                                 <div id="course-${course.id}" class="course light-box mini-layout box-shadow">
                                     <div class="row-fluid">
                                         <div class="span2">
-                                            <img src="http://static.learnstreet.com/commons/static/images/icons/icon_javascript_medium.png?20130521">
+                                            <img src="http://static.learnstreet.com/commons/static/images/icons/icon_javascript_medium.png">
                                         </div>
                                         <div class="span10">
                                             <a class="right more-margin btn btn-primary"

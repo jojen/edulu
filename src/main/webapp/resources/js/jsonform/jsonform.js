@@ -774,7 +774,7 @@
                     // Insert a "draggable" icon
                     // floating to the left of the main element
                     return '<li data-idx="<%= node.childPos %>">' +
-                        '<span class="draggable line"><i class="icon-list" title="Move item"></i></span>' +
+                        '<span class="draggable line"><i class="icon-move pull-right" title="Move item"></i></span>' +
                         inner +
                         '</li>';
                 }
