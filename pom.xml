@@ -250,6 +250,11 @@
             <artifactId>spring-security-taglibs</artifactId>
             <version>${org.springframework-version}</version>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.17</version>
+        </dependency>
     </dependencies>
     <build>
         <resources>
@@ -313,19 +318,15 @@
     </build>
     <profiles>
         <profile>
-            <id>mysql</id>
+            <id>prod</id>
             <dependencies>
-                <dependency>
-                    <groupId>mysql</groupId>
-                    <artifactId>mysql-connector-java</artifactId>
-                    <version>5.1.17</version>
-                </dependency>
+
             </dependencies>
             <properties>
                 <resource.directory>${database.dir}/mysql</resource.directory>
             </properties>
         </profile>
-        <profile>
+        <!--profile>
             <id>postgresql</id>
             <dependencies>
                 <dependency>
@@ -337,9 +338,9 @@
             <properties>
                 <resource.directory>${database.dir}/postgresql</resource.directory>
             </properties>
-        </profile>
+        </profile-->
         <profile>
-            <id>h2</id>
+            <id>dev</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
@@ -354,7 +355,7 @@
                 <resource.directory>${database.dir}/h2</resource.directory>
             </properties>
         </profile>
-        <profile>
+        <!--profile>
             <id>hsql</id>
             <dependencies>
                 <dependency>
@@ -367,13 +368,13 @@
             <properties>
                 <resource.directory>${database.dir}/hsql</resource.directory>
             </properties>
-        </profile>
-        <profile>
+        </profile-->
+        <!--profile>
             <id>postgresql_jta</id>
             <properties>
                 <resource.directory>${database.dir}/postgresql_jta</resource.directory>
             </properties>
-        </profile>
+        </profile-->
     </profiles>
     <repositories>
         <repository>

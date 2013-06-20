@@ -27,7 +27,7 @@
     <bean
             class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
             id="entityManagerFactory">
-        <property name="persistenceUnitName" value="persistenceUnit"/>
+        <property name="persistenceUnitName" value="${persistence.unit}"/>
         <property name="dataSource" ref="dataSource"/>
         <property name="jpaVendorAdapter" ref="jpaVendorAdapter"/>
     </bean>
@@ -51,5 +51,4 @@
 
     <bean id="webexpressionHandler"
           class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"/>
-
 </beans>
