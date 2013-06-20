@@ -1,5 +1,6 @@
 package org.jojen.wikistudy.listener;
 
+import org.jojen.wikistudy.repository.ContentRepository;
 import org.jojen.wikistudy.repository.CourseRepository;
 import org.jojen.wikistudy.repository.LessonRepository;
 import org.jojen.wikistudy.util.RepositoryRefresher;
@@ -28,8 +29,8 @@ public class ApplicationInitilizeListener implements ServletContextListener {
 
 			CourseRepository courseRepository = ctx.getBean(CourseRepository.class);
 			LessonRepository lessonRepository = ctx.getBean(LessonRepository.class);
-
-			RepositoryRefresher.refresh(courseRepository,lessonRepository);
+			ContentRepository contentRepository = ctx.getBean(ContentRepository.class);
+			RepositoryRefresher.refresh(courseRepository,lessonRepository,contentRepository);
 
 		}
 	}

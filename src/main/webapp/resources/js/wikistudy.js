@@ -3,6 +3,25 @@ $(document).ready(function () {
      * NOTE - this is only for Edit Mode
      */
 
+    $(".sortable").sortable({
+            start: function (event, ui) {
+                ui.item.startPos = ui.item.index();
+            },
+            stop: function (event, ui) {
+                var startpos = ui.item.startPos;
+                var endpos = ui.item.index();
+                var lesson = $(this).data("id");
+                $.get("/wikistudy/course/move/" + lesson, {
+                    from: startpos,
+                    to: endpos
+                });
+                console.log(lesson, startpos, endpos);
+            }
+        }
+
+    );
+    $(".sortable").disableSelection();
+
     $(".update-course").click(function () {
         var id = $(this).data("id");
         // TODO URL muss übergeben werden -> JQ Plugin draus machen

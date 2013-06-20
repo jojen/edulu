@@ -17,7 +17,7 @@ public class Lesson implements Serializable {
 
 
 	@OneToMany
-    @OrderBy
+	@OrderBy("index ASC")
 	private List<Content> content;
 
 

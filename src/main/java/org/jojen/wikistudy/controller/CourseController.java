@@ -1,7 +1,9 @@
 package org.jojen.wikistudy.controller;
 
+import org.jojen.wikistudy.entity.Content;
 import org.jojen.wikistudy.entity.Course;
 import org.jojen.wikistudy.entity.Lesson;
+import org.jojen.wikistudy.service.ContentService;
 import org.jojen.wikistudy.service.CourseService;
 import org.jojen.wikistudy.service.LessonService;
 import org.slf4j.Logger;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.util.Collections;
+import java.util.List;
 
 @Controller
 @RequestMapping("/course")
@@ -25,6 +29,9 @@ public class CourseController {
 
 	@Inject
 	protected LessonService lessonService;
+
+	@Inject
+	protected ContentService contentService;
 
 
 	protected static final Logger log = LoggerFactory
@@ -110,6 +117,28 @@ public class CourseController {
 		}
 
 		return "/course/form";
+	}
+
+	@RequestMapping(value = "/move/{id}", method = RequestMethod.GET)
+	public String move(@PathVariable("id") Integer id,
+					   @RequestParam(value = "from", required = true) Integer from,
+					   @RequestParam(value = "to", required = true) Integer to,
+					   Model model) {
+		if(id!= null && from != null && to != null){
+		 Lesson l = lessonService.findById(id);
+			List<Content> list = l.getContent();
+			Collections.swap(list,from,to);
+
+			// Wir updaten noch alle positionen
+			for(Content c:list){
+				contentService.update(c);
+			}
+
+			lessonService.update(l);
+
+		}
+		model.addAttribute("self",true);
+		return "/json/boolean";
 	}
 
 	@RequestMapping(value = "/form", method = RequestMethod.GET)

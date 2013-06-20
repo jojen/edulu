@@ -1,12 +1,13 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 <jsp:useBean id="lesson" class="org.jojen.wikistudy.entity.Lesson" scope="request"/>
-<div id="lesson-content">
-    <c:if test="${!empty lesson}">
+<c:if test="${!empty lesson}">
+    <ul id="lesson-content" data-id="${lesson.id}" class="sortable">
+
 
         <c:forEach var="c" items="${lesson.content}">
             <c:url var="link" value="/content/media/${c.id}/${c.name}"/>
-            <div class="row-fluid">
-                    <%-- TODO da solllten eigene templates her --%>
+            <li class="ui-state-default">
+                    <%-- TODO da sollten eigene templates her --%>
                 <c:if test="${c.type eq 'Image'}">
                     <img src="${link}" class="img-polaroid">
                 </c:if>
@@ -82,10 +83,10 @@
                     </div>
                 </sec:authorize>
 
-            </div>
+            </li>
         </c:forEach>
         <sec:authorize access="hasRole('ROLE_TEACHER')">
-            <div class="row-fluid">
+            <li class="row-fluid">
                 <div class="well">
                     <div class="row-fluid">
                         <div class="span6">
@@ -136,9 +137,10 @@
 
 
                 </div>
-            </div>
+            </li>
         </sec:authorize>
 
-    </c:if>
-</div>
+
+    </ul>
+</c:if>
 

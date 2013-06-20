@@ -17,6 +17,7 @@
         <security:intercept-url pattern="/**/edit/**" access="ROLE_TEACHER"/>
         <security:intercept-url pattern="/**/add/**" access="ROLE_TEACHER"/>
         <security:intercept-url pattern="/**/delete/**" access="ROLE_TEACHER"/>
+        <security:intercept-url pattern="/**/move/**" access="ROLE_TEACHER"/>
         <security:intercept-url pattern="/content/fileupload" access="ROLE_TEACHER"/>
         <security:intercept-url pattern="/user/*" access="ROLE_USER"/>
         <security:intercept-url pattern="/auth/login" access="IS_AUTHENTICATED_ANONYMOUSLY"/>

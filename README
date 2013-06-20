@@ -1,4 +1,4 @@
-for development (default) - Memory based H2 Database
+for development - In-Memory H2 Database
 
 $ mvn clean install
 $ mvn tomcat:run

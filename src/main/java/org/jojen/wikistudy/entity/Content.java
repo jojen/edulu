@@ -1,5 +1,8 @@
 package org.jojen.wikistudy.entity;
 
+
+import org.hibernate.annotations.Parent;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -16,6 +19,19 @@ public class Content implements Serializable {
     @Id
     @GeneratedValue
     private Integer id;
+
+	@ManyToOne
+	Lesson parent;
+
+	private Integer index;
+
+	@PrePersist
+	@PreUpdate
+	private void prepareIndex() {
+		if (parent != null) {
+			index = parent.getContent().indexOf(this);
+		}
+	}
 
     public String getType() {
         return this.getClass().getSimpleName();
