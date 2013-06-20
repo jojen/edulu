@@ -46,6 +46,22 @@ public class ContentController {
 	protected static final Logger log = LoggerFactory
 												.getLogger(ContentController.class);
 
+	@RequestMapping(value = "/delete/{lesson}/{content}", method = RequestMethod.GET)
+	public String edit(           @PathVariable(value = "lesson") Integer lid ,
+								  @PathVariable(value = "content") Integer id,Model model){
+
+
+		// TODO das bekommt man bestimmt auch ohne das hier hin (Referenzelle Integrität)
+		Lesson lesson = lessonService.findById(lid);
+		Content content = contentService.findById(id);
+		lesson.getContent().remove(content);
+		lessonService.update(lesson);
+
+
+		contentService.deleteById(id);
+		model.addAttribute("self",true);
+		return "redirect:/";
+	}
 
 	@RequestMapping(value = "/{type}/edit", method = RequestMethod.GET)
 	public String edit(@PathVariable(value = "type") String type,

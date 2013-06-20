@@ -1,8 +1,6 @@
 package org.jojen.wikistudy.entity;
 
 
-import org.hibernate.annotations.Parent;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -21,7 +19,7 @@ public class Content implements Serializable {
     private Integer id;
 
 	@ManyToOne
-	Lesson parent;
+	private Lesson parent;
 
 	private Integer index;
 
@@ -44,4 +42,21 @@ public class Content implements Serializable {
     public Boolean getIsEditable() {
         return true;
     }
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Content content = (Content) o;
+
+		if (id != null ? !id.equals(content.id) : content.id != null) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		return id != null ? id.hashCode() : 0;
+	}
 }

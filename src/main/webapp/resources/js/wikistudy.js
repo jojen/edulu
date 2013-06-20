@@ -3,6 +3,10 @@ $(document).ready(function () {
      * NOTE - this is only for Edit Mode
      */
 
+    $("button.btn-danger").click({
+
+    });
+
     $(".sortable").sortable({
             start: function (event, ui) {
                 ui.item.startPos = ui.item.index();
@@ -15,7 +19,6 @@ $(document).ready(function () {
                     from: startpos,
                     to: endpos
                 });
-                console.log(lesson, startpos, endpos);
             }
         }
 

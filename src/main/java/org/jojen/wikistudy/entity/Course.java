@@ -23,10 +23,6 @@ public class Course implements Serializable {
     private String name;
 
 
-    @Min(1)
-    @Max(200)
-    private Integer age;
-
     @Column(columnDefinition = "TEXT")
     private String description;
 
@@ -55,7 +51,7 @@ public class Course implements Serializable {
     }
 
     public Boolean getHasDraft() {
-        return true;
+        return false;
     }
 
     public List<Lesson> getLessons() {
@@ -72,14 +68,6 @@ public class Course implements Serializable {
         if (lesson != null) {
             lessons.add(lesson);
         }
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
     }
 
 

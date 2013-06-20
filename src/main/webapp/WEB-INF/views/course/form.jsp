@@ -19,11 +19,6 @@
                          cssClass="error help-inline inline"
                          element="span"/>
 
-            <label>Level:</label>
-            <select name="level">
-                <option>Beginner</option>
-                <option>Advanced</option>
-            </select>
 
             <div>Description:</div>
             <c:url value="/resources/ckeditor/" var="ckeditorpath"/>

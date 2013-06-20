@@ -1,5 +1,6 @@
 package org.jojen.wikistudy.controller;
 
+import org.jojen.wikistudy.repository.ContentRepository;
 import org.jojen.wikistudy.repository.CourseRepository;
 import org.jojen.wikistudy.repository.LessonRepository;
 import org.jojen.wikistudy.service.CourseService;
@@ -22,9 +23,12 @@ public class AdminController {
 	@Inject
 	protected LessonRepository lessonRepository;
 
+	@Inject
+	protected ContentRepository contentRepository;
+
 	@RequestMapping(value = "/refresh", method = RequestMethod.GET)
 	public String refresh(){
-		RepositoryRefresher.refresh(courseRepository,lessonRepository);
+		RepositoryRefresher.refresh(courseRepository,lessonRepository,contentRepository);
 		return "redirect:/";
 	}
 }

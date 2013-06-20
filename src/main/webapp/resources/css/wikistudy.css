@@ -79,11 +79,17 @@ body {
     background-color: #ebebeb;
     padding: 20px;
     list-style: none;
+}
 
+#lesson-content .row {
+   margin-left: 0px;
 }
 
 #lesson-content .row-fluid {
     margin-bottom: 20px;
+}
+#lesson-content .edit-box {
+    margin-bottom: 5px;
 }
 
 #progress {

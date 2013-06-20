@@ -28,8 +28,6 @@
 
                                         <h3 class="update" data-id="${course.id}"
                                             data-key="title">${course.name}</h3>
-                                        <h4>Level: Beginner</h4>
-
 
                                         <p><c:out value="${course.description}" escapeXml="false"/></p>
 
@@ -39,9 +37,9 @@
                                         </ul>
                                         <sec:authorize access="hasRole('ROLE_TEACHER')">
                                             <div class="btn-group right">
-                                                <c:if test="${course.hasDraft}">
-                                                    <a data-id="${course.id}" class="btn btn-danger">Revert</a>
-                                                </c:if>
+
+                                                    <a data-id="${course.id}" class="btn btn-danger">Delete</a>
+
                                                 <a data-id="${course.id}"
                                                    class="update-course btn btn-warning">Edit</a>
                                                 <c:if test="${course.hasDraft}">

@@ -7,6 +7,7 @@
         <c:forEach var="c" items="${lesson.content}">
             <c:url var="link" value="/content/media/${c.id}/${c.name}"/>
             <li class="ui-state-default">
+                <div class="row">
                     <%-- TODO da sollten eigene templates her --%>
                 <c:if test="${c.type eq 'Image'}">
                     <img src="${link}" class="img-polaroid">
@@ -70,19 +71,17 @@
 
                 </c:if>
                 <sec:authorize access="hasRole('ROLE_TEACHER')">
-                    <div class="btn-group right">
+                    <div class="edit-box btn-group right">
 
-                        <a data-id="${c.id}" class="btn btn-danger">Revert</a>
+                        <a class="btn btn-danger" href="<c:url value="/content/delete/${lesson.id}/${c.id}" />">Delete</a>
+
                         <c:if test="${c.isEditable}">
                             <a data-id="${c.id}" data-courseid="${course.id}"
                                data-lessonid="${lesson.id}" class="update-${c.type} btn btn-warning">Edit</a>
                         </c:if>
-
-                        <a data-id="${c.id}" class="btn btn-success">Publish</a>
-
                     </div>
                 </sec:authorize>
-
+                 </div>
             </li>
         </c:forEach>
         <sec:authorize access="hasRole('ROLE_TEACHER')">
