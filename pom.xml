@@ -251,10 +251,15 @@
             <version>${org.springframework-version}</version>
         </dependency>
         <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>8.4-702.jdbc3</version>
+        </dependency>
+        <!--dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.17</version>
-        </dependency>
+        </dependency-->
     </dependencies>
     <build>
         <resources>
@@ -323,7 +328,7 @@
 
             </dependencies>
             <properties>
-                <resource.directory>${database.dir}/mysql</resource.directory>
+                <resource.directory>${database.dir}/postgresql</resource.directory>
             </properties>
         </profile>
         <!--profile>

@@ -1,11 +1,11 @@
-for development - In-Memory H2 Database
+for development - In Memory H2 Database
 
 $ mvn clean install
 $ mvn tomcat:run
 
 access http://localhost:8080/wikistudy
 
-for production - MySQL [settings: /src/main/databases/mysql/META-INF/spring/database.properties]
+for production - Postgresql [settings: /src/main/databases/postgresql/META-INF/spring/database.properties]
 
 $ mvn clean install -P prod
 
