@@ -71,6 +71,22 @@
     </p>
 </footer>
 
+<div id="modal-from-dom" class="modal hide fade">
+    <div class="modal-header">
+        <a href="javascript:$('#modal-from-dom').modal('hide')" class="close">&times;</a>
+        <h3>Confirm</h3>
+    </div>
+    <div class="modal-body">
+        <p>This procedure is irreversible.<br>
+            Do you want to proceed?</p>
+    </div>
+    <div class="modal-footer">
+
+        <a href="javascript:$('#modal-from-dom').modal('hide')" class="btn">No</a>
+        <button id="modal-yes" class="btn btn-danger">Yes</button>
+    </div>
+</div>
+
 
 <!-- video -->
 <script type="text/javascript" src="<c:url value='/resources/js/video.js' />"></script>

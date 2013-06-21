@@ -3,8 +3,29 @@ $(document).ready(function () {
      * NOTE - this is only for Edit Mode
      */
 
-    $("button.btn-danger").click({
+    $(".btn-danger").click(function(){
+        // Generell wollen wir bei allen gefährlichen Sachen
+        // nen Dialog vorher haben
+       var action = $(this).data('action');
+        if(action!= null){
+            $("#modal-yes").data("action",action);
+            $("#modal-yes").data("delete",$(this).data('delete'));
+            $("#modal-from-dom").modal('show');
+        }
+    });
 
+    $("#modal-yes").click(function(){
+        var action = $(this).data("action");
+        if(action != null){
+            // Da könnte man mal sehen, ob das Ergebnis angekommen ist
+            $.get(action);
+        }
+        var del = $(this).data("delete");
+        if(del != null){
+            $(del).remove();
+        }
+
+        $("#modal-from-dom").modal('hide');
     });
 
     $(".sortable").sortable({

@@ -31,7 +31,7 @@
 
     <div class="modal-footer">
 
-        <button id="revert" class="btn">Drop changes</button>
+        <a href="javascript:$('#text-update').modal('hide')" class="btn">Drop changes</a>
         <button id="save" type="submit" class="btn btn-primary">Save</button>
     </div>
 

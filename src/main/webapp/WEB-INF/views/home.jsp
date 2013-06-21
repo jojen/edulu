@@ -7,10 +7,10 @@
             <c:if test="${!empty page}">
                 <div class="span3 btn-group btn-group-vertical">
 
-                    <c:forEach items="${page.content}" var="course">
+                    <%--c:forEach items="${page.content}" var="course">
                         <a class="btn btn-large" href="#course-${course.id}"></i>${course.name}</a>
 
-                    </c:forEach>
+                    </c:forEach--%>
 
                 </div>
                 <div class="span7">
@@ -18,10 +18,10 @@
                         <c:forEach items="${page.content}" var="course" varStatus="status">
                             <div id="course-${course.id}" class="course light-box mini-layout box-shadow">
                                 <div class="row-fluid">
-                                    <div class="span2">
-                                        <img src="http://static.learnstreet.com/commons/static/images/icons/icon_javascript_medium.png">
+                                    <div class="span1">
+                                        <!-- TODO Image -->
                                     </div>
-                                    <div class="span10">
+                                    <div class="span11">
                                         <a class="right more-margin btn btn-primary"
                                            href="<c:url value="/course/${course.id}" />">Start
                                             Course</a>
@@ -38,7 +38,7 @@
                                         <sec:authorize access="hasRole('ROLE_TEACHER')">
                                             <div class="btn-group right">
 
-                                                    <a data-id="${course.id}" class="btn btn-danger">Delete</a>
+                                                    <button data-action="<c:url value="/course/delete/${course.id}"/>" data-delete="#course-${course.id}" class="btn btn-danger">Delete</button>
 
                                                 <a data-id="${course.id}"
                                                    class="update-course btn btn-warning">Edit</a>

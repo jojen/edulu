@@ -60,7 +60,7 @@ public class ContentController {
 
 		contentService.deleteById(id);
 		model.addAttribute("self",true);
-		return "redirect:/";
+		return "/json/boolean";
 	}
 
 	@RequestMapping(value = "/{type}/edit", method = RequestMethod.GET)

@@ -6,7 +6,7 @@
 
         <c:forEach var="c" items="${lesson.content}">
             <c:url var="link" value="/content/media/${c.id}/${c.name}"/>
-            <li class="ui-state-default">
+            <li id="content-${c.id}" class="ui-state-default">
                 <div class="row">
                     <%-- TODO da sollten eigene templates her --%>
                 <c:if test="${c.type eq 'Image'}">
@@ -73,7 +73,7 @@
                 <sec:authorize access="hasRole('ROLE_TEACHER')">
                     <div class="edit-box btn-group right">
 
-                        <a class="btn btn-danger" href="<c:url value="/content/delete/${lesson.id}/${c.id}" />">Delete</a>
+                        <button data-delete="#content-${c.id}" data-action="<c:url value="/content/delete/${lesson.id}/${c.id}" />" class="btn btn-danger">Delete</button>
 
                         <c:if test="${c.isEditable}">
                             <a data-id="${c.id}" data-courseid="${course.id}"

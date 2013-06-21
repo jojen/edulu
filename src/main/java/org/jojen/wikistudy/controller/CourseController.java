@@ -191,11 +191,19 @@ public class CourseController {
 	@RequestMapping(value = "/delete/{id}")
 	public String delete(
 								@RequestParam(value = "page", required = false) Integer page,
-								@PathVariable("id") Integer id) {
+								@PathVariable("id") Integer id,
+								Model model) {
 		log.debug("delete id={}", id);
+		Course c = courseService.findById(id);
+		for(Lesson l : c.getLessons()){
+			for(Content content: l.getContent()){
+				contentService.deleteById(content.getId());
+			}
+			lessonService.deleteById(l.getId());
+		}
 		courseService.deleteById(id);
-
-		return "redirect:/";
+		model.addAttribute("self",true);
+		return "/json/boolean";
 	}
 
 
