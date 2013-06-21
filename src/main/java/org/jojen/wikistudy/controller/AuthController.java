@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,11 +26,15 @@ public class AuthController {
     UserService userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(@RequestParam(value = "login_error", required = false) boolean error, Model model) {
+    public String login(@RequestParam(value = "login_error", required = false) boolean error,
+						@RequestParam(value = "nextUrl", required = false) String url, Model model) {
         log.debug("Received request to show login page, error " + error);
         if (error) {
             model.addAttribute("error", "You have entered an invalid username or password!");
         }
+		if(url!= null){
+			model.addAttribute("nextUrl",url);
+		}
         return "/auth/loginpage";
     }
 

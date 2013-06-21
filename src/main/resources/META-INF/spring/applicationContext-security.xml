@@ -23,10 +23,11 @@
         <security:intercept-url pattern="/auth/login" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <security:intercept-url pattern="/auth/register" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
         <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-        <security:form-login login-page="/auth/login" authentication-failure-url="/auth/login?login_error=true"
-                             default-target-url="/user"/>
+        <security:form-login login-page="/auth/login" authentication-failure-url="/auth/login?login_error=true" authentication-success-handler-ref="successHandler" />
         <security:logout logout-url="/auth/logout" logout-success-url="/" invalidate-session="true"/>
     </security:http>
+    <bean id="successHandler" class="org.jojen.wikistudy.controller.AuthSuccessHandler" />
+
 
     <security:authentication-manager>
         <security:authentication-provider>

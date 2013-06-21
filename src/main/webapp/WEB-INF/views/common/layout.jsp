@@ -34,21 +34,22 @@
                 <p class="navbar-text pull-right">
                     <sec:authorize access="hasRole('ROLE_USER')">
                         Logged in as
-                        <a class="navbar-link" href="<c:url value="/user" />">
+
                             <sec:authentication scope="session" var="user" property="principal.username"/>
-                            <c:out value="${user}"/>
-                        </a>
+                            <c:out value="${user}"/>&nbsp;
+
                         <a href="<c:url value="/auth/logout" />">Logout</a>
                     </sec:authorize>
                     <c:choose>
                         <c:when test="${empty user}">
-                            <a href="<c:url value="/auth/login" />">Sign Up</a>
+
+                            <a href="<c:url value="/auth/login" />?nextUrl=<c:out value="${encodedUrl}"/>">Sign Up</a>
                         </c:when>
 
                     </c:choose>
                 </p>
                 <ul class="nav">
-                    <li class="active"><a href="<c:url value="/" />">Courses</a></li>
+                    <li><a href="<c:url value="/" />">Courses</a></li>
                     <li><a href="<c:url  value="/static/about"/>">About</a></li>
                 </ul>
             </div>
