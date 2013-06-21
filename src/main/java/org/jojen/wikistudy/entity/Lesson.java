@@ -39,4 +39,13 @@ public class Lesson implements Serializable {
 		}
 		content.add(c);
 	}
+
+	public boolean getHasQuiz(){
+		for(Content c:getContent()){
+			if(c instanceof Quiz){
+				return true;
+			}
+		}
+		return false;
+	}
 }

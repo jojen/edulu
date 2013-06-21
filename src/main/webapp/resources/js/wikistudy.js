@@ -155,40 +155,44 @@ $(document).ready(function () {
 
 
     $(".update-Quiz").click(function () {
-        var id = $(this).data("id");
-        var lessonId = $(this).data("lessonid");
-        var courseId = $(this).data("courseid");
-        // TODO URL muss übergeben werden -> JQ Plugin draus machen
-        $.get("/wikistudy/content/quiz/edit/", {
-                courseid: courseId,
-                lessonid: lessonId,
-                id: id
-            }, function (result) {
-                // hier machen machen wir das editierbar
-                $("body").prepend(result);
-                var dialog = $("#quiz-update");
-                dialog.modal('show');
+        if(!$(this).parent().hasClass("disabled")){
+            var id = $(this).data("id");
+            var lessonId = $(this).data("lessonid");
+            var courseId = $(this).data("courseid");
+            // TODO URL muss übergeben werden -> JQ Plugin draus machen
+            $.get("/wikistudy/content/quiz/edit/", {
+                    courseid: courseId,
+                    lessonid: lessonId,
+                    id: id
+                }, function (result) {
+                    // hier machen machen wir das editierbar
+                    $("body").prepend(result);
+                    var dialog = $("#quiz-update");
+                    dialog.modal('show');
 
-                $("#save").click(function () {
-                    dialog.modal('hide');
-                });
-                var revert = false;
-                $(".close").click(function () {
-                    revert = true;
-                    dialog.modal('hide');
-                });
+                    $("#save").click(function () {
+                        dialog.modal('hide');
+                    });
+                    var revert = false;
+                    $(".close").click(function () {
+                        revert = true;
+                        dialog.modal('hide');
+                    });
 
-                dialog.on('hidden', function () {
-                    if (!revert) {
-                        $('#quiz-json-form').submit();
-                        $('#quiz-form').append("<input name='quizcontent' value='" + getQuizContent() + "'>");
-                        $('#quiz-form').submit();
-                    }
-                });
-            }
-        )
-        ;
-    });
+                    dialog.on('hidden', function () {
+                        if (!revert) {
+                            $('#quiz-json-form').submit();
+                            $('#quiz-form').append("<input name='quizcontent' value='" + getQuizContent() + "'>");
+                            $('#quiz-form').submit();
+                        }
+                    });
+                }
+            );
+        }
+
+    }
+
+    );
 
 
 });

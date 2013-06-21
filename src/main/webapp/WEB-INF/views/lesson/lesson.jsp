@@ -103,12 +103,12 @@
                                         class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a href="#" class="update-Quiz" data-courseid="${course.id}"
+                                    <li <c:if test="${lesson.hasQuiz}">class="disabled"</c:if>> <a href="#" class="update-Quiz" data-courseid="${course.id}"
                                            data-lessonid="${lesson.id}">Quiz</a></li>
-                                    <li class="disabled"><a href="#">Survey</a></li>
+                                    <!--li class="disabled"><a href="#">Survey</a></li>
                                     <li class="disabled"><a href="#">Hot Potato</a></li>
                                     <li class="divider"></li>
-                                    <li class="disabled"><a href="#">Test</a></li>
+                                    <li class="disabled"><a href="#">Test</a></li-->
                                 </ul>
                             </div>
                         </div>
