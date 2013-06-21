@@ -23,14 +23,19 @@
                                     class="icon-plus"></i></a>
                         </sec:authorize>
                     </div>
+                    <div style="margin-top: 10px">
+                        <sec:authorize access="hasRole('ROLE_TEACHER')">
+                            <button data-action="<c:url value="/course/${course.id}/lesson/delete/${lesson.id}" />" data-delete="#lesson-content" class="btn btn-danger">delete lesson</button>
+                        </sec:authorize>
+                    </div>
 
-                    <ul class="nav nav-tabs">
+                    <!--ul class="nav nav-tabs">
                         <li class="active">
                             <a href="#">Content</a>
                         </li>
 
                         <li><a href="#">Glossary</a></li>
-                    </ul>
+                    </ul-->
                 </div>
                 <div class="span9">
                     <c:import url="/WEB-INF/views/lesson/lesson.jsp" charEncoding="UTF-8"/>

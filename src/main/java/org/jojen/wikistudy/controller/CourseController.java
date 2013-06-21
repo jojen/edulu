@@ -57,13 +57,19 @@ public class CourseController {
 	@RequestMapping(value = "/{courseId}/lesson/delete/{id}")
 	public String deleteLesson(
 									  @PathVariable("courseId") Integer cid,
-									  @RequestParam(value = "page", required = false) Integer page,
 									  @PathVariable("id") Integer id,
 									  Model model) {
 		log.debug("delete id={}", id);
+		Lesson l = lessonService.findById(id);
+		for(Content content:l.getContent()){
+			contentService.deleteById(content.getId());
+		}
+		Course c = courseService.findById(cid);
+		c.getLessons().remove(l);
 		lessonService.deleteById(id);
 
-		Course c = courseService.findById(cid);
+
+
 		model.addAttribute("course", c);
 
 		return "/course/" + cid;
