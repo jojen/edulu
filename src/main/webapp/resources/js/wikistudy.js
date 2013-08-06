@@ -2,6 +2,25 @@ $(document).ready(function () {
     /**
      * NOTE - this is only for Edit Mode
      */
+    $('.noEnterSubmit').keypress(function(e){
+        if ( e.which == 13 ) e.preventDefault();
+    });
+
+    $("#update-lesson-name").click(function(){
+        var action = $(this).data('action');
+        var name = $("#lesson-name-input").val();
+        var id = $(this).data('id');
+
+        $.get(action, {
+            name: name
+        }, function (result) {
+            console.log(id);
+            if(name && !$("#lesson-name-"+id).val()){
+                name = "- " +name;
+            }
+            $("#lesson-name-"+id).html(name);
+        });
+    });
 
     $(".btn-danger").click(function(){
         // Generell wollen wir bei allen gefährlichen Sachen
@@ -35,8 +54,9 @@ $(document).ready(function () {
             stop: function (event, ui) {
                 var startpos = ui.item.startPos;
                 var endpos = ui.item.index();
-                var lesson = $(this).data("id");
-                $.get("/wikistudy/course/move/" + lesson, {
+                var id = $(this).data("id");
+                var type = $(this).data("type");
+                $.get("/wikistudy/course/move/"+ type +"/" + id, {
                     from: startpos,
                     to: endpos
                 });

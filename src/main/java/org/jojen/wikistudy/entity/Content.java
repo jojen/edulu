@@ -18,18 +18,8 @@ public class Content implements Serializable {
     @GeneratedValue
     private Integer id;
 
-	@ManyToOne
-	private Lesson parent;
+	private Integer position;
 
-	private Integer index;
-
-	@PrePersist
-	@PreUpdate
-	private void prepareIndex() {
-		if (parent != null) {
-			index = parent.getContent().indexOf(this);
-		}
-	}
 
     public String getType() {
         return this.getClass().getSimpleName();
@@ -42,6 +32,14 @@ public class Content implements Serializable {
     public Boolean getIsEditable() {
         return true;
     }
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
 
 	@Override
 	public boolean equals(Object o) {

@@ -107,6 +107,7 @@ public class ContentController {
 		}
 		modelQuiz.setName(quiz.getName());
 		modelQuiz.setQuizContent(quizcontent);
+		modelQuiz.setPosition(l.getContent().size());
 
 		contentService.update(modelQuiz);
 		if (l != null) {
@@ -125,10 +126,9 @@ public class ContentController {
 		log.debug("edit text={}", text);
 
 		Text modelText;
-		Lesson l = null;
+		Lesson l = lessonService.findById(lessonid);
 		if (id == null) {
 			modelText = new Text();
-			l = lessonService.findById(lessonid);
 			l.addContent(modelText);
 
 		} else {
@@ -138,6 +138,7 @@ public class ContentController {
 
 		modelText.setName(text.getName());
 		modelText.setText(text.getText());
+		modelText.setPosition(l.getContent().size());
 		contentService.update(modelText);
 		if (l != null) {
 			lessonService.update(l);
@@ -169,7 +170,7 @@ public class ContentController {
 				blobService.save(fileUpload.getFileData(), b.getId());
 				b.setContentType(fileUpload.getFileData().getContentType());
 				b.setName(UriUtils.encodeQuery(fileUpload.getFileData().getFileItem().getName(), "UTF8"));
-
+				b.setPosition(l.getContent().size());
 				contentService.update(b);
 				l.addContent(b);
 				lessonService.update(l);

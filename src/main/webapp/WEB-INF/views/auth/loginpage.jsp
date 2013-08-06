@@ -20,9 +20,9 @@
                     <input id="j_password" name="j_password" type="password"/>
                 </p>
 
-                <p>
+                <!--p>
                     <input type="checkbox" name="_spring_security_remember_me"/> Remember me
-                </p>
+                </p-->
                 <br/>
                 <input type="hidden" name="nextUrl" value="${nextUrl}" />
                 <input class="btn btn-primary" type="submit" value="Login"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!--a

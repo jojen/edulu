@@ -11,6 +11,40 @@ $ mvn clean install -P prod
 
 $ mvn tomcat:run
 or copy webapp to servlet container
+----------------------------------------
+
+Distribution Installation example for CentOS 6
+
+# Install Database
+yum install postgresql-server
+
+# Install Java
+wget http://download.oracle.com/otn/java/jdk/6u45-b06/jdk-6u45-linux-i586-rpm.bin?AuthParam=xxx
+sh ./jdk-6u45-linux-i586-rpm.bin?AuthParam=xxx
+rpm -Uvh jdk-6u45-linux-i586.rpm
+
+# Install Maven
+mkdir /opt/maven
+cd /opt/maven
+wget http://mirrors.hust.edu.cn/apache/maven/maven-3/3.1.0/binaries/apache-maven-3.1.0-bin.tar.gz
+tar xvf apache-maven-3.1.0-bin.tar.gz
+
+
+
+# Install Jenkis
+wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+yum install jenkins
+
+# Install redmine
+wget http://bitnami.com/redirect/to/21815/bitnami-redmine-2.3.2-0-linux-installer.run?with_popup_signin=1
+./bitnami-redmine-2.3.2-0-linux-installer.run
+
+
+# Install Git
+yum install git
+
+
 
 
 

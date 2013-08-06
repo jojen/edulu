@@ -1,7 +1,22 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 <jsp:useBean id="lesson" class="org.jojen.wikistudy.entity.Lesson" scope="request"/>
 <c:if test="${!empty lesson}">
-    <ul id="lesson-content" data-id="${lesson.id}" class="sortable">
+    <ul id="lesson-content" data-id="${lesson.id}" data-type="content" class="sortable">
+        <sec:authorize access="!hasRole('ROLE_TEACHER')">
+            <c:if test="${!empty lesson.name}"><h1><c:out value="${lesson.name}" /></h1></c:if>
+        </sec:authorize>
+
+        <sec:authorize access="hasRole('ROLE_TEACHER')">
+            <div class="span12">
+            <c:url var="action" value="/course/lesson/rename/${lesson.id}"/>
+            <form:form modelAttribute="lesson"
+                       cssClass="form-horizontal span10">
+                <form:input id="lesson-name-input" path="name" cssClass="edit-btn-large noEnterSubmit" maxlength="50"
+                            cssErrorClass="error" />
+            </form:form>
+            <button data-action="${action}" data-id="${lesson.id}" id="update-lesson-name" class="btn btn-large" style="margin-left: 10px;">Update</button>
+            </div>
+        </sec:authorize>
 
 
         <c:forEach var="c" items="${lesson.content}">

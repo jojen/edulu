@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Wiki Study <c:if test="${!empty param.title}">- ${param.title}</c:if></title>
+    <title>Edulu <c:if test="${!empty param.title}">- ${param.title}</c:if></title>
 
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/bootstrap.min.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/bootstrap-responsive.min.css'/>">
@@ -28,7 +28,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <span class="brand"><a href="<c:url value="/" />">Wiki Study</a></span>
+            <span class="brand"><a href="<c:url value="/" />">Edulu</a></span>
 
             <div class="nav-collapse collapse">
                 <p class="navbar-text pull-right">
@@ -50,7 +50,7 @@
                 </p>
                 <ul class="nav">
                     <li><a href="<c:url value="/" />">Courses</a></li>
-                    <li><a href="<c:url  value="/static/about"/>">About</a></li>
+                    <!--li><a href="<c:url  value="/static/about"/>">About</a></li-->
                 </ul>
             </div>
             <!--/.nav-collapse -->
@@ -63,12 +63,9 @@
 
 <footer id="footer">
     <p>
-        Designed and build by for educational usage
+        Designed and build for educational usage
     </p>
 
-    <p>
-        &copy; JoJen 2013. All rights reserved.
-    </p>
 </footer>
 
 <div id="modal-from-dom" class="modal hide fade">

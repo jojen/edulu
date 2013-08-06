@@ -53,26 +53,51 @@ public class CourseController {
 		return "/course/course";
 	}
 
+	@RequestMapping(value = "/lesson/rename/{id}")
+	public String renameLesson(@PathVariable("id") Integer id,
+							   @RequestParam(value = "name") String name,
+							   Model model) {
+		Lesson l = lessonService.findById(id);
+		l.setName(name);
+		lessonService.update(l);
+		return "/json/boolean";
+	}
+
 
 	@RequestMapping(value = "/{courseId}/lesson/delete/{id}")
 	public String deleteLesson(
 									  @PathVariable("courseId") Integer cid,
 									  @PathVariable("id") Integer id,
 									  Model model) {
+
 		log.debug("delete id={}", id);
 		Lesson l = lessonService.findById(id);
-		for(Content content:l.getContent()){
-			contentService.deleteById(content.getId());
+		for (Content content : l.getContent()) {
+			try {
+				contentService.deleteById(content.getId());
+			} catch (Exception e) {
+				log.error("Cannot delete content+" + content);
+			}
 		}
+
 		Course c = courseService.findById(cid);
-		c.getLessons().remove(l);
-		lessonService.deleteById(id);
+		if(!c.getLessons().isEmpty() && c.getLessons().size()>1){
+
+			c.getLessons().remove(l.getPosition()-1);
+
+			lessonService.deleteById(id);
+			courseService.update(c);
+
+			int i = 1;
+			for(Lesson lesson : c.getLessons()){
+				lesson.setPosition(i);
+				lessonService.update(lesson);
+				i++;
+			}
+		}
 
 
-
-		model.addAttribute("course", c);
-
-		return "/course/" + cid;
+		return "/json/boolean";
 	}
 
 
@@ -83,19 +108,19 @@ public class CourseController {
 							  Model model) {
 
 		Integer lesson;
-        Course c = courseService.findById(id);
+		Course c = courseService.findById(id);
 
-        if(c.getLessons().isEmpty()){
-            Lesson l = new Lesson();
-            l = lessonService.insert(l);
-            c.addLessons(l);
-            courseService.update(c);
-            lesson = l.getId();
+		if (c.getLessons().isEmpty()) {
+			Lesson l = new Lesson();
+			l = lessonService.insert(l);
+			c.addLessons(l);
+			courseService.update(c);
+			lesson = l.getId();
 
-        }else{
-            lesson = c.getLessons().iterator().next().getId();
-        }
-        // TODO aktuelle lesson des benutzers
+		} else {
+			lesson = c.getLessons().iterator().next().getId();
+		}
+		// TODO aktuelle lesson des benutzers
 
 		return "redirect:/course/" + id + "/lesson/" + lesson;
 	}
@@ -125,25 +150,52 @@ public class CourseController {
 		return "/course/form";
 	}
 
-	@RequestMapping(value = "/move/{id}", method = RequestMethod.GET)
-	public String move(@PathVariable("id") Integer id,
+	@RequestMapping(value = "/move/content/{id}", method = RequestMethod.GET)
+	public String moveContent(@PathVariable("id") Integer id,
 					   @RequestParam(value = "from", required = true) Integer from,
 					   @RequestParam(value = "to", required = true) Integer to,
 					   Model model) {
-		if(id!= null && from != null && to != null){
-		 Lesson l = lessonService.findById(id);
+		if (id != null && from != null && to != null) {
+			Lesson l = lessonService.findById(id);
 			List<Content> list = l.getContent();
-			Collections.swap(list,from,to);
+			Collections.swap(list, from-1, to-1);
 
 			// Wir updaten noch alle positionen
-			for(Content c:list){
+			int i = 1;
+			for (Content c : list) {
+				c.setPosition(i);
 				contentService.update(c);
+				i++;
 			}
 
 			lessonService.update(l);
 
 		}
-		model.addAttribute("self",true);
+		model.addAttribute("self", true);
+		return "/json/boolean";
+	}
+	@RequestMapping(value = "/move/lesson/{id}", method = RequestMethod.GET)
+	public String moveLesson(@PathVariable("id") Integer id,
+					   @RequestParam(value = "from", required = true) Integer from,
+					   @RequestParam(value = "to", required = true) Integer to,
+					   Model model) {
+		if (id != null && from != null && to != null) {
+			Course c = courseService.findById(id);
+			List<Lesson> list = c.getLessons();
+			Collections.swap(list, from, to);
+
+			// Wir updaten noch alle positionen
+			int i = 1;
+			for (Lesson l : list) {
+				l.setPosition(i);
+				lessonService.update(l);
+				i++;
+			}
+
+			courseService.update(c);
+
+		}
+		model.addAttribute("self", true);
 		return "/json/boolean";
 	}
 
@@ -201,14 +253,14 @@ public class CourseController {
 								Model model) {
 		log.debug("delete id={}", id);
 		Course c = courseService.findById(id);
-		for(Lesson l : c.getLessons()){
-			for(Content content: l.getContent()){
+		for (Lesson l : c.getLessons()) {
+			for (Content content : l.getContent()) {
 				contentService.deleteById(content.getId());
 			}
 			lessonService.deleteById(l.getId());
 		}
 		courseService.deleteById(id);
-		model.addAttribute("self",true);
+		model.addAttribute("self", true);
 		return "/json/boolean";
 	}
 

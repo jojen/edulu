@@ -38,9 +38,10 @@ public class RepositoryRefresher {
 		Lesson l = new Lesson();
 		course.addLessons(l);
 
+
 		Text t1 = new Text();
 		t1.setName("First Text Module");
-		t1.setText("<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet</p>");
+		t1.setText("<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet</p><p>http://www.youtube.com/watch?v=nxnDkVRpBi4&list=PL22FB36EAEA0D2DF0</p>");
 
 		Text t2 = new Text();
 		t2.setName("Second Text Module");

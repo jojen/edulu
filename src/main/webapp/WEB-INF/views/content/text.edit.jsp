@@ -10,8 +10,8 @@
         <div class="modal-body">
 
 
-            <form:input path="name" cssClass="span5"
-                        cssErrorClass="error"/>
+            <form:input path="name" cssClass="span5" maxlength="50"
+                        cssErrorClass="error" />
 
 
             <div>Text:</div>

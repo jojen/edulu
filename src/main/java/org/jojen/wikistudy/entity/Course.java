@@ -27,6 +27,7 @@ public class Course implements Serializable {
     private String description;
 
     @OneToMany
+	@OrderBy("position ASC")
     private List<Lesson> lessons;
 
     public Integer getId() {
@@ -62,12 +63,15 @@ public class Course implements Serializable {
     }
 
     public void addLessons(Lesson lesson) {
-        if (lessons == null) {
-            lessons = new ArrayList<Lesson>();
-        }
-        if (lesson != null) {
-            lessons.add(lesson);
-        }
+		if(lesson != null){
+			if (lessons == null) {
+				lessons = new ArrayList<Lesson>();
+			}
+			if (lesson != null) {
+				lessons.add(lesson);
+			}
+			lesson.setPosition(lessons.size());
+		}
     }
 
 

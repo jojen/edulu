@@ -68,7 +68,7 @@ body {
 
 #footer {
     background-color: #C4C4C4;
-    border-top: 1px solid #a5a5a5;
+    border-top: 6px solid #a5a5a5;
     margin-top: 60px;
     padding: 30px 0;
     text-align: center;
@@ -115,6 +115,13 @@ body {
     -o-transition: all 0.3s ease-out;
     transition: all 0.3s ease-out;
     opacity: 1;
+}
+
+input.edit-btn-large {
+    padding: 11px 19px;
+    font-size: 30px;
+    width: 80%;
+
 }
 
 /*
