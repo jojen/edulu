@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -158,7 +159,15 @@ public class CourseController {
 		if (id != null && from != null && to != null) {
 			Lesson l = lessonService.findById(id);
 			List<Content> list = l.getContent();
-			Collections.swap(list, from-1, to-1);
+
+			// Warum auch immer klappt das verschieben nur in eine Richtung
+			if(from>to){
+				Collections.reverse(list);
+				Collections.rotate(list.subList(list.size()-from,list.size()+1-to),-1);
+				Collections.reverse(list);
+			}else{
+				Collections.rotate(list.subList(from-1,to),-1);
+			}
 
 			// Wir updaten noch alle positionen
 			int i = 1;
@@ -182,11 +191,21 @@ public class CourseController {
 		if (id != null && from != null && to != null) {
 			Course c = courseService.findById(id);
 			List<Lesson> list = c.getLessons();
-			Collections.swap(list, from, to);
+
+			// Warum auch immer klappt das verschieben nur in eine Richtung
+			if(from>to){
+				Collections.reverse(list);
+				Collections.rotate(list.subList(list.size()-1-from,list.size()-to),-1);
+				Collections.reverse(list);
+			}else{
+				Collections.rotate(list.subList(from,to+1),-1);
+			}
+
 
 			// Wir updaten noch alle positionen
+
 			int i = 1;
-			for (Lesson l : list) {
+			for (Lesson l:list) {
 				l.setPosition(i);
 				lessonService.update(l);
 				i++;

@@ -101,13 +101,14 @@ public class ContentController {
 			modelQuiz = new Quiz();
 			l = lessonService.findById(lessonid);
 			l.addContent(modelQuiz);
+			modelQuiz.setPosition(l.getContent().size());
 
 		} else {
 			modelQuiz = (Quiz) contentService.findById(id);
 		}
 		modelQuiz.setName(quiz.getName());
 		modelQuiz.setQuizContent(quizcontent);
-		modelQuiz.setPosition(l.getContent().size());
+
 
 		contentService.update(modelQuiz);
 		if (l != null) {
@@ -130,7 +131,7 @@ public class ContentController {
 		if (id == null) {
 			modelText = new Text();
 			l.addContent(modelText);
-
+			modelText.setPosition(l.getContent().size());
 		} else {
 			modelText = (Text) contentService.findById(id);
 		}
@@ -138,7 +139,7 @@ public class ContentController {
 
 		modelText.setName(text.getName());
 		modelText.setText(text.getText());
-		modelText.setPosition(l.getContent().size());
+
 		contentService.update(modelText);
 		if (l != null) {
 			lessonService.update(l);
