@@ -28,6 +28,11 @@ public class BlobService {
         return context.getRealPath("../../../store");
     }
 
+	public void delete(Integer id){
+		File f = getFile(id);
+		f.delete();
+	}
+
 
     public void save(CommonsMultipartFile file, Integer id) {
         File path = new File(getBasePath());
@@ -35,16 +40,7 @@ public class BlobService {
             path.mkdirs();
         }
         try {
-            String contentPath = getFilePath(id);
-            File f = new File(getBasePath() + File.separatorChar + contentPath);
-            if (!f.exists()) {
-                if (!f.mkdirs()) {
-                    f = new File(System.getProperty("user.home") + File.separatorChar + contentPath);
-                    if (!f.exists()) {
-                        f.mkdirs();
-                    }
-                }
-            }
+			File f = getFile(id);
             if (file.getContentType().startsWith("image")) {
                 BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
                 if (bufferedImage.getWidth() > MAX_IMAGE_WIDTH) {
@@ -63,7 +59,21 @@ public class BlobService {
         }
     }
 
-    public String get(Integer id) {
+	private File getFile(Integer id) {
+		String contentPath = getFilePath(id);
+		File f = new File(getBasePath() + File.separatorChar + contentPath);
+		if (!f.exists()) {
+			if (!f.mkdirs()) {
+				f = new File(System.getProperty("user.home") + File.separatorChar + contentPath);
+				if (!f.exists()) {
+					f.mkdirs();
+				}
+			}
+		}
+		return f;
+	}
+
+	public String get(Integer id) {
         return getBasePath() + File.separatorChar + getFilePath(id);
     }
 

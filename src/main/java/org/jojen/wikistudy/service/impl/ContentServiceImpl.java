@@ -1,7 +1,9 @@
 package org.jojen.wikistudy.service.impl;
 
+import org.jojen.wikistudy.entity.Blobbased;
 import org.jojen.wikistudy.entity.Content;
 import org.jojen.wikistudy.repository.ContentRepository;
+import org.jojen.wikistudy.service.BlobService;
 import org.jojen.wikistudy.service.ContentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +19,7 @@ import javax.inject.Inject;
 public class ContentServiceImpl implements ContentService {
 	@Inject
 	protected ContentRepository contentRepository;
+	@Inject BlobService blobService;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -50,6 +53,11 @@ public class ContentServiceImpl implements ContentService {
 	@Override
 	@Transactional
 	public void deleteById(Integer id) {
+		Content c = contentRepository.findOne(id);
+		if (c instanceof Blobbased){
+			Blobbased b = (Blobbased) c;
+			blobService.delete(b.getId());
+		}
 		contentRepository.delete(id);
 	}
 

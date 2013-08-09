@@ -12,7 +12,7 @@
                     <h3><c:out value="${course.name}"/></h3>
 
                         <div class="span12" style="margin-left: 0">
-                        <div data-type="lesson" data-id="${course.id}" class="btn-group-vertical sortable">
+                        <div data-type="lesson" data-id="${course.id}" class="btn-group-vertical<sec:authorize access="hasRole('ROLE_TEACHER')"> sortable</sec:authorize>">
 
                             <c:forEach var="l" items="${course.lessons}" varStatus="status">
 

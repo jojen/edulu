@@ -1,105 +1,128 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
 <jsp:useBean id="lesson" class="org.jojen.wikistudy.entity.Lesson" scope="request"/>
 <c:if test="${!empty lesson}">
-    <ul id="lesson-content" data-id="${lesson.id}" data-type="content" class="sortable">
+
+
+    <ul id="lesson-content">
+        <!-- Headline -->
         <sec:authorize access="!hasRole('ROLE_TEACHER')">
-            <c:if test="${!empty lesson.name}"><h1><c:out value="${lesson.name}" /></h1></c:if>
+            <c:if test="${!empty lesson.name}"><h1><c:out value="${lesson.name}"/></h1></c:if>
         </sec:authorize>
 
         <sec:authorize access="hasRole('ROLE_TEACHER')">
             <div class="span12">
-            <c:url var="action" value="/course/lesson/rename/${lesson.id}"/>
-            <form:form modelAttribute="lesson"
-                       cssClass="form-horizontal span10">
-                <form:input id="lesson-name-input" path="name" cssClass="edit-btn-large noEnterSubmit" maxlength="50"
-                            cssErrorClass="error" />
-            </form:form>
-            <button data-action="${action}" data-id="${lesson.id}" id="update-lesson-name" class="btn btn-large" style="margin-left: 10px;">Update</button>
+                <c:url var="action" value="/course/lesson/rename/${lesson.id}"/>
+                <form:form modelAttribute="lesson"
+                           cssClass="form-horizontal span10">
+                    <form:input id="lesson-name-input" path="name" cssClass="edit-btn-large noEnterSubmit"
+                                maxlength="50"
+                                cssErrorClass="error"/>
+                </form:form>
+                <button data-action="${action}" data-id="${lesson.id}" id="update-lesson-name" class="btn btn-large"
+                        style="margin-left: 10px;">Update
+                </button>
             </div>
         </sec:authorize>
 
+        <!-- Content -->
+        <sec:authorize access="!hasRole('ROLE_TEACHER')">
+            <div>
+        </sec:authorize>
 
-        <c:forEach var="c" items="${lesson.content}">
-            <c:url var="link" value="/content/media/${c.id}/${c.name}"/>
-            <li id="content-${c.id}" class="ui-state-default">
-                <div class="row">
-                    <%-- TODO da sollten eigene templates her --%>
-                <c:if test="${c.type eq 'Image'}">
-                    <img src="${link}" class="img-polaroid">
-                </c:if>
-                <c:if test="${c.type eq 'Video'}">
-                    <video id="${c.id}" width="770" height="480" class="video-js vjs-default-skin" controls
-                           preload="auto"
-                           data-setup='{"example_option":true}'>
-                        <source src="${link}"
-                                type="${c.contentType}">
-                        Your browser does not support the video tag.
-                    </video>
-                </c:if>
-                <c:if test="${c.type eq 'Text'}">
-                    <div>
-                        <c:if test="${!empty c.name}">
-                            <h2><c:out value="${c.name}"/></h2>
-                        </c:if>
-
-                        <c:out value="${c.text}" escapeXml="false"/>
-                    </div>
-
-                </c:if>
-                <c:if test="${c.type eq 'Download'}">
-                    <a href="${link}">
-                        <button class="btn"><i class="icon-download"></i>&nbsp;${c.name}</button>
-                    </a>
-                </c:if>
-                <c:if test="${c.type eq 'Quiz'}">
-                    <!-- TODO sollte in class übergehen -->
-                    <div id="slick-quiz">
-                        <h3 class="quizName"></h3>
-
-                        <div class="quizArea">
-                            <div class="quizHeader">
-                                <!-- where the quiz main copy goes -->
-
-                                <button class="btn btn-primary startQuiz" href="#"><i
-                                        class="icon-play icon-white pull-right"></i>Get Started&nbsp;</button>
-                            </div>
-
-                            <!-- where the quiz gets built -->
-                        </div>
-
-                        <div class="quizResults">
-                            <h4 class="quizScore">You Scored: <span><!-- where the quiz score goes --></span></h4>
-
-                            <h4 class="quizLevel"><strong>Ranking:</strong> <span><!-- where the quiz ranking level goes --></span>
-                            </h4>
-
-                            <div class="quizResultsCopy">
-                                <!-- where the quiz result copy goes -->
-                            </div>
-                        </div>
-                    </div>
-                    <script type="text/javascript">
-                        $('#slick-quiz').slickQuiz({json:
-                            ${c.quizContent}
-                        });
-                    </script>
-
-                </c:if>
-                <sec:authorize access="hasRole('ROLE_TEACHER')">
-                    <div class="edit-box btn-group right">
-
-                        <button data-delete="#content-${c.id}" data-action="<c:url value="/content/delete/${lesson.id}/${c.id}" />" class="btn btn-danger">Delete</button>
-
-                        <c:if test="${c.isEditable}">
-                            <a data-id="${c.id}" data-courseid="${course.id}"
-                               data-lessonid="${lesson.id}" class="update-${c.type} btn btn-warning">Edit</a>
-                        </c:if>
-                    </div>
-                </sec:authorize>
-                 </div>
-            </li>
-        </c:forEach>
         <sec:authorize access="hasRole('ROLE_TEACHER')">
+            <div data-id="${lesson.id}" data-type="content" class="sortable">
+        </sec:authorize>
+
+
+                <c:forEach var="c" items="${lesson.content}">
+                    <c:url var="link" value="/content/media/${c.id}/${c.name}"/>
+                    <li id="content-${c.id}" class="ui-state-default">
+                        <div class="row">
+                                <%-- TODO da sollten eigene templates her --%>
+                            <c:if test="${c.type eq 'Image'}">
+                                <img src="${link}" class="img-polaroid">
+                            </c:if>
+                            <c:if test="${c.type eq 'Video'}">
+                                <video id="${c.id}" width="770" height="480" class="video-js vjs-default-skin" controls
+                                       preload="auto"
+                                       data-setup='{"example_option":true}'>
+                                    <source src="${link}"
+                                            type="${c.contentType}">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </c:if>
+                            <c:if test="${c.type eq 'Text'}">
+                                <div>
+                                    <c:if test="${!empty c.name}">
+                                        <h2><c:out value="${c.name}"/></h2>
+                                    </c:if>
+
+                                    <c:out value="${c.text}" escapeXml="false"/>
+                                </div>
+
+                            </c:if>
+                            <c:if test="${c.type eq 'Download'}">
+                                <a href="${link}">
+                                    <button class="btn"><i class="icon-download"></i>&nbsp;${c.name}</button>
+                                </a>
+                            </c:if>
+                            <c:if test="${c.type eq 'Quiz'}">
+                                <!-- TODO sollte in class übergehen -->
+                                <div id="slick-quiz">
+                                    <h3 class="quizName"></h3>
+
+                                    <div class="quizArea">
+                                        <div class="quizHeader">
+                                            <!-- where the quiz main copy goes -->
+
+                                            <button class="btn btn-primary startQuiz" href="#"><i
+                                                    class="icon-play icon-white pull-right"></i>Get Started&nbsp;
+                                            </button>
+                                        </div>
+
+                                        <!-- where the quiz gets built -->
+                                    </div>
+
+                                    <div class="quizResults">
+                                        <h4 class="quizScore">You Scored:
+                                            <span><!-- where the quiz score goes --></span></h4>
+
+                                        <h4 class="quizLevel"><strong>Ranking:</strong> <span><!-- where the quiz ranking level goes --></span>
+                                        </h4>
+
+                                        <div class="quizResultsCopy">
+                                            <!-- where the quiz result copy goes -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <script type="text/javascript">
+                                    $('#slick-quiz').slickQuiz({json:
+                                        ${c.quizContent}
+                                    });
+                                </script>
+
+                            </c:if>
+                            <sec:authorize access="hasRole('ROLE_TEACHER')">
+                                <div class="edit-box btn-group right">
+
+                                    <button data-delete="#content-${c.id}"
+                                            data-action="<c:url value="/content/delete/${lesson.id}/${c.id}" />"
+                                            class="btn btn-danger">Delete
+                                    </button>
+
+                                    <c:if test="${c.isEditable}">
+                                        <a data-id="${c.id}" data-courseid="${course.id}"
+                                           data-lessonid="${lesson.id}"
+                                           class="update-${c.type} btn btn-warning">Edit</a>
+                                    </c:if>
+                                </div>
+                            </sec:authorize>
+                        </div>
+                    </li>
+                </c:forEach>
+
+            </div>
+            <sec:authorize access="hasRole('ROLE_TEACHER')">
             <li class="row-fluid">
                 <div class="well">
                     <div class="row-fluid">
@@ -118,8 +141,11 @@
                                         class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li <c:if test="${lesson.hasQuiz}">class="disabled"</c:if>> <a href="#" class="update-Quiz" data-courseid="${course.id}"
-                                           data-lessonid="${lesson.id}">Quiz</a></li>
+                                    <li <c:if test="${lesson.hasQuiz}">class="disabled"</c:if>><a href="#"
+                                                                                                  class="update-Quiz"
+                                                                                                  data-courseid="${course.id}"
+                                                                                                  data-lessonid="${lesson.id}">Quiz</a>
+                                    </li>
                                     <!--li class="disabled"><a href="#">Survey</a></li>
                                     <li class="disabled"><a href="#">Hot Potato</a></li>
                                     <li class="divider"></li>
@@ -152,8 +178,7 @@
 
                 </div>
             </li>
-        </sec:authorize>
-
+            </sec:authorize>
 
     </ul>
 </c:if>

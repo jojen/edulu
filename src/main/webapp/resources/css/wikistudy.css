@@ -124,6 +124,14 @@ input.edit-btn-large {
 
 }
 
+.sortable li:hover, .sortable a:hover {
+    cursor: move;
+}
+
+.btn-warning {
+    cursor: pointer !important;
+}
+
 /*
 Quiz
 */
