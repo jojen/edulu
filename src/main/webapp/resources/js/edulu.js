@@ -56,7 +56,7 @@ $(document).ready(function () {
                 var endpos = ui.item.index();
                 var id = $(this).data("id");
                 var type = $(this).data("type");
-                $.get("/wikistudy/course/move/"+ type +"/" + id, {
+                $.get("/edulu/course/move/"+ type +"/" + id, {
                     from: startpos,
                     to: endpos
                 });
@@ -69,7 +69,7 @@ $(document).ready(function () {
     $(".update-course").click(function () {
         var id = $(this).data("id");
         // TODO URL muss übergeben werden -> JQ Plugin draus machen
-        $.get("/wikistudy/course/edit/", {
+        $.get("/edulu/course/edit/", {
             id: id
         }, function (result) {
             // hier machen machen wir das editierbar
@@ -100,7 +100,7 @@ $(document).ready(function () {
         var lessonId = $(this).data("lessonid");
         var courseId = $(this).data("courseid");
         // TODO URL muss übergeben werden -> JQ Plugin draus machen
-        $.get("/wikistudy/content/text/edit/", {
+        $.get("/edulu/content/text/edit/", {
             courseid: courseId,
             lessonid: lessonId,
             id: id
@@ -180,7 +180,7 @@ $(document).ready(function () {
             var lessonId = $(this).data("lessonid");
             var courseId = $(this).data("courseid");
             // TODO URL muss übergeben werden -> JQ Plugin draus machen
-            $.get("/wikistudy/content/quiz/edit/", {
+            $.get("/edulu/content/quiz/edit/", {
                     courseid: courseId,
                     lessonid: lessonId,
                     id: id

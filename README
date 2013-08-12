@@ -3,7 +3,7 @@ for development - In Memory H2 Database
 $ mvn clean install
 $ mvn tomcat:run
 
-access http://localhost:8080/wikistudy
+access http://localhost:8080/edulu
 
 for production - Postgresql [settings: /src/main/databases/postgresql/META-INF/spring/database.properties]
 

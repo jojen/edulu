@@ -4,6 +4,7 @@
 
 
     <ul id="lesson-content">
+
         <!-- Headline -->
         <sec:authorize access="!hasRole('ROLE_TEACHER')">
             <c:if test="${!empty lesson.name}"><h1><c:out value="${lesson.name}"/></h1></c:if>
@@ -37,6 +38,7 @@
                 <c:forEach var="c" items="${lesson.content}">
                     <c:url var="link" value="/content/media/${c.id}/${c.name}"/>
                     <li id="content-${c.id}" class="ui-state-default">
+                        <!-- Content Position: ${c.position} -->
                         <div class="row">
                                 <%-- TODO da sollten eigene templates her --%>
                             <c:if test="${c.type eq 'Image'}">

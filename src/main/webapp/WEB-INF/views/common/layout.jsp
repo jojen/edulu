@@ -9,7 +9,7 @@
         <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/jquery.fileupload-ui.css'/>">
     </sec:authorize>
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/video-js.css'/>">
-    <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/wikistudy.css'/>">
+    <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/edulu.css'/>">
 
     <!-- lib -->
     <script type="text/javascript" src="<c:url value='/resources/js/jquery-2.0.0.min.js' />"></script>
@@ -103,7 +103,7 @@
     <script type="text/javascript" src="<c:url value="/resources/js/jsonform/jsv.js" />"></script>
     <script type="text/javascript" src="<c:url value="/resources/js/jsonform/jsonform.js" />"></script>
 
-    <script type="text/javascript" src="<c:url value='/resources/js/wikistudy.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/resources/js/edulu.js' />"></script>
 </sec:authorize>
 
 

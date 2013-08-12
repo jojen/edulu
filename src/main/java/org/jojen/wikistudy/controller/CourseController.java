@@ -73,13 +73,6 @@ public class CourseController {
 
 		log.debug("delete id={}", id);
 		Lesson l = lessonService.findById(id);
-		for (Content content : l.getContent()) {
-			try {
-				contentService.deleteById(content.getId());
-			} catch (Exception e) {
-				log.error("Cannot delete content+" + content);
-			}
-		}
 
 		Course c = courseService.findById(cid);
 		if(!c.getLessons().isEmpty() && c.getLessons().size()>1){
@@ -96,6 +89,7 @@ public class CourseController {
 				i++;
 			}
 		}
+		lessonService.deleteById(id);
 
 
 		return "/json/boolean";
@@ -113,7 +107,7 @@ public class CourseController {
 
 		if (c.getLessons().isEmpty()) {
 			Lesson l = new Lesson();
-			l = lessonService.insert(l);
+			lessonService.add(l,c);
 			c.addLessons(l);
 			courseService.update(c);
 			lesson = l.getId();
@@ -132,7 +126,7 @@ public class CourseController {
 								   Model model) {
 		Course c = courseService.findById(id);
 		Lesson l = new Lesson();
-		lessonService.insert(l);
+		lessonService.add(l,c);
 		c.addLessons(l);
 		courseService.update(c);
 
@@ -163,10 +157,10 @@ public class CourseController {
 			// Warum auch immer klappt das verschieben nur in eine Richtung
 			if(from>to){
 				Collections.reverse(list);
-				Collections.rotate(list.subList(list.size()-from,list.size()+1-to),-1);
+				Collections.rotate(list.subList(list.size()-from-1,list.size()-to),-1);
 				Collections.reverse(list);
 			}else{
-				Collections.rotate(list.subList(from-1,to),-1);
+				Collections.rotate(list.subList(from,to+1),-1);
 			}
 
 			// Wir updaten noch alle positionen
@@ -271,13 +265,6 @@ public class CourseController {
 								@PathVariable("id") Integer id,
 								Model model) {
 		log.debug("delete id={}", id);
-		Course c = courseService.findById(id);
-		for (Lesson l : c.getLessons()) {
-			for (Content content : l.getContent()) {
-				contentService.deleteById(content.getId());
-			}
-			lessonService.deleteById(l.getId());
-		}
 		courseService.deleteById(id);
 		model.addAttribute("self", true);
 		return "/json/boolean";

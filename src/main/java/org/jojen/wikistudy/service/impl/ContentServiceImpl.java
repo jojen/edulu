@@ -2,6 +2,7 @@ package org.jojen.wikistudy.service.impl;
 
 import org.jojen.wikistudy.entity.Blobbased;
 import org.jojen.wikistudy.entity.Content;
+import org.jojen.wikistudy.entity.Lesson;
 import org.jojen.wikistudy.repository.ContentRepository;
 import org.jojen.wikistudy.service.BlobService;
 import org.jojen.wikistudy.service.ContentService;
@@ -19,7 +20,9 @@ import javax.inject.Inject;
 public class ContentServiceImpl implements ContentService {
 	@Inject
 	protected ContentRepository contentRepository;
-	@Inject BlobService blobService;
+
+	@Inject
+	BlobService blobService;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -40,12 +43,6 @@ public class ContentServiceImpl implements ContentService {
 
 	@Override
 	@Transactional
-	public Content insert(Content learnContent) {
-		return contentRepository.save(learnContent);
-	}
-
-	@Override
-	@Transactional
 	public Content update(Content learnContent) {
 		return contentRepository.save(learnContent);
 	}
@@ -60,5 +57,19 @@ public class ContentServiceImpl implements ContentService {
 		}
 		contentRepository.delete(id);
 	}
+
+	@Override
+	@Transactional
+	public void deleteAll() {
+		contentRepository.deleteAll();
+	}
+
+	@Override
+	@Transactional
+	public void add(Content c, Lesson l) {
+		c.setPosition(l.getContent().size());
+		contentRepository.save(c);
+	}
+
 
 }

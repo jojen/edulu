@@ -30,7 +30,8 @@ public class ApplicationInitilizeListener implements ServletContextListener {
 			CourseRepository courseRepository = ctx.getBean(CourseRepository.class);
 			LessonRepository lessonRepository = ctx.getBean(LessonRepository.class);
 			ContentRepository contentRepository = ctx.getBean(ContentRepository.class);
-			RepositoryRefresher.refresh(courseRepository,lessonRepository,contentRepository);
+			// TODO das geht hier noch nicht
+			//RepositoryRefresher.refresh(null,null,null);
 
 		}
 	}

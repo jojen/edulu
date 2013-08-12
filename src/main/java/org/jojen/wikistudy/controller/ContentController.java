@@ -167,11 +167,11 @@ public class ContentController {
 					b = new Download();
 				}
 
-				contentService.insert(b);
+				contentService.add(b,l);
 				blobService.save(fileUpload.getFileData(), b.getId());
 				b.setContentType(fileUpload.getFileData().getContentType());
 				b.setName(UriUtils.encodeQuery(fileUpload.getFileData().getFileItem().getName(), "UTF8"));
-				b.setPosition(l.getContent().size());
+
 				contentService.update(b);
 				l.addContent(b);
 				lessonService.update(l);

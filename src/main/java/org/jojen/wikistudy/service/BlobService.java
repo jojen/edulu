@@ -25,7 +25,7 @@ public class BlobService {
     }
 
     private String getBasePath() {
-        return context.getRealPath("../../../store");
+        return context.getRealPath("../../../edulu/store");
     }
 
 	public void delete(Integer id){

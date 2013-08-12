@@ -1,7 +1,10 @@
 package org.jojen.wikistudy.service.impl;
 
+import org.jojen.wikistudy.entity.Content;
+import org.jojen.wikistudy.entity.Course;
 import org.jojen.wikistudy.entity.Lesson;
 import org.jojen.wikistudy.repository.LessonRepository;
+import org.jojen.wikistudy.service.ContentService;
 import org.jojen.wikistudy.service.LessonService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,11 +15,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 
 @Service
 public class LessonServiceImpl implements LessonService {
 	@Inject
 	protected LessonRepository lessonRepository;
+	@Inject
+	protected ContentService contentService;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -35,11 +41,6 @@ public class LessonServiceImpl implements LessonService {
 		return lesson;
 	}
 
-	@Override
-	@Transactional
-	public Lesson insert(Lesson lesson) {
-		return lessonRepository.save(lesson);
-	}
 
 	@Override
 	@Transactional
@@ -50,7 +51,28 @@ public class LessonServiceImpl implements LessonService {
 	@Override
 	@Transactional
 	public void deleteById(Integer id) {
-		lessonRepository.delete(id);
+		Lesson l = lessonRepository.findOne(id);
+		if(l!= null){
+			ArrayList<Content> list = new ArrayList<Content>(l.getContent());
+			l.getContent().clear();
+			for(Content c:list){
+				contentService.deleteById(c.getId());
+			}
+			lessonRepository.delete(id);
+		}
+	}
+
+	@Override
+	@Transactional
+	public void deleteAll() {
+		lessonRepository.deleteAll();
+	}
+
+	@Override
+	@Transactional
+	public void add(Lesson l, Course c) {
+		l.setPosition(c.getLessons().size());
+		lessonRepository.save(l);
 	}
 
 }

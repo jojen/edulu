@@ -1,6 +1,7 @@
 package org.jojen.wikistudy.service;
 
 import org.jojen.wikistudy.entity.Content;
+import org.jojen.wikistudy.entity.Lesson;
 import org.springframework.data.domain.Page;
 
 public interface ContentService {
@@ -9,10 +10,13 @@ public interface ContentService {
 
     Content findById(Integer id);
 
-    Content insert(Content module);
+    void add(Content c, Lesson l);
 
     Content update(Content module);
 
     void deleteById(Integer id);
+
+	void deleteAll();
+
 
 }

@@ -3,13 +3,10 @@ package org.jojen.wikistudy.util;
 import org.jojen.wikistudy.entity.Course;
 import org.jojen.wikistudy.entity.Lesson;
 import org.jojen.wikistudy.entity.Text;
-import org.jojen.wikistudy.repository.ContentRepository;
-import org.jojen.wikistudy.repository.CourseRepository;
-import org.jojen.wikistudy.repository.LessonRepository;
+import org.jojen.wikistudy.service.ContentService;
+import org.jojen.wikistudy.service.CourseService;
+import org.jojen.wikistudy.service.LessonService;
 
-import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,20 +18,17 @@ import java.util.List;
 
 public class RepositoryRefresher {
 
-	public static void refresh(CourseRepository courseRepository, LessonRepository lessonRepository, ContentRepository contentRepository){
-		courseRepository.deleteAll();
-		lessonRepository.deleteAll();
-		List<Course> courses = new ArrayList<Course>();
+	public static void refresh(CourseService courseService, LessonService lessonService, ContentService contentService) {
+		courseService.deleteAll();
+		lessonService.deleteAll();
+		contentService.deleteAll();
 
-		int itemCount = 3;
 
-		for (int i = 1; i <= itemCount; i++) {
-			Course c = new Course();
-			c.setName("Course - " + i);
-			c.setDescription("Description - " + i);
-			courses.add(c);
-		}
-		Course course = courses.get(0);
+		Course course = new Course();
+		course.setName("Test Course");
+		course.setDescription("This is only a dummy Course, prease edit or delete. Feel free");
+
+
 		Lesson l = new Lesson();
 		course.addLessons(l);
 
@@ -48,11 +42,13 @@ public class RepositoryRefresher {
 		t2.setText("<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi</p>");
 
 		l.addContent(t1);
-		l.addContent(t2);
+		contentService.add(t1, l);
 
-		contentRepository.save(t1);
-		contentRepository.save(t2);
-		lessonRepository.save(l);
-		courseRepository.save(courses);
+		l.addContent(t2);
+		contentService.add(t2, l);
+
+		lessonService.add(l, course);
+
+		courseService.update(course);
 	}
 }

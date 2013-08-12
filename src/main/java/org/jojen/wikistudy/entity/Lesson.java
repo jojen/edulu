@@ -42,6 +42,9 @@ public class Lesson implements Serializable {
 	}
 
 	public List<Content> getContent() {
+		if(content == null){
+			return new ArrayList<Content>(0);
+		}
 		return content;
 	}
 

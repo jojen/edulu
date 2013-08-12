@@ -1,8 +1,10 @@
 package org.jojen.wikistudy.service.impl;
 
 import org.jojen.wikistudy.entity.Course;
+import org.jojen.wikistudy.entity.Lesson;
 import org.jojen.wikistudy.repository.CourseRepository;
 import org.jojen.wikistudy.service.CourseService;
+import org.jojen.wikistudy.service.LessonService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,11 +14,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
 
 @Service
 public class CourseServiceImpl implements CourseService {
 	@Inject
 	protected CourseRepository courseRepository;
+	@Inject
+	LessonService lessonService;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -59,7 +64,21 @@ public class CourseServiceImpl implements CourseService {
 	@Override
 	@Transactional
 	public void deleteById(Integer id) {
-		courseRepository.delete(id);
+		Course c = courseRepository.findOne(id);
+		if(c!= null){
+			ArrayList<Lesson> list = new ArrayList<Lesson>(c.getLessons());
+			c.getLessons().clear();
+			for(Lesson l: list){
+				lessonService.deleteById(l.getId());
+			}
+			courseRepository.delete(id);
+		}
+	}
+
+	@Override
+	@Transactional
+	public void deleteAll() {
+		courseRepository.deleteAll();
 	}
 
 }

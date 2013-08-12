@@ -16,4 +16,6 @@ public interface CourseService {
 
     void deleteById(Integer id);
 
+	void deleteAll();
+
 }
