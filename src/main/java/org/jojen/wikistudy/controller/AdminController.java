@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.inject.Inject;
+import java.io.IOException;
 
 
 @Controller
@@ -32,4 +33,18 @@ public class AdminController {
 		RepositoryRefresher.refresh(courseService,lessonService,contentService);
 		return "redirect:/";
 	}
+
+	@RequestMapping(value = "/shutdown", method = RequestMethod.GET)
+	public String shutdown(){
+		Runtime runtime = Runtime.getRuntime();
+		try {
+			Process proc = runtime.exec("shutdown -t 0 now");
+		} catch (IOException e) {
+
+		}
+
+		return "redirect:/";
+	}
+
+
 }
