@@ -38,7 +38,8 @@ public class AdminController {
 	public String shutdown(){
 		Runtime runtime = Runtime.getRuntime();
 		try {
-			Process proc = runtime.exec("shutdown -t 0 now");
+			// Works only on Raspian (Alias)
+			Process proc = runtime.exec("halt");
 		} catch (IOException e) {
 
 		}
