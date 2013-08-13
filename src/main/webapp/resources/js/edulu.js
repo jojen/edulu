@@ -164,6 +164,7 @@ $(document).ready(function () {
             window.location.reload();
         },
         dropZone: $('#dropzone'),
+        pasteZone: null,
         progressall: function (e, data) {
             var progress = parseInt(data.loaded / data.total * 100, 10);
             $('#progress .bar').css(
