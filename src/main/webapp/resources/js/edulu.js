@@ -15,6 +15,7 @@ $(document).ready(function () {
             name: name
         }, function (result) {
             console.log(id);
+            // Wir wursteln noch ein bisschen im dom herum
             if(name && !$("#lesson-name-"+id).val()){
                 name = "- " +name;
             }
@@ -76,13 +77,13 @@ $(document).ready(function () {
             $("body").prepend(result);
             var dialog = $("#course-update");
             dialog.modal('show');
-
+            var revert = true;
             $("#save").click(function () {
+                revert = false;
                 dialog.modal('hide');
             });
-            var revert = false;
+
             $("#revert").click(function () {
-                revert = true;
                 dialog.modal('hide');
             });
 
@@ -109,13 +110,14 @@ $(document).ready(function () {
             $("body").prepend(result);
             var dialog = $("#text-update");
             dialog.modal('show');
+            var revert = true;
 
             $("#save").click(function () {
+                revert = false;
                 dialog.modal('hide');
             });
-            var revert = false;
+
             $(".close").click(function () {
-                revert = true;
                 dialog.modal('hide');
             });
 
@@ -190,13 +192,13 @@ $(document).ready(function () {
                     $("body").prepend(result);
                     var dialog = $("#quiz-update");
                     dialog.modal('show');
-
+                    var revert = true;
                     $("#save").click(function () {
+                        revert = false;
                         dialog.modal('hide');
                     });
-                    var revert = false;
+
                     $(".close").click(function () {
-                        revert = true;
                         dialog.modal('hide');
                     });
 
