@@ -8,7 +8,7 @@
 
         <div class="container-fluid">
             <div class="row-fluid">
-                <div class="span3">
+                <div id="lessons-menu" class="span3">
                     <h3><c:out value="${course.name}"/></h3>
 
                         <div class="span12" style="margin-left: 0">

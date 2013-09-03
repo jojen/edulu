@@ -85,9 +85,18 @@ body {
    margin-left: 0px;
 }
 
-#lesson-content .row-fluid {
+#lesson-content .row-fluid, #lesson-content .row {
     margin-bottom: 20px;
 }
+
+.row div h2, .row div h3 {
+    margin-top: 25px !important;
+}
+
+#lesson-content .row div h2, #lesson-content .row div h3 {
+    margin-top: 40px !important;
+}
+
 #lesson-content .edit-box {
     margin-bottom: 5px;
 }
@@ -203,6 +212,20 @@ ul.answers label {
 
 #quiz-json-form div div.control-group div.controls div ul._jsonform-array-ul li li {
     border: none;
+}
+
+.vjs-big-play-button{
+    margin: auto !important;
+}
+
+@media print {
+    #lessons-menu, .navbar, #footer{
+        display:none;
+    }
+    #lesson-content{
+        border: none;
+        padding: 0;
+    }
 }
 
 

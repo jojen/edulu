@@ -42,6 +42,16 @@
             <version>4.2</version>
         </dependency>
 
+        <!-- PDF    -->
+        <dependency>
+            <!-- iText 4.2.0: LGPL/MPL; iText 5.x: AGPL -->
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>4.2.0</version>
+        </dependency>
+
+
+
         <!-- File Upload -->
         <dependency>
             <groupId>commons-fileupload</groupId>
@@ -255,6 +265,11 @@
             <artifactId>postgresql</artifactId>
             <version>8.4-702.jdbc3</version>
         </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.3.4</version>
+        </dependency>
         <!--dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -382,6 +397,10 @@
         </profile-->
     </profiles>
     <repositories>
+        <repository>
+            <id>mvnrepository</id>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>
         <repository>
             <id>amateras</id>
             <name>Project Amateras Maven2 Repository</name>
