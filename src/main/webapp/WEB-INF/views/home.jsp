@@ -33,6 +33,8 @@
 
                                         <ul>
                                             <li><span>${fn:length(course.lessons)}</span> Lessons</li>
+                                            <li> - </li>
+                                            <li><a href="<c:url value="/course/pdf/${course.id}/course-${course.id}.pdf"/>">Download as PDF</a></li>
 
                                         </ul>
                                         <sec:authorize access="hasRole('ROLE_TEACHER')">
@@ -47,6 +49,7 @@
                                                 </c:if>
                                             </div>
                                         </sec:authorize>
+
                                     </div>
                                 </div>
 
