@@ -9,14 +9,9 @@ import com.lowagie.text.Font;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.html.simpleparser.HTMLWorker;
 import com.lowagie.text.pdf.PdfWriter;
-import com.lowagie.text.pdf.draw.LineSeparator;
-import com.lowagie.text.rtf.field.RtfPageNumber;
 import org.jojen.wikistudy.entity.*;
 import org.jojen.wikistudy.entity.Image;
-import org.jojen.wikistudy.service.BlobService;
-import org.jojen.wikistudy.service.ContentService;
-import org.jojen.wikistudy.service.CourseService;
-import org.jojen.wikistudy.service.LessonService;
+import org.jojen.wikistudy.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -32,6 +27,7 @@ import javax.validation.Valid;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -51,7 +47,7 @@ public class CourseController {
 	protected ContentService contentService;
 
 	@Inject
-	protected BlobService blobService;
+	protected PDFService pdfService;
 
 
 	protected static final Logger log = LoggerFactory
@@ -290,85 +286,20 @@ public class CourseController {
 		return "/json/boolean";
 	}
 
-	@RequestMapping(value = "/pdf/{id}")
+	@RequestMapping(value = "/pdf/{id}/{name}")
 	public void pdf(@PathVariable("id") Integer id, HttpServletResponse response) {
 		Course c = courseService.findById(id);
 
 		response.setContentType("application/pdf");
 		//response.setHeader("Content-Disposition","attachment");
-
-
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ByteArrayOutputStream stream = pdfService.getPdf(c);
+		response.setContentLength(stream.size());
 		try {
-			Document document = new Document();
-			PdfWriter.getInstance(document, baos);
-
-
-			document.open();
-			Font f = new Font(Font.BOLD, 26);
-			Font f2 = new Font(Font.BOLD, 24);
-			Font f3 = new Font(Font.BOLD, 18);
-			Font f4 = new Font(Font.BOLD, 14);
-
-
-			document.add(new Paragraph(c.getName(), f));
-			document.add(addRichText(c.getDescription()));
-
-			document.add(new Paragraph("Table of content",f3));
-			com.lowagie.text.List lst1 = new com.lowagie.text.List( true, 15 );
-			// Inhaltsverzeichnis
-			for (Lesson l : c.getLessons()) {
-				lst1.add(l.getName());
-			}
-			document.add(lst1);
-
-			int i = 0;
-			for (Lesson l : c.getLessons()){
-				i++;
-				Chapter chapter = new Chapter(l.getName(),i);
-
-				//document.add(new Paragraph(l.getName(), f2));
-				for (Content content : l.getContent()) {
-
-					if (content instanceof Text) {
-						chapter.add(new Paragraph(((Text) content).getName(), f3));
-						chapter.add(addRichText(((Text) content).getText()));
-					}
-					if (content instanceof Image){
-						// TODO hier scheint noch ein Seitenumbruch Schwierigkeiten zu machen
-						File file = new File(blobService.get(content.getId()));
-						BufferedImage bufferedImage = ImageIO.read(file);
-						com.lowagie.text.Image pdfimg = com.lowagie.text.Image.getInstance(bufferedImage,null);
-						pdfimg.scaleToFit(400,400);
-						Paragraph p = new Paragraph();
-						p.add(pdfimg);
-						chapter.add(p);
-					}
-				}
-				document.add(chapter);
-			}
-
-
-			document.close();
-
-
-			response.setContentLength(baos.size());
-			baos.writeTo(response.getOutputStream());
-		} catch (Exception e) {
-			e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+			stream.writeTo(response.getOutputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-	}
 
-	// TODO das klappt hier noch nicht ganz
-	private com.lowagie.text.List addRichText(String html) throws IOException, DocumentException {
-		com.lowagie.text.List ret = new com.lowagie.text.List();
-		for (Object o : HTMLWorker.parseToList(new StringReader(html), null)) {
-			Paragraph p = new Paragraph();
-			p.add(o);
-			ret.add(p);
-
-		}
-		return ret;
 	}
 
 
