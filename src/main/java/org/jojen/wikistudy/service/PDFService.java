@@ -1,6 +1,6 @@
 package org.jojen.wikistudy.service;
 
-import com.itextpdf.text.BaseColor;
+
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.Rectangle;
@@ -41,6 +41,7 @@ public class PDFService {
 
 			PdfWriter writer = PdfWriter.getInstance(document, ret);
 			writer.setStrictImageSequence(true);
+
 			HeaderFooter event = new HeaderFooter();
 			event.setTitle(c.getName());
 
@@ -103,11 +104,11 @@ public class PDFService {
 						currentSection.add(p);
 					}
 					if (content instanceof Quiz) {
-						currentSection.add(get2InfoBox("Quiz","Please check online to do the Quiz"));
+						currentSection.add(get2InfoBox("Quiz","Please check online to do the quiz"));
 					}
 
 					if (content instanceof Video) {
-						currentSection.add(get2InfoBox("Video","Please check online to watch the Video"));
+						currentSection.add(get2InfoBox("Video","Please check online to watch the video"));
 					}
 					if (content instanceof Download) {
 						currentSection.add(get2InfoBox("Download","Please check online to download the file"));
@@ -200,6 +201,16 @@ public class PDFService {
 			pagenumber++;
 		}
 
+		public void onChapterEnd(PdfWriter writer, Document document,
+								 float position) {
+			/*
+			drawLine(writer.getDirectContent(),
+
+							document.left(), document.right(), position - 5);
+			*/
+
+		}
+
 		/**
 		 * Adds the header and the footer.
 		 *
@@ -227,6 +238,11 @@ public class PDFService {
 
 			}
 
+		}
+		public void drawLine(PdfContentByte cb, float x1, float x2, float y) {
+			cb.moveTo(x1, y);
+			cb.lineTo(x2, y);
+			cb.stroke();
 		}
 	}
 

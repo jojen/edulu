@@ -291,7 +291,7 @@ public class CourseController {
 		Course c = courseService.findById(id);
 
 		response.setContentType("application/pdf");
-		//response.setHeader("Content-Disposition","attachment");
+		response.setHeader("Content-Disposition","attachment");
 		ByteArrayOutputStream stream = pdfService.getPdf(c);
 		response.setContentLength(stream.size());
 		try {
