@@ -98,7 +98,11 @@ public class PDFService {
 						File file = new File(blobService.get(content.getId()));
 						BufferedImage bufferedImage = ImageIO.read(file);
 						com.lowagie.text.Image pdfimg = com.lowagie.text.Image.getInstance(bufferedImage, null);
-						pdfimg.scaleToFit(300, 580);
+
+						if(pdfimg.getHeight()>300 || pdfimg.getWidth()>580){
+							pdfimg.scaleToFit(300, 580);
+						}
+
 						Paragraph p = new Paragraph();
 						p.add(pdfimg);
 						currentSection.add(p);
