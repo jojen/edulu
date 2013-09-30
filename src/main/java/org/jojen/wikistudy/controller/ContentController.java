@@ -62,6 +62,19 @@ public class ContentController {
 		model.addAttribute("self",true);
 		return "/json/boolean";
 	}
+	@RequestMapping(value = "/property", method = RequestMethod.GET)
+	public String propertyChange(@RequestParam(value = "name") String type,
+								 @RequestParam(value = "id") Integer id,
+								 @RequestParam(value = "value") String value){
+		Content c = contentService.findById(id);
+		// TODO hier müsste man dann reflections machen
+
+		((Image)c).setShowPdf(Boolean.valueOf(value));
+		contentService.update(c);
+
+		return "/json/boolean";
+	}
+
 
 	@RequestMapping(value = "/{type}/edit", method = RequestMethod.GET)
 	public String edit(@PathVariable(value = "type") String type,

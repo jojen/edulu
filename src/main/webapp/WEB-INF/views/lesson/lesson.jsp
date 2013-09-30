@@ -27,12 +27,12 @@
 
         <!-- Content -->
         <sec:authorize access="!hasRole('ROLE_TEACHER')">
-            <div>
-        </sec:authorize>
+        <div>
+            </sec:authorize>
 
-        <sec:authorize access="hasRole('ROLE_TEACHER')">
+            <sec:authorize access="hasRole('ROLE_TEACHER')">
             <div data-id="${lesson.id}" data-type="content" class="sortable">
-        </sec:authorize>
+                </sec:authorize>
 
 
                 <c:forEach var="c" items="${lesson.content}">
@@ -43,6 +43,19 @@
                                 <%-- TODO da sollten eigene templates her --%>
                             <c:if test="${c.type eq 'Image'}">
                                 <img src="${link}" class="img-polaroid">
+                                <sec:authorize access="hasRole('ROLE_TEACHER')">
+                                <div class="row content-settings" id="update-${c.id}-section">
+                                    <div class="span6">Show in PDF</div>
+                                    <div class="span6">
+                                        <div class="slideCheck">
+                                            <input class="content-property" data-id="${c.id}" type="checkbox" <c:if test="${c.showPdf}">checked="checked"</c:if> id="show-pdf-${c.id}" data-name="showPdf"/>
+                                            <label for="show-pdf-${c.id}"></label>
+                                        </div> 
+                                    </div>
+
+                                </div>
+                                </sec:authorize>
+
                             </c:if>
                             <c:if test="${c.type eq 'Video'}">
                                 <video id="${c.id}" width="770" height="480" class="video-js vjs-default-skin" controls
@@ -69,7 +82,7 @@
                                 </a>
                             </c:if>
                             <c:if test="${c.type eq 'Quiz'}">
-                                <!-- TODO sollte in class übergehen -->
+                                <!-- TODO sollte in class übergehen - momentan nur ein quiz pro site möglich -->
                                 <div id="slick-quiz">
                                     <h3 class="quizName"></h3>
 

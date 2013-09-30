@@ -6,6 +6,32 @@ $(document).ready(function () {
         if ( e.which == 13 ) e.preventDefault();
     });
 
+    $('.update-Image').click(function(e){
+        var id = $(this).data('id');
+        $("#update-"+id+"-section").slideToggle();
+    });
+
+    $('.content-property').change(function(e){
+        var name = $(this).data('name');
+        var id = $(this).data('id');
+        var value;
+
+        if ($(this).prop('type') == 'checkbox'){
+            value = $(this).get(0).checked;
+        }
+
+        $.get("/edulu/content/property/", {
+            name: name,
+            value: value,
+            id: id
+        }, function (result) {
+
+        });
+
+
+    });
+
+
     $("#update-lesson-name").click(function(){
         var action = $(this).data('action');
         var name = $("#lesson-name-input").val();

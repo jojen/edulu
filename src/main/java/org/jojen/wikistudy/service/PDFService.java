@@ -94,13 +94,15 @@ public class PDFService {
 					if (currentSection == null) {
 						currentSection = chapter.addSection(title);
 					}
-					if (content instanceof org.jojen.wikistudy.entity.Image) {
+					if (content instanceof org.jojen.wikistudy.entity.Image && ((org.jojen.wikistudy.entity.Image)content).getShowPdf()) {
 						File file = new File(blobService.get(content.getId()));
 						BufferedImage bufferedImage = ImageIO.read(file);
 						com.lowagie.text.Image pdfimg = com.lowagie.text.Image.getInstance(bufferedImage, null);
 
 						if(pdfimg.getHeight()>300 || pdfimg.getWidth()>580){
 							pdfimg.scaleToFit(300, 580);
+						} else {
+							pdfimg.scaleToFit(pdfimg.getHeight(),pdfimg.getWidth());
 						}
 
 						Paragraph p = new Paragraph();
