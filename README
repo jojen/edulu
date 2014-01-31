@@ -13,38 +13,136 @@ $ mvn tomcat:run
 or copy webapp to servlet container
 ----------------------------------------
 
-Distribution Installation example for CentOS 6
+Distribution Installation example for Rasbian
+copy latest rasbian image to sd card
+
+sudo raspi config
+	Expand Fllesystem
+	16 MB GPU setting
+	Hostname: edulu
+
+# Fix IP Address
+sudo nano /etc/network/interfaces
+
+iface eth0 static
+address 192.168.6.10
+netmask 255.255.255.0
+network 192.168.6.0
+broadcast 192.168.6.255
+gateway 192.168.6.1
+
+sudo reboot
 
 # Install Database
-yum install postgresql-server
+sudo apt-get install postgresql
+# configuration database (probably version number will change ;) )
+sudo nano /etc/postgresql/9.1/main/postgresql.conf
 
-# Install Java
-wget http://download.oracle.com/otn/java/jdk/6u45-b06/jdk-6u45-linux-i586-rpm.bin?AuthParam=xxx
-sh ./jdk-6u45-linux-i586-rpm.bin?AuthParam=xxx
-rpm -Uvh jdk-6u45-linux-i586.rpm
-
-# Install Maven
-mkdir /opt/maven
-cd /opt/maven
-wget http://mirrors.hust.edu.cn/apache/maven/maven-3/3.1.0/binaries/apache-maven-3.1.0-bin.tar.gz
-tar xvf apache-maven-3.1.0-bin.tar.gz
+#listen_addresses = 'localhost'
+listen_addresses = '*'
 
 
 
-# Install Jenkis
-wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
-rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
-yum install jenkins
+sudo nano /etc/postgresql/9.1/main/pg_hba.conf
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
 
-# Install redmine
-wget http://bitnami.com/redirect/to/21815/bitnami-redmine-2.3.2-0-linux-installer.run?with_popup_signin=1
-./bitnami-redmine-2.3.2-0-linux-installer.run
-
-
-# Install Git
-yum install git
+# "local" is for Unix domain socket connections only
+local   all             all                                     trust
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            trust
+# Everywhere
+host    all         all         0.0.0.0/0             md5
 
 
+sudo su - postgres
+createuser -P jochen
+password: connect2DB
+superuser: y
+
+sudo /etc/init.d/postgresql restart
+# use sql or pgadmin to create database: “edulu” and grant all rights to: “jochen”
+
+
+
+
+# Install Tomcat
+cd /opt
+sudo wget http://mirror.olnevhost.net/pub/apache/tomcat/tomcat-7/v7.0.50/bin/apache-tomcat-7.0.50.tar.gz
+sudo tar xvfz apache-tomcat-7.0.50.tar.gz
+sudo ln -s apache-tomcat-7.0.50 tomcat
+
+# Tomcat in Autostart eintragen
+sudo nano /etc/init.d/tomcat
+
+
+#!/bin/bash
+# /etc/init.d/tomcat
+
+### BEGIN INIT INFO
+# Provides:          tomcat
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: initscript
+# Description:       This service is used to start the servlet container
+### END INIT INFO
+
+
+ 
+
+case "$1" in
+
+start)
+sh /opt/tomcat/bin/startup.sh
+;;
+
+stop)
+sh /opt/tomcat/bin/shutdown.sh
+;;
+
+restart)
+sh /opt/tomcat/bin/shutdown.sh
+sh /opt/tomcat/bin/startup.sh
+;;
+
+esac
+
+    
+exit 0
+
+sudo chmod 755 /etc/init.d/tomcat
+sudo update-rc.d tomcat defaults
+
+sudo nano /opt/tomcat/conf/tomcat-users.xml
+# add
+<role rolename="manager-gui"/>
+<user username="tomcat" password="s3cret" roles="manager-gui"/>
+
+
+sudo nano /opt/tomcat/conf/server.xml
+# change connector port 8080 to 80
+    <Connector port="80" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443" />
+
+sudo /etc/init.d/tomcat start
+
+# goto http://192.168.6.10/manager
+# deploy edulu.war
+
+# If you don't have any data yet use http://192.168.6.10/edulu/refresh  admin eduluadm1n
+
+# restore edulu.backup database in pgadmin
+# copy blobstore
+scp ./download.zip pi@192.168.6.10:
+# copy and unzip blobstore
+sudo mkdir /opt/edulu
+sudo mkdir /opt/edulu/store
+sudo mv download.zip /opt/edulu/store
+sudo unzip download.zip
+sudo rm download.zip
+# goto http://192.168.6.10/edulu
 
 
 

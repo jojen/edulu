@@ -20,7 +20,7 @@ import javax.inject.Inject;
 public class HomeController {
 
 	protected static final int DEFAULT_PAGE_NUM = 0;
-	protected static final int DEFAULT_PAGE_SIZE = 5;
+	protected static final int DEFAULT_PAGE_SIZE = 10;
 
 	@Inject
 	protected CourseService courseService;
