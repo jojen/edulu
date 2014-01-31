@@ -49,7 +49,7 @@
                     </c:choose>
                 </p>
                 <ul class="nav">
-                    <li><a href="<c:url value="/" />">Courses</a></li>
+                    <!--li><a href="<c:url value="/" />">Courses</a></li-->
                     <sec:authorize access="hasRole('ROLE_ADMIN')">
                         <li><i style="float: left; margin-top: 11px;" class="icon-off icon-white"></i><a href="<c:url value="/admin/shutdown" />">Shutdown</a></li>
                     </sec:authorize>

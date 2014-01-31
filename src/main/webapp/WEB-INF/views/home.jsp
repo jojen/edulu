@@ -7,10 +7,10 @@
             <c:if test="${!empty page}">
                 <div class="span3 btn-group btn-group-vertical">
 
-                    <%--c:forEach items="${page.content}" var="course">
-                        <a class="btn btn-large" href="#course-${course.id}"></i>${course.name}</a>
+                        <%--c:forEach items="${page.content}" var="course">
+                            <a class="btn btn-large" href="#course-${course.id}"></i>${course.name}</a>
 
-                    </c:forEach--%>
+                        </c:forEach--%>
 
                 </div>
                 <div class="span7">
@@ -33,14 +33,18 @@
 
                                         <ul>
                                             <li><span>${fn:length(course.lessons)}</span> Lessons</li>
-                                            <li> - </li>
-                                            <li><a href="<c:url value="/course/pdf/${course.id}/course-${course.id}.pdf"/>">Download as PDF</a></li>
+                                            <li> -</li>
+                                            <li>
+                                                <a href="<c:url value="/course/pdf/${course.id}/course-${course.id}.pdf"/>">Download
+                                                    as PDF</a></li>
 
                                         </ul>
                                         <sec:authorize access="hasRole('ROLE_TEACHER')">
                                             <div class="btn-group right">
 
-                                                    <button data-action="<c:url value="/course/delete/${course.id}"/>" data-delete="#course-${course.id}" class="btn btn-danger">Delete</button>
+                                                <button data-action="<c:url value="/course/delete/${course.id}"/>"
+                                                        data-delete="#course-${course.id}" class="btn btn-danger">Delete
+                                                </button>
 
                                                 <a data-id="${course.id}"
                                                    class="update-course btn btn-warning">Edit</a>
@@ -66,43 +70,34 @@
 
                         </div>
                     </sec:authorize>
-                 <c:if test="${page.totalPages > 1}">
-                     <div class="row">
-                     <div class="span1">
-                     <ul class="pagination">
+                    <c:if test="${page.totalPages > 1}">
+                        <div class="pagination">
+                            <ul>
+                                <c:set var="link" value="?page=${page.number-1}" />
+                                <li <c:if test="${page.firstPage}">class="disabled"<c:set var="link" value="#" /></c:if>>
 
-                         <li>
-                             <c:if test="${!page.firstPage}">
-                             <a href="?page=${page.number-1}">
-                             </c:if>
-                                 &laquo;
-                             <c:if test="${!page.firstPage}">
-                            </a>
-                             </c:if>
-                         </li>
+                                    <a href="${link}">&laquo;</a>
+
+                                </li>
 
 
-                         <c:forEach begin="1" end="${page.totalPages}" varStatus="index">
-                             <li     <c:if test="${index.count == page.number+1}">
-                                 class="active"
-                                     </c:if>
-                                     ><a href="?page=${index.count -1}">${index.count}</a></li>
+                                <c:forEach begin="1" end="${page.totalPages}" varStatus="index">
+                                    <li     <c:if test="${index.count == page.number+1}">
+                                        class="active"
+                                    </c:if>
+                                            ><a href="?page=${index.count -1}">${index.count}</a></li>
 
-                         </c:forEach>
-                         <li>
-                             <c:if test="${!page.lastPage}">
-                             <a href="?page=${page.number+1}">
-                              </c:if>
-                                 &raquo;
-                                  <c:if test="${!page.lastPage}">
-                             </a>
-                                 </c:if>
-                         </li>
+                                </c:forEach>
+                                <c:set var="link" value="?page=${page.number+1}" />
+                                <li <c:if test="${page.lastPage}">class="disabled"<c:set var="link" value="#" /></c:if>>
+                                    <a href="${link}"> &raquo </a>
 
-                     </ul>
-                         </span>
-                     </div>
-                 </c:if>
+                                </li>
+
+                            </ul>
+
+                        </div>
+                    </c:if>
                 </div>
 
             </c:if>
