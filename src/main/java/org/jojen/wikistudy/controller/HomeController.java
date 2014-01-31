@@ -34,6 +34,9 @@ public class HomeController {
 					   Model model) {
 		int pageNum = page != null ? page : DEFAULT_PAGE_NUM;
 		Page<Course> paging = courseService.findAll(pageNum, DEFAULT_PAGE_SIZE);
+		model.addAttribute("defaultPageSize",DEFAULT_PAGE_SIZE);
+
+
 		model.addAttribute("page", paging);
 		return "home";
 	}

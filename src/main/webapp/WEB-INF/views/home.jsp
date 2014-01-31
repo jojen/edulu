@@ -66,7 +66,43 @@
 
                         </div>
                     </sec:authorize>
+                 <c:if test="${page.totalPages > 1}">
+                     <div class="row">
+                     <div class="span1">
+                     <ul class="pagination">
 
+                         <li>
+                             <c:if test="${!page.firstPage}">
+                             <a href="?page=${page.number-1}">
+                             </c:if>
+                                 &laquo;
+                             <c:if test="${!page.firstPage}">
+                            </a>
+                             </c:if>
+                         </li>
+
+
+                         <c:forEach begin="1" end="${page.totalPages}" varStatus="index">
+                             <li     <c:if test="${index.count == page.number+1}">
+                                 class="active"
+                                     </c:if>
+                                     ><a href="?page=${index.count -1}">${index.count}</a></li>
+
+                         </c:forEach>
+                         <li>
+                             <c:if test="${!page.lastPage}">
+                             <a href="?page=${page.number+1}">
+                              </c:if>
+                                 &raquo;
+                                  <c:if test="${!page.lastPage}">
+                             </a>
+                                 </c:if>
+                         </li>
+
+                     </ul>
+                         </span>
+                     </div>
+                 </c:if>
                 </div>
 
             </c:if>

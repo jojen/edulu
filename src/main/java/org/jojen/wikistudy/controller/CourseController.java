@@ -69,6 +69,8 @@ public class CourseController {
 		return "/course/course";
 	}
 
+
+
 	@RequestMapping(value = "/lesson/rename/{id}")
 	public String renameLesson(@PathVariable("id") Integer id,
 							   @RequestParam(value = "name") String name,
