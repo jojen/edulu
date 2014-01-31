@@ -11,53 +11,61 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Service
 public class BlobService {
-    public static final int MAX_IMAGE_WIDTH = 770;
-    // TODO das noch aus den properties holen
-    private ServletContext context;
+	public static final int MAX_IMAGE_WIDTH = 770;
+	// TODO das noch aus den properties holen
+	private ServletContext context;
 
-    @Autowired
-    public BlobService(ServletContext context) {
-        this.context = context;
-    }
+	@Autowired
+	public BlobService(ServletContext context) {
+		this.context = context;
+	}
 
-    private String getBasePath() {
-        return context.getRealPath("../../../edulu/store");
-    }
+	private String getBasePath() {
+		return context.getRealPath("../../../edulu/store");
+	}
 
-	public void delete(Integer id){
+	public void delete(Integer id) {
 		File f = getFile(id);
 		f.delete();
 	}
 
 
-    public void save(CommonsMultipartFile file, Integer id) {
-        File path = new File(getBasePath());
-        if (!path.exists()) {
-            path.mkdirs();
-        }
-        try {
+
+	public void save(CommonsMultipartFile file, Integer id) {
+		File path = new File(getBasePath());
+		if (!path.exists()) {
+			path.mkdirs();
+		}
+		try {
 			File f = getFile(id);
-            if (file.getContentType().startsWith("image")) {
-                BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
-                if (bufferedImage.getWidth() > MAX_IMAGE_WIDTH) {
-                    ImageIO.write(Scalr.resize(bufferedImage, MAX_IMAGE_WIDTH), FilenameUtils.getExtension(file.getFileItem().getName()), f);
-                } else {
-                    file.transferTo(f);
-                }
+			if (file.getContentType().startsWith("image")) {
+				BufferedImage bufferedImage = ImageIO.read(file.getInputStream());
+				if (bufferedImage.getWidth() > MAX_IMAGE_WIDTH) {
+					ImageIO.write(Scalr.resize(bufferedImage, MAX_IMAGE_WIDTH), FilenameUtils.getExtension(file.getFileItem().getName()), f);
+				} else {
+					file.transferTo(f);
+				}
 
-            } else {
-                file.transferTo(f);
-            }
+			} else {
+				file.transferTo(f);
+			}
 
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private File getFile(Integer id) {
 		String contentPath = getFilePath(id);
@@ -74,21 +82,90 @@ public class BlobService {
 	}
 
 	public String get(Integer id) {
-        return getBasePath() + File.separatorChar + getFilePath(id);
-    }
+		return getBasePath() + File.separatorChar + getFilePath(id);
+	}
 
-    private String getFilePath(Integer id) {
-        int bits = 10;
-        int mask = (1 << bits) - 1;
-        int padLen = (bits + 4) / 5;
-        String pathInDir;
-        for (pathInDir = (new StringBuilder()).append("Z").append(File.separatorChar).append(zeroPaddedBase32((int) (id & (long) mask), padLen)).toString(); (id >>>= bits) != 0L; pathInDir = (new StringBuilder()).append(zeroPaddedBase32((int) (id & (long) mask), padLen)).append(File.separatorChar).append(pathInDir).toString())
-            ;
-        return pathInDir;
-    }
+	private String getFilePath(Integer id) {
+		int bits = 10;
+		int mask = (1 << bits) - 1;
+		int padLen = (bits + 4) / 5;
+		String pathInDir;
+		for (pathInDir = (new StringBuilder()).append("Z").append(File.separatorChar).append(zeroPaddedBase32((int) (id & (long) mask), padLen)).toString(); (id >>>= bits) != 0L; pathInDir = (new StringBuilder()).append(zeroPaddedBase32((int) (id & (long) mask), padLen)).append(File.separatorChar).append(pathInDir).toString())
+			;
+		return pathInDir;
+	}
 
-    private String zeroPaddedBase32(int i, int padLen) {
-        String nString = Integer.toString(i, 32);
-        return (new StringBuilder()).append("0000000".substring(0, padLen - nString.length())).append(nString).toString();
-    }
+	private String zeroPaddedBase32(int i, int padLen) {
+		String nString = Integer.toString(i, 32);
+		return (new StringBuilder()).append("0000000".substring(0, padLen - nString.length())).append(nString).toString();
+	}
+
+	public String readableFileSize(long size) {
+		if(size <= 0) return "0";
+		final String[] units = new String[] { "B", "KB", "MB", "GB", "TB" };
+		int digitGroups = (int) (Math.log10(size)/Math.log10(1024));
+		return new DecimalFormat("#,##0.#").format(size/Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+	}
+
+
+	public File getAllBlobsZip() {
+		File tempfile = null;
+		try {
+			byte[] buffer = new byte[1024];
+			tempfile = File.createTempFile("backup.zip", null);
+
+
+			String zipFile = tempfile.getAbsolutePath();
+			FileOutputStream fos = new FileOutputStream(zipFile);
+			ZipOutputStream zos = new ZipOutputStream(fos);
+
+			List<String> fileList = generateFileList(new File(getBasePath()), new ArrayList<String>());
+
+			for (String file : fileList) {
+				ZipEntry ze = new ZipEntry(file);
+				zos.putNextEntry(ze);
+
+				FileInputStream in = new FileInputStream(getBasePath() + File.separator + file);
+
+				int len;
+				while ((len = in.read(buffer)) > 0) {
+					zos.write(buffer, 0, len);
+				}
+
+				in.close();
+			}
+
+			zos.closeEntry();
+			//remember close it
+			zos.close();
+		} catch (Exception e) {
+			// bissle aufräumen wenns geht
+			if (tempfile != null) {
+				tempfile.delete();
+			}
+		}
+		return tempfile;
+	}
+
+	private List<String> generateFileList(File node, List<String> fileList) {
+
+		//add file only
+		if (node.isFile()) {
+			fileList.add(generateZipEntry(node.getAbsoluteFile().toString()));
+		}
+
+		if (node.isDirectory()) {
+			String[] subNote = node.list();
+			for (String filename : subNote) {
+				generateFileList(new File(node, filename), fileList);
+			}
+		}
+		return fileList;
+
+	}
+
+	private String generateZipEntry(String file) {
+		return file.substring(getBasePath().length() + 1, file.length());
+	}
+
 }

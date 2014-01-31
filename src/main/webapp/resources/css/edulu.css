@@ -75,11 +75,13 @@ body {
     text-align: center;
     color:#a5a5a5;
 }
-
-#lesson-content {
+.main-content{
     border: 1px solid #a5a5a5;
     background-color: rgba(248, 248, 248, 0.75);
     padding: 20px;
+}
+#lesson-content {
+
     list-style: none;
 }
 #lessons-menu h3 {

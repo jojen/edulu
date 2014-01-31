@@ -3,7 +3,7 @@
 <c:if test="${!empty lesson}">
 
 
-    <ul id="lesson-content">
+    <ul class="main-content" id="lesson-content">
 
         <!-- Headline -->
         <sec:authorize access="!hasRole('ROLE_TEACHER')">

@@ -1,17 +1,22 @@
 package org.jojen.wikistudy.controller;
 
-import org.jojen.wikistudy.repository.ContentRepository;
-import org.jojen.wikistudy.repository.CourseRepository;
-import org.jojen.wikistudy.repository.LessonRepository;
+
+import org.jojen.wikistudy.service.BlobService;
 import org.jojen.wikistudy.service.ContentService;
 import org.jojen.wikistudy.service.CourseService;
 import org.jojen.wikistudy.service.LessonService;
 import org.jojen.wikistudy.util.RepositoryRefresher;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
@@ -28,16 +33,20 @@ public class AdminController {
 	@Inject
 	protected ContentService contentService;
 
+	@Inject
+	protected BlobService blobService;
+
 	@RequestMapping(value = "/refresh", method = RequestMethod.GET)
-	public String refresh(){
-		RepositoryRefresher.refresh(courseService,lessonService,contentService);
+	public String refresh() {
+		RepositoryRefresher.refresh(courseService, lessonService, contentService);
 		return "redirect:/";
 	}
 
 	@RequestMapping(value = "/shutdown", method = RequestMethod.GET)
-	public String shutdown(){
+	public String shutdown() {
 		Runtime runtime = Runtime.getRuntime();
 		try {
+			// OS abhängig
 			// Works only on Raspian (Alias)
 			Process proc = runtime.exec("halt");
 		} catch (IOException e) {
@@ -46,6 +55,31 @@ public class AdminController {
 
 		return "redirect:/";
 	}
+	@RequestMapping(value = "/settings", method = RequestMethod.GET)
+	public String getSettings(Model model) {
+		// OS abhängig
+		File rootfile = new File("/");
+		model.addAttribute("rootfile",rootfile);
+		model.addAttribute("usablespace",blobService.readableFileSize(rootfile.getUsableSpace()));
+		return "static/settings";
+	}
+	@RequestMapping(value = "/blobs.zip", method = RequestMethod.GET)
+	public void getAllBlobsZip(HttpServletResponse response) {
+		File f = null;
+		try {
+			f = blobService.getAllBlobsZip();
+			response.setContentType("application/zip");
+			response.setContentLength((int) (f.length() + 0));
 
+			FileCopyUtils.copy(new FileInputStream(f), response.getOutputStream());
+		} catch (Exception e) {
+		   // dann gehts nicht
+		} finally {
+			if (f != null) {
+				f.delete();
+			}
+		}
+
+	}
 
 }

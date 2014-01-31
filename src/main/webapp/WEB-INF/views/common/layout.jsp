@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Edulu <c:if test="${!empty param.title}">- ${param.title}</c:if></title>
+    <title>edulu <c:if test="${!empty param.title}">- ${param.title}</c:if></title>
 
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/bootstrap.min.css'/>">
     <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/bootstrap-responsive.min.css'/>">
@@ -20,7 +20,7 @@
 
 </head>
 <body>
-<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-inverse">
     <div class="navbar-inner">
         <div class="container-fluid">
             <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -28,7 +28,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <span class="brand"><a href="<c:url value="/" />">Edulu</a></span>
+            <span class="brand"><a href="<c:url value="/" />">edulu</a></span>
 
             <div class="nav-collapse collapse">
                 <p class="navbar-text pull-right">
@@ -47,12 +47,16 @@
                         </c:when>
 
                     </c:choose>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+
+                        <a style="margin-left: 10px;" href="<c:url value="/admin/settings" />" title="Settings" >
+                            <i class="icon-cog icon-white"></i>
+                        </a>
+                    </sec:authorize>
                 </p>
                 <ul class="nav">
                     <!--li><a href="<c:url value="/" />">Courses</a></li-->
-                    <sec:authorize access="hasRole('ROLE_ADMIN')">
-                        <li><i style="float: left; margin-top: 11px;" class="icon-off icon-white"></i><a href="<c:url value="/admin/shutdown" />">Shutdown</a></li>
-                    </sec:authorize>
+
                     <!--li><a href="<c:url  value="/static/about"/>">About</a></li-->
                 </ul>
             </div>
