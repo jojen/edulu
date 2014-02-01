@@ -23,7 +23,7 @@
 
             <div class="row-fluid">
                 Download Blobstore:
-                <a href="<c:url var="link" value="/admin/blobs.zip"/>">
+                <a href="<c:url value="/admin/blobs.zip"/>">
                     <button class="btn"><i class="icon-download"></i>Download</button>
                 </a>
             </div>
