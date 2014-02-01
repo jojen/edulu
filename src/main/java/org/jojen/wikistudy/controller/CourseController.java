@@ -1,30 +1,23 @@
 package org.jojen.wikistudy.controller;
 
 
-import com.lowagie.text.*;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Font;
 
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.html.simpleparser.HTMLWorker;
-import com.lowagie.text.pdf.PdfWriter;
 import org.jojen.wikistudy.entity.*;
-import org.jojen.wikistudy.entity.Image;
 import org.jojen.wikistudy.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.imageio.ImageIO;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.awt.image.BufferedImage;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,9 +53,12 @@ public class CourseController {
 									 Model model) {
 		Course c = courseService.findById(cid);
 		Lesson l = lessonService.findById(id);
+		// TODO hier werden nur die erste 50 angezeigt bei vielen kursen mit ajax dann
+		Page<Course> courses = courseService.findAll(0,50);
 
 		model.addAttribute("course", c);
 		model.addAttribute("lesson", l);
+		model.addAttribute("courses", courses);
 
 		return "/course/course";
 	}
@@ -83,8 +79,30 @@ public class CourseController {
 
 		return "redirect:/course/" + cid + "/lesson/" + idCopy;
 	}
-	@RequestMapping(value = "/move/lesson/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/move/lesson/{c1id}/{c2id}/{id}", method = RequestMethod.GET)
 	public String moveLesson(@PathVariable("id") Integer id,
+							@PathVariable("c1id") Integer c1id,
+							@PathVariable("c2id") Integer c2id){
+		Course c1 = courseService.findById(c1id);
+		Course c2 = courseService.findById(c2id);
+		Lesson l = lessonService.findById(id);
+		c1.getLessons().remove(l.getPosition() - 1);
+		courseService.update(c1);
+		int i = 1;
+		for (Lesson lesson : c1.getLessons()) {
+			lesson.setPosition(i);
+			lessonService.update(lesson);
+			i++;
+		}
+		c2.addLessons(l);
+		courseService.update(c2);
+
+
+		return "redirect:/course/" + c2id + "/lesson/" + id;
+	}
+
+	@RequestMapping(value = "/move/lesson/{id}", method = RequestMethod.GET)
+	public String moveLessonPosition(@PathVariable("id") Integer id,
 							 @RequestParam(value = "from", required = true) Integer from,
 							 @RequestParam(value = "to", required = true) Integer to,
 							 Model model) {
@@ -120,21 +138,10 @@ public class CourseController {
 		Lesson l = lessonService.findById(id);
 
 		Course c = courseService.findById(cid);
-		if (!c.getLessons().isEmpty() && c.getLessons().size() > 1) {
 
-			c.getLessons().remove(l.getPosition() - 1);
+		lessonService.delete(l,c);
 
-			lessonService.deleteById(id);
-			courseService.update(c);
 
-			int i = 1;
-			for (Lesson lesson : c.getLessons()) {
-				lesson.setPosition(i);
-				lessonService.update(lesson);
-				i++;
-			}
-		}
-		lessonService.deleteById(id);
 
 
 		return "/json/boolean";

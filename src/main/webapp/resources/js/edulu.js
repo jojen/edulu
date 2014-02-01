@@ -10,6 +10,9 @@ $(document).ready(function () {
         var id = $(this).data('id');
         $("#update-"+id+"-section").slideToggle();
     });
+    $('#move-lesson').click(function(){
+        $('#lesson-settings').slideToggle();
+    });
 
     $('.content-property').change(function(e){
         var name = $(this).data('name');

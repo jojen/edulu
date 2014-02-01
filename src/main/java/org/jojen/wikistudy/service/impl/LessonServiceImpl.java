@@ -61,24 +61,34 @@ public class LessonServiceImpl implements LessonService {
 
 	@Override
 	@Transactional
-	public void deleteById(Integer id) {
-		Lesson l = lessonRepository.findOne(id);
-		if(l!= null){
+	public void delete(Lesson l, Course c) {
+		if (l != null) {
+			// wir nehmen uns mal aus dem kurs raus
+			c.getLessons().remove(l.getPosition() - 1);
+			courseService.update(c);
+
 			ArrayList<Content> list = new ArrayList<Content>(l.getContent());
 			l.getContent().clear();
-			for(Content c:list){
-				contentService.deleteById(c.getId());
+			for (Content content : list) {
+				contentService.deleteById(content.getId());
 			}
-			lessonRepository.delete(id);
+			lessonRepository.delete(l.getId());
+			// dann sortieren wir alles neu
+			int i = 1;
+			for (Lesson lesson : c.getLessons()) {
+				lesson.setPosition(i);
+				update(lesson);
+				i++;
+			}
 		}
+
 	}
 
 	@Override
 	public Integer copy(Lesson l, Course c) {
 
 
-
-		Lesson clonel = JpaCloner.clone(l,new PropertyFilter() {
+		Lesson clonel = JpaCloner.clone(l, new PropertyFilter() {
 			@Override
 			public boolean test(Object entity, String property) {
 				// do not clone primary keys for the whole entity subgraph
@@ -87,20 +97,20 @@ public class LessonServiceImpl implements LessonService {
 		});
 
 		int i = 0;
-		for(Content content:clonel.getContent()){
+		for (Content content : clonel.getContent()) {
 			String blobPath = null;
 			Integer originalId = -1;
-			if(content instanceof Blobbased){
+			if (content instanceof Blobbased) {
 				originalId = l.getContent().get(i).getId();
 				blobPath = blobService.get(originalId);
 			}
 			contentService.add(content, clonel);
-			if(blobPath!= null){
-				blobService.copy(originalId,content.getId());
+			if (blobPath != null) {
+				blobService.copy(originalId, content.getId());
 			}
 			i++;
 		}
-		add(clonel,c);
+		add(clonel, c);
 
 		return clonel.getId();
 	}

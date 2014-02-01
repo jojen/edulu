@@ -14,7 +14,7 @@ public interface LessonService {
 
 	Lesson update(Lesson lesson);
 
-	void deleteById(Integer id);
+	void delete(Lesson l, Course c);
 
 	public Integer copy(Lesson l, Course c);
 
