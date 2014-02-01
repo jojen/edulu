@@ -16,7 +16,15 @@ public class Embedded extends Blobbased {
     private String width;
     private String height;
 
-    public String getWidth() {
+	public String getHeight() {
+		return height;
+	}
+
+	public void setHeight(String height) {
+		this.height = height;
+	}
+
+	public String getWidth() {
         return width;
     }
 

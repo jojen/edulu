@@ -49,6 +49,5 @@ public class RepositoryRefresher {
 
 		lessonService.add(l, course);
 
-		courseService.update(course);
 	}
 }

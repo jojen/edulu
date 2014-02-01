@@ -34,8 +34,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/course")
 public class CourseController {
-	protected static final int DEFAULT_PAGE_NUM = 0;
-	protected static final int DEFAULT_PAGE_SIZE = 5;
 
 	@Inject
 	protected CourseService courseService;
@@ -55,11 +53,11 @@ public class CourseController {
 
 
 	@RequestMapping(value = "/{courseId}/lesson/{id}", method = RequestMethod.GET)
-	public String listLesson(
-									@PathVariable("courseId") Integer cid,
-									@PathVariable("id") Integer id,
-									@RequestParam(value = "page", required = false) Integer page,
-									Model model) {
+	 public String listLesson(
+									 @PathVariable("courseId") Integer cid,
+									 @PathVariable("id") Integer id,
+									 @RequestParam(value = "page", required = false) Integer page,
+									 Model model) {
 		Course c = courseService.findById(cid);
 		Lesson l = lessonService.findById(id);
 
@@ -67,6 +65,23 @@ public class CourseController {
 		model.addAttribute("lesson", l);
 
 		return "/course/course";
+	}
+
+	@RequestMapping(value = "/{courseId}/lesson/{id}/copy", method = RequestMethod.GET)
+	public String copyLesson(
+									@PathVariable("courseId") Integer cid,
+									@PathVariable("id") Integer id,
+									Model model) {
+		Course c = courseService.findById(cid);
+		Lesson l = lessonService.findById(id);
+		Integer idCopy = lessonService.copy(l,c);
+		// TODO rechteschutz kann umgangen werden
+
+
+		model.addAttribute("course", c);
+		model.addAttribute("lesson", lessonService.findById(idCopy));
+
+		return "redirect:/course/" + cid + "/lesson/" + idCopy;
 	}
 
 
@@ -125,8 +140,6 @@ public class CourseController {
 		if (c.getLessons().isEmpty()) {
 			Lesson l = new Lesson();
 			lessonService.add(l, c);
-			c.addLessons(l);
-			courseService.update(c);
 			lesson = l.getId();
 
 		} else {
@@ -144,8 +157,7 @@ public class CourseController {
 		Course c = courseService.findById(id);
 		Lesson l = new Lesson();
 		lessonService.add(l, c);
-		c.addLessons(l);
-		courseService.update(c);
+
 
 		return "redirect:/course/" + id + "/lesson/" + l.getId();
 	}

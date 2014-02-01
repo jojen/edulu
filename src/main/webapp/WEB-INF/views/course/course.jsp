@@ -33,13 +33,7 @@
                         </div>
 
 
-                    <div style="margin-top: 10px">
-                        <sec:authorize access="hasRole('ROLE_TEACHER')">
-                            <button data-action="<c:url value="/course/${course.id}/lesson/delete/${lesson.id}" />"
-                                    data-delete="#lesson-content" class="btn btn-danger">delete lesson
-                            </button>
-                        </sec:authorize>
-                    </div>
+
 
 
                 </div>

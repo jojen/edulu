@@ -11,7 +11,8 @@ $ mvn clean install -P prod
 
 $ mvn tomcat:run
 or copy webapp to servlet container
-----------------------------------------
+
++++++++++++++++++++++++++++++++++++++++++
 
 Distribution Installation example for Rasbian
 copy latest rasbian image to sd card
@@ -22,6 +23,7 @@ sudo raspi config
 	Hostname: edulu
 
 # Fix IP Address
+-----------------------------------------
 sudo nano /etc/network/interfaces
 
 iface eth0 static
@@ -30,20 +32,24 @@ netmask 255.255.255.0
 network 192.168.6.0
 broadcast 192.168.6.255
 gateway 192.168.6.1
-
+-----------------------------------------
 sudo reboot
 
 # Install Database
 sudo apt-get install postgresql
 # configuration database (probably version number will change ;) )
+
 sudo nano /etc/postgresql/9.1/main/postgresql.conf
 
+-----------------------------------------
 #listen_addresses = 'localhost'
 listen_addresses = '*'
-
+-----------------------------------------
 
 
 sudo nano /etc/postgresql/9.1/main/pg_hba.conf
+
+-----------------------------------------
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
 
 # "local" is for Unix domain socket connections only
@@ -52,7 +58,7 @@ local   all             all                                     trust
 host    all             all             127.0.0.1/32            trust
 # Everywhere
 host    all         all         0.0.0.0/0             md5
-
+-----------------------------------------
 
 sudo su - postgres
 createuser -P jochen
@@ -61,7 +67,6 @@ superuser: y
 
 sudo /etc/init.d/postgresql restart
 # use sql or pgadmin to create database: “edulu” and grant all rights to: “jochen”
-
 
 
 
@@ -74,7 +79,7 @@ sudo ln -s apache-tomcat-7.0.50 tomcat
 # Tomcat in Autostart eintragen
 sudo nano /etc/init.d/tomcat
 
-
+-----------------------------------------
 #!/bin/bash
 # /etc/init.d/tomcat
 
@@ -87,8 +92,6 @@ sudo nano /etc/init.d/tomcat
 # Short-Description: initscript
 # Description:       This service is used to start the servlet container
 ### END INIT INFO
-
-
  
 
 case "$1" in
@@ -110,6 +113,7 @@ esac
 
     
 exit 0
+-----------------------------------------
 
 sudo chmod 755 /etc/init.d/tomcat
 sudo update-rc.d tomcat defaults
@@ -122,9 +126,11 @@ sudo nano /opt/tomcat/conf/tomcat-users.xml
 
 sudo nano /opt/tomcat/conf/server.xml
 # change connector port 8080 to 80
+-----------------------------------------
     <Connector port="80" protocol="HTTP/1.1"
                connectionTimeout="20000"
                redirectPort="8443" />
+-----------------------------------------
 
 sudo /etc/init.d/tomcat start
 

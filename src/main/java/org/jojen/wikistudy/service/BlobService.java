@@ -1,6 +1,7 @@
 package org.jojen.wikistudy.service;
 
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,15 @@ public class BlobService {
 
 	public String get(Integer id) {
 		return getBasePath() + File.separatorChar + getFilePath(id);
+	}
+
+	public void copy(Integer originalId,Integer id){
+		try {
+			FileUtils.copyFile(new File(get(originalId)),new File(get(id)));
+		} catch (IOException e) {
+			// TODO logging
+			e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+		}
 	}
 
 	private String getFilePath(Integer id) {

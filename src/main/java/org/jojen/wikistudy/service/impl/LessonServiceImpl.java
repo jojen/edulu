@@ -1,11 +1,16 @@
 package org.jojen.wikistudy.service.impl;
 
+import org.jojen.wikistudy.entity.Blobbased;
 import org.jojen.wikistudy.entity.Content;
 import org.jojen.wikistudy.entity.Course;
 import org.jojen.wikistudy.entity.Lesson;
 import org.jojen.wikistudy.repository.LessonRepository;
+import org.jojen.wikistudy.service.BlobService;
 import org.jojen.wikistudy.service.ContentService;
+import org.jojen.wikistudy.service.CourseService;
 import org.jojen.wikistudy.service.LessonService;
+import org.jojen.wikistudy.util.jpacloner.JpaCloner;
+import org.jojen.wikistudy.util.jpacloner.graphs.PropertyFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +28,10 @@ public class LessonServiceImpl implements LessonService {
 	protected LessonRepository lessonRepository;
 	@Inject
 	protected ContentService contentService;
+	@Inject
+	protected CourseService courseService;
+	@Inject
+	protected BlobService blobService;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -63,6 +72,40 @@ public class LessonServiceImpl implements LessonService {
 	}
 
 	@Override
+	public Integer copy(Lesson l, Course c) {
+
+
+
+		Lesson clonel = JpaCloner.clone(l,new PropertyFilter() {
+			@Override
+			public boolean test(Object entity, String property) {
+				// do not clone primary keys for the whole entity subgraph
+				return !"id".equals(property);
+			}
+		});
+
+		int i = 0;
+		for(Content content:clonel.getContent()){
+			String blobPath = null;
+			Integer originalId = -1;
+			if(content instanceof Blobbased){
+				originalId = l.getContent().get(i).getId();
+				blobPath = blobService.get(originalId);
+			}
+			contentService.add(content, clonel);
+			if(blobPath!= null){
+				blobService.copy(originalId,content.getId());
+			}
+			i++;
+		}
+		add(clonel,c);
+		c.addLessons(clonel);
+
+
+		return clonel.getId();
+	}
+
+	@Override
 	@Transactional
 	public void deleteAll() {
 		lessonRepository.deleteAll();
@@ -73,6 +116,8 @@ public class LessonServiceImpl implements LessonService {
 	public void add(Lesson l, Course c) {
 		l.setPosition(c.getLessons().size());
 		lessonRepository.save(l);
+		c.addLessons(l);
+		courseService.update(c);
 	}
 
 }

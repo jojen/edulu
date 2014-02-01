@@ -72,4 +72,21 @@ public class Lesson implements Serializable {
 	public void setPosition(int position) {
 		this.position = position;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Lesson lesson = (Lesson) o;
+
+		if (!id.equals(lesson.id)) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}
 }

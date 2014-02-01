@@ -20,9 +20,41 @@
                                 cssErrorClass="error"/>
                 </form:form>
                 <button data-action="${action}" data-id="${lesson.id}" id="update-lesson-name" class="btn btn-large"
-                        style="margin-left: 10px;">Update
+                        >Update
                 </button>
             </div>
+            <div class="span12 edit-box btn-group">
+                    <div class="pull-right">
+
+                    <sec:authorize access="hasRole('ROLE_TEACHER')">
+                        <button data-action="<c:url value="/course/${course.id}/lesson/delete/${lesson.id}" />"
+                                data-delete="#lesson-content" class="btn btn-danger">Delete Lesson
+                        </button>
+                    </sec:authorize>
+
+
+
+                    <a href="<c:url value="/course/${course.id}/lesson/${lesson.id}/copy" />"
+                       class="btn btn-info">Copy</a>
+
+                <a data-id="${lesson.id}" data-courseid="${course.id}"
+                   data-lessonid="${lesson.id}"
+                   class="btn">Move to</a>
+                    </div>
+
+            </div>
+            <div class="row content-settings" id="update-${lesson.id}-section">
+
+                <div class="span8">Course 1</div>
+                <div class="span4"><button class="btn btn-warning">Move</button></div>
+
+                <div class="span8">Course 2</div>
+                <div class="span4"><button class="btn btn-warning">Move</button></div>
+
+                <div class="span8">Course 3</div>
+                <div class="span4"><button class="btn btn-warning">Move</button></div>
+            </div>
+
         </sec:authorize>
 
         <!-- Content -->
