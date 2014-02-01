@@ -21,4 +21,5 @@ public interface LessonService {
 	void deleteAll();
 
 
+	void move(Course c, Integer from, Integer to);
 }

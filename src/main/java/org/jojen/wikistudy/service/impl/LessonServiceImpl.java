@@ -21,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class LessonServiceImpl implements LessonService {
@@ -99,8 +101,6 @@ public class LessonServiceImpl implements LessonService {
 			i++;
 		}
 		add(clonel,c);
-		c.addLessons(clonel);
-
 
 		return clonel.getId();
 	}
@@ -109,6 +109,32 @@ public class LessonServiceImpl implements LessonService {
 	@Transactional
 	public void deleteAll() {
 		lessonRepository.deleteAll();
+	}
+
+	@Override
+	public void move(Course c, Integer from, Integer to) {
+		List<Lesson> list = c.getLessons();
+
+		// Warum auch immer klappt das verschieben nur in eine Richtung
+		if (from > to) {
+			Collections.reverse(list);
+			Collections.rotate(list.subList(list.size() - 1 - from, list.size() - to), -1);
+			Collections.reverse(list);
+		} else {
+			Collections.rotate(list.subList(from, to + 1), -1);
+		}
+
+
+		// Wir updaten noch alle positionen
+
+		int i = 1;
+		for (Lesson l : list) {
+			l.setPosition(i);
+			update(l);
+			i++;
+		}
+
+		courseService.update(c);
 	}
 
 	@Override

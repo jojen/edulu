@@ -75,13 +75,26 @@ public class CourseController {
 		Course c = courseService.findById(cid);
 		Lesson l = lessonService.findById(id);
 		Integer idCopy = lessonService.copy(l,c);
-		// TODO rechteschutz kann umgangen werden
+		lessonService.move(c,c.getLessons().size()-1,l.getPosition());
 
 
 		model.addAttribute("course", c);
 		model.addAttribute("lesson", lessonService.findById(idCopy));
 
 		return "redirect:/course/" + cid + "/lesson/" + idCopy;
+	}
+	@RequestMapping(value = "/move/lesson/{id}", method = RequestMethod.GET)
+	public String moveLesson(@PathVariable("id") Integer id,
+							 @RequestParam(value = "from", required = true) Integer from,
+							 @RequestParam(value = "to", required = true) Integer to,
+							 Model model) {
+		if (id != null && from != null && to != null) {
+			Course c = courseService.findById(id);
+			lessonService.move(c,from,to);
+
+		}
+		model.addAttribute("self", true);
+		return "/json/boolean";
 	}
 
 
@@ -207,40 +220,7 @@ public class CourseController {
 		return "/json/boolean";
 	}
 
-	@RequestMapping(value = "/move/lesson/{id}", method = RequestMethod.GET)
-	public String moveLesson(@PathVariable("id") Integer id,
-							 @RequestParam(value = "from", required = true) Integer from,
-							 @RequestParam(value = "to", required = true) Integer to,
-							 Model model) {
-		if (id != null && from != null && to != null) {
-			Course c = courseService.findById(id);
-			List<Lesson> list = c.getLessons();
 
-			// Warum auch immer klappt das verschieben nur in eine Richtung
-			if (from > to) {
-				Collections.reverse(list);
-				Collections.rotate(list.subList(list.size() - 1 - from, list.size() - to), -1);
-				Collections.reverse(list);
-			} else {
-				Collections.rotate(list.subList(from, to + 1), -1);
-			}
-
-
-			// Wir updaten noch alle positionen
-
-			int i = 1;
-			for (Lesson l : list) {
-				l.setPosition(i);
-				lessonService.update(l);
-				i++;
-			}
-
-			courseService.update(c);
-
-		}
-		model.addAttribute("self", true);
-		return "/json/boolean";
-	}
 
 	@RequestMapping(value = "/form", method = RequestMethod.GET)
 	public
