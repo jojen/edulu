@@ -18,9 +18,10 @@
 
                                 <a href="<c:url value="/course/${course.id}/lesson/${l.id}"/>"
                                    style="text-align: left;"
-                                   class="btn <c:if test="${l.id eq lesson.id}">active</c:if>"><c:out
-                                        value="${status.count}"/><c:if test="${!empty l.name}"> -</c:if>&nbsp;<span
-                                        id="lesson-name-${l.id}">${l.name}</span></a>
+                                   class="btn <c:if test="${l.id eq lesson.id}">active</c:if>">
+                                    <c:out value="${status.count}"/><c:if test="${!empty l.name}"> -</c:if>&nbsp;<span
+                                        id="lesson-name-${l.id}">${l.name}</span>
+                        </span></a>
 
                             </c:forEach>
                         </div>

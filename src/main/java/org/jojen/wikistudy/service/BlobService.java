@@ -38,9 +38,10 @@ public class BlobService {
 
 	public void delete(Integer id) {
 		File f = getFile(id);
-		f.delete();
+		if (f.exists()) {
+			f.delete();
+		}
 	}
-
 
 
 	public void save(CommonsMultipartFile file, Integer id) {
@@ -86,9 +87,9 @@ public class BlobService {
 		return getBasePath() + File.separatorChar + getFilePath(id);
 	}
 
-	public void copy(Integer originalId,Integer id){
+	public void copy(Integer originalId, Integer id) {
 		try {
-			FileUtils.copyFile(new File(get(originalId)),new File(get(id)));
+			FileUtils.copyFile(new File(get(originalId)), new File(get(id)));
 		} catch (IOException e) {
 			// TODO logging
 			e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -111,10 +112,10 @@ public class BlobService {
 	}
 
 	public String readableFileSize(long size) {
-		if(size <= 0) return "0";
-		final String[] units = new String[] { "B", "KB", "MB", "GB", "TB" };
-		int digitGroups = (int) (Math.log10(size)/Math.log10(1024));
-		return new DecimalFormat("#,##0.#").format(size/Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+		if (size <= 0) return "0";
+		final String[] units = new String[]{"B", "KB", "MB", "GB", "TB"};
+		int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
+		return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " " + units[digitGroups];
 	}
 
 

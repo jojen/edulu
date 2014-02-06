@@ -41,6 +41,7 @@ body {
 .brand a:hover {
     text-decoration: none;
     color: #0088CC;
+    text-shadow: 0px 0px 4px #006091;
 }
 
 .bs-docs-sidenav.affix {
@@ -100,18 +101,35 @@ body {
 }
 
 .row div h2, .row div h3 {
-    margin-top: 25px !important;
+    margin-top: 25px;
 }
 
 #lesson-content .row div h2, #lesson-content .row div h3 {
-    margin-top: 40px !important;
+    margin-top: 40px;
 }
-.course div h3 {
-    margin-top: 10px !important;
+
+.course div h2 {
+    margin-top: 10px;
+}
+
+#lesson-content .row div.content-container h2 {
+    margin-top: 0;
 }
 
 #lesson-content .edit-box {
     margin-bottom: 5px;
+}
+
+
+.container-edit {
+    min-height: 120px !important;
+    margin-bottom: 10px;
+    border: 3px dotted #999792;
+    width: 48% !important;
+    padding-right: 12px;
+    padding-left: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 
 #progress {
@@ -139,6 +157,11 @@ body {
     opacity: 1;
 }
 
+.hovered {
+    background: #ffffff;
+
+}
+
 input.edit-btn-large {
     padding: 11px 19px;
     font-size: 30px;
@@ -146,9 +169,6 @@ input.edit-btn-large {
 
 }
 
-.sortable li:hover, .sortable a:hover {
-    cursor: move;
-}
 
 .btn-warning {
     cursor: pointer !important;

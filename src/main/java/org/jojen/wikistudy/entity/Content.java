@@ -9,6 +9,8 @@ import java.io.Serializable;
  * Date: 6/4/13
  * Time: 3:45 PM
  */
+
+// TODO Eigentlich uncool alles in einer tabelle zu haben, aber Vererbung hilft enorm. vielleicht würde es auch JOINED tun
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Content implements Serializable {
@@ -19,6 +21,10 @@ public class Content implements Serializable {
     private Integer id;
 
 	private Integer position;
+
+	public String getName() {
+		return "";
+	}
 
 
     public String getType() {

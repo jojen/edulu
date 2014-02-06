@@ -47,13 +47,14 @@ public class ContentController {
 												.getLogger(ContentController.class);
 
 	@RequestMapping(value = "/delete/{lesson}/{content}", method = RequestMethod.GET)
-	public String edit(           @PathVariable(value = "lesson") Integer lid ,
+	public String delete(           @PathVariable(value = "lesson") Integer lid ,
 								  @PathVariable(value = "content") Integer id,Model model){
 
 
-		// TODO das bekommt man bestimmt auch ohne das hier hin (Referenzelle Integrität)
 		Lesson lesson = lessonService.findById(lid);
 		Content content = contentService.findById(id);
+
+		contentService.move(lesson,content.getPosition()-1,lesson.getContent().size()-1);
 		lesson.getContent().remove(content);
 		lessonService.update(lesson);
 
@@ -179,14 +180,14 @@ public class ContentController {
 				} else {
 					b = new Download();
 				}
-
+				l.addContent(b);
 				contentService.add(b,l);
 				blobService.save(fileUpload.getFileData(), b.getId());
 				b.setContentType(fileUpload.getFileData().getContentType());
 				b.setName(UriUtils.encodeQuery(fileUpload.getFileData().getFileItem().getName(), "UTF8"));
 
 				contentService.update(b);
-				l.addContent(b);
+
 				lessonService.update(l);
 
 			}

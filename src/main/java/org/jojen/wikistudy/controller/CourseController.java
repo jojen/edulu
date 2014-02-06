@@ -1,7 +1,6 @@
 package org.jojen.wikistudy.controller;
 
 
-
 import org.jojen.wikistudy.entity.*;
 import org.jojen.wikistudy.service.*;
 import org.slf4j.Logger;
@@ -13,16 +12,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 @Controller
 @RequestMapping("/course")
@@ -46,19 +40,20 @@ public class CourseController {
 
 
 	@RequestMapping(value = "/{courseId}/lesson/{id}", method = RequestMethod.GET)
-	 public String listLesson(
-									 @PathVariable("courseId") Integer cid,
-									 @PathVariable("id") Integer id,
-									 @RequestParam(value = "page", required = false) Integer page,
-									 Model model) {
+	public String listLesson(
+									@PathVariable("courseId") Integer cid,
+									@PathVariable("id") Integer id,
+									@RequestParam(value = "page", required = false) Integer page,
+									Model model) {
 		Course c = courseService.findById(cid);
 		Lesson l = lessonService.findById(id);
 		// TODO hier werden nur die erste 50 angezeigt bei vielen kursen mit ajax dann
-		Page<Course> courses = courseService.findAll(0,50);
+		Page<Course> courses = courseService.findAll(0, 50);
 
 		model.addAttribute("course", c);
 		model.addAttribute("lesson", l);
 		model.addAttribute("courses", courses);
+
 
 		return "/course/course";
 	}
@@ -70,8 +65,8 @@ public class CourseController {
 									Model model) {
 		Course c = courseService.findById(cid);
 		Lesson l = lessonService.findById(id);
-		Integer idCopy = lessonService.copy(l,c);
-		lessonService.move(c,c.getLessons().size()-1,l.getPosition());
+		Integer idCopy = lessonService.copy(l, c);
+		lessonService.move(c, c.getLessons().size() - 1, l.getPosition());
 
 
 		model.addAttribute("course", c);
@@ -79,10 +74,11 @@ public class CourseController {
 
 		return "redirect:/course/" + cid + "/lesson/" + idCopy;
 	}
+
 	@RequestMapping(value = "/move/lesson/{c1id}/{c2id}/{id}", method = RequestMethod.GET)
-	public String moveLesson(@PathVariable("id") Integer id,
-							@PathVariable("c1id") Integer c1id,
-							@PathVariable("c2id") Integer c2id){
+	public String moveLessonToOtherCourse(@PathVariable("id") Integer id,
+										  @PathVariable("c1id") Integer c1id,
+										  @PathVariable("c2id") Integer c2id) {
 		Course c1 = courseService.findById(c1id);
 		Course c2 = courseService.findById(c2id);
 		Lesson l = lessonService.findById(id);
@@ -103,18 +99,17 @@ public class CourseController {
 
 	@RequestMapping(value = "/move/lesson/{id}", method = RequestMethod.GET)
 	public String moveLessonPosition(@PathVariable("id") Integer id,
-							 @RequestParam(value = "from", required = true) Integer from,
-							 @RequestParam(value = "to", required = true) Integer to,
-							 Model model) {
+									 @RequestParam(value = "from", required = true) Integer from,
+									 @RequestParam(value = "to", required = true) Integer to,
+									 Model model) {
 		if (id != null && from != null && to != null) {
 			Course c = courseService.findById(id);
-			lessonService.move(c,from,to);
+			lessonService.move(c, from, to);
 
 		}
 		model.addAttribute("self", true);
 		return "/json/boolean";
 	}
-
 
 
 	@RequestMapping(value = "/lesson/rename/{id}")
@@ -139,9 +134,7 @@ public class CourseController {
 
 		Course c = courseService.findById(cid);
 
-		lessonService.delete(l,c);
-
-
+		lessonService.delete(l, c);
 
 
 		return "/json/boolean";
@@ -165,7 +158,7 @@ public class CourseController {
 		} else {
 			lesson = c.getLessons().iterator().next().getId();
 		}
-		// TODO aktuelle lesson des benutzers
+
 
 		return "redirect:/course/" + id + "/lesson/" + lesson;
 	}
@@ -201,32 +194,12 @@ public class CourseController {
 							  Model model) {
 		if (id != null && from != null && to != null) {
 			Lesson l = lessonService.findById(id);
-			List<Content> list = l.getContent();
-
-			// Warum auch immer klappt das verschieben nur in eine Richtung
-			if (from > to) {
-				Collections.reverse(list);
-				Collections.rotate(list.subList(list.size() - from - 1, list.size() - to), -1);
-				Collections.reverse(list);
-			} else {
-				Collections.rotate(list.subList(from, to + 1), -1);
-			}
-
-			// Wir updaten noch alle positionen
-			int i = 1;
-			for (Content c : list) {
-				c.setPosition(i);
-				contentService.update(c);
-				i++;
-			}
-
-			lessonService.update(l);
+			contentService.move(l, from, to);
 
 		}
 		model.addAttribute("self", true);
 		return "/json/boolean";
 	}
-
 
 
 	@RequestMapping(value = "/form", method = RequestMethod.GET)
@@ -292,7 +265,7 @@ public class CourseController {
 		Course c = courseService.findById(id);
 
 		response.setContentType("application/pdf");
-		response.setHeader("Content-Disposition","attachment");
+		response.setHeader("Content-Disposition", "attachment");
 		ByteArrayOutputStream stream = pdfService.getPdf(c);
 		response.setContentLength(stream.size());
 		try {
@@ -303,5 +276,86 @@ public class CourseController {
 
 	}
 
+	@RequestMapping(value = "/{courseId}/lesson/{id}/add/container", method = RequestMethod.GET)
+	public String addContainer(
+									  @PathVariable("courseId") Integer cid,
+									  @PathVariable("id") Integer id,
+									  Model model) {
+
+		Lesson l = lessonService.findById(id);
+		Container container = new Container();
+
+		l.addContent(container);
+		contentService.add(container, l);
+		lessonService.update(l);
+
+		Integer containerId = container.getId();
+
+		return "redirect:/course/" + cid + "/lesson/" + id + "#content-" + containerId;
+	}
+
+	@RequestMapping(value = "/{courseId}/lesson/{lid}/move/in/{containerId}/{contentId}/{place}", method = RequestMethod.GET)
+	public String moveInContainer(
+										 @PathVariable("courseId") Integer cid,
+										 @PathVariable("lid") Integer lid,
+										 @PathVariable("containerId") Integer containerId,
+										 @PathVariable("contentId") Integer contentId,
+										 @PathVariable("place") Integer place,
+										 Model model) {
+
+		Content content = contentService.findById(contentId);
+		if(!(content instanceof Container)){
+			Lesson lesson = lessonService.findById(lid);
+			// zuersteinmal schieben wir es ans ende
+			contentService.move(lesson, content.getPosition()-1, lesson.getContent().size() - 1);
+			lesson.getContent().remove(content);
+			lessonService.update(lesson);
+
+			Container container = (Container) contentService.findById(containerId);
+
+			if(place == 1){
+				container.setFirstContent(content);
+			}else if(place == 2){
+				container.setSecondContent(content);
+			} else{
+				throw new RuntimeException("Not valid place in container : ["+container+"]");
+			}
+
+
+			contentService.update(container);
+		}
+
+
+
+		return "redirect:/course/" + cid + "/lesson/" + lid + "/#content-" + containerId;
+	}
+
+	@RequestMapping(value = "/{courseId}/lesson/{lid}/move/out/{containerId}/{place}", method = RequestMethod.GET)
+	public String moveOutContainer(
+										  @PathVariable("courseId") Integer cid,
+										  @PathVariable("lid") Integer lid,
+										  @PathVariable("containerId") Integer containerId,
+										  @PathVariable("place") Integer place) {
+		Container container = (Container) contentService.findById(containerId);
+		Content c = null;
+		if(place == 1){
+			c= container.getFirstContent();
+			container.setFirstContent(null);
+		}else if(place == 2){
+			c = container.getSecondContent();
+			container.setSecondContent(null);
+		} else{
+			throw new RuntimeException("Not valid place in container : ["+container+"]");
+		}
+
+
+		Lesson lesson = lessonService.findById(lid);
+		lesson.getContent().add(c);
+		contentService.add(c,lesson);
+		contentService.update(container);
+		contentService.move(lesson,lesson.getContent().size()-1,container.getPosition());
+
+		return "redirect:/course/" + cid + "/lesson/" + lid + "/#content-" + containerId;
+	}
 
 }

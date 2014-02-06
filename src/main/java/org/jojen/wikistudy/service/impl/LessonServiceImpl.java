@@ -1,9 +1,6 @@
 package org.jojen.wikistudy.service.impl;
 
-import org.jojen.wikistudy.entity.Blobbased;
-import org.jojen.wikistudy.entity.Content;
-import org.jojen.wikistudy.entity.Course;
-import org.jojen.wikistudy.entity.Lesson;
+import org.jojen.wikistudy.entity.*;
 import org.jojen.wikistudy.repository.LessonRepository;
 import org.jojen.wikistudy.service.BlobService;
 import org.jojen.wikistudy.service.ContentService;
@@ -98,21 +95,39 @@ public class LessonServiceImpl implements LessonService {
 
 		int i = 0;
 		for (Content content : clonel.getContent()) {
-			String blobPath = null;
-			Integer originalId = -1;
-			if (content instanceof Blobbased) {
-				originalId = l.getContent().get(i).getId();
-				blobPath = blobService.get(originalId);
+			processBobbasedCopy(content,l.getContent().get(i).getId());
+			if (content instanceof Container) {
+				Container container = (Container) content;
+				if (container.getFirstContent() != null) {
+					Content subcontent = container.getFirstContent();
+					int originalId = ((Container)l.getContent().get(i)).getFirstContent().getId();
+					processBobbasedCopy(subcontent,originalId);
+					contentService.update(subcontent);
+				}
+				if (container.getSecondContent() != null) {
+					Content subcontent2 = container.getSecondContent();
+					int originalId2 = ((Container)l.getContent().get(i)).getSecondContent().getId();
+					processBobbasedCopy(subcontent2,originalId2);
+					contentService.update(subcontent2);
+				}
+
 			}
-			contentService.add(content, clonel);
-			if (blobPath != null) {
-				blobService.copy(originalId, content.getId());
-			}
+			contentService.update(content);
 			i++;
 		}
 		add(clonel, c);
 
 		return clonel.getId();
+	}
+
+	private void processBobbasedCopy(Content content, int originalId) {
+		String blobPath = null;
+
+		if (content instanceof Blobbased) {
+			blobPath = blobService.get(originalId);
+			contentService.update(content);
+			blobService.copy(originalId, content.getId());
+		}
 	}
 
 	@Override
@@ -123,6 +138,9 @@ public class LessonServiceImpl implements LessonService {
 
 	@Override
 	public void move(Course c, Integer from, Integer to) {
+		if (from.equals(to)) {
+			return;
+		}
 		List<Lesson> list = c.getLessons();
 
 		// Warum auch immer klappt das verschieben nur in eine Richtung

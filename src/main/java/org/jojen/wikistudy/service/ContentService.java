@@ -18,5 +18,6 @@ public interface ContentService {
 
 	void deleteAll();
 
+	void move(Lesson l, Integer from, Integer to);
 
 }

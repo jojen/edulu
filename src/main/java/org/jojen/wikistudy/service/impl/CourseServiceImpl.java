@@ -69,7 +69,7 @@ public class CourseServiceImpl implements CourseService {
 			ArrayList<Lesson> list = new ArrayList<Lesson>(c.getLessons());
 			c.getLessons().clear();
 			for(Lesson l: list){
-				lessonService.deleteById(l.getId());
+				lessonService.delete(l,c);
 			}
 			courseRepository.delete(id);
 		}

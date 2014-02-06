@@ -1,4 +1,4 @@
-<%@ taglib tagdir="/WEB-INF/tags" prefix="tag" %>
+<%@ taglib tagdir="/WEB-INF/tags" prefix="edu" %>
 <jsp:useBean id="lesson" class="org.jojen.wikistudy.entity.Lesson" scope="request"/>
 <c:if test="${!empty lesson}">
 
@@ -71,95 +71,17 @@
     </sec:authorize>
 
     <sec:authorize access="hasRole('ROLE_TEACHER')">
-    <div data-id="${lesson.id}" data-type="content" class="sortable">
+    <div data-id="${lesson.id}" data-type="content" class="sortable connectedSortable">
         </sec:authorize>
 
 
-        <c:forEach var="c" items="${lesson.content}">
+        <c:forEach var="c" items="${lesson.content}" varStatus="index">
             <c:url var="link" value="/content/media/${c.id}/${c.name}"/>
-            <li id="content-${c.id}" class="ui-state-default">
-                <!-- Content Position: ${c.position} -->
+            <li id="content-${c.id}" class="ui-state-default content-item" data-id="${c.id}" >
                 <div class="row">
-                        <%-- TODO da sollten eigene templates her --%>
-                    <c:if test="${c.type eq 'Image'}">
-                        <img src="${link}" class="img-polaroid">
-                        <sec:authorize access="hasRole('ROLE_TEACHER')">
-                            <div class="row content-settings" id="update-${c.id}-section">
-                                <div class="span6">Show in PDF</div>
-                                <div class="span6">
-                                    <div class="slideCheck">
-                                        <input class="content-property" data-id="${c.id}" type="checkbox"
-                                               <c:if test="${c.showPdf}">checked="checked"</c:if> id="show-pdf-${c.id}"
-                                               data-name="showPdf"/>
-                                        <label for="show-pdf-${c.id}"></label>
-                                    </div>
-                                     
-                                </div>
+                    <edu:content c="${c}" link="${link}" />
 
-                            </div>
-                        </sec:authorize>
 
-                    </c:if>
-                    <c:if test="${c.type eq 'Video'}">
-                        <video id="${c.id}" width="770" height="480" class="video-js vjs-default-skin" controls
-                               preload="auto"
-                               data-setup='{"example_option":true}'>
-                            <source src="${link}"
-                                    type="${c.contentType}">
-                            Your browser does not support the video tag.
-                        </video>
-                    </c:if>
-                    <c:if test="${c.type eq 'Text'}">
-                        <div>
-                            <c:if test="${!empty c.name}">
-                                <h2><c:out value="${c.name}"/></h2>
-                            </c:if>
-
-                            <c:out value="${c.text}" escapeXml="false"/>
-                        </div>
-
-                    </c:if>
-                    <c:if test="${c.type eq 'Download'}">
-                        <a href="${link}">
-                            <button class="btn"><i class="icon-download"></i>&nbsp;${c.name}</button>
-                        </a>
-                    </c:if>
-                    <c:if test="${c.type eq 'Quiz'}">
-                        <!-- TODO sollte in class übergehen - momentan nur ein quiz pro site möglich -->
-                        <div id="slick-quiz">
-                            <h3 class="quizName"></h3>
-
-                            <div class="quizArea">
-                                <div class="quizHeader">
-                                    <!-- where the quiz main copy goes -->
-
-                                    <button class="btn btn-primary startQuiz" href="#"><i
-                                            class="icon-play icon-white pull-right"></i>Get Started&nbsp;
-                                    </button>
-                                </div>
-
-                                <!-- where the quiz gets built -->
-                            </div>
-
-                            <div class="quizResults">
-                                <h4 class="quizScore">You Scored:
-                                    <span><!-- where the quiz score goes --></span></h4>
-
-                                <h4 class="quizLevel"><strong>Ranking:</strong> <span><!-- where the quiz ranking level goes --></span>
-                                </h4>
-
-                                <div class="quizResultsCopy">
-                                    <!-- where the quiz result copy goes -->
-                                </div>
-                            </div>
-                        </div>
-                        <script type="text/javascript">
-                            $('#slick-quiz').slickQuiz({json:
-                                ${c.quizContent}
-                            });
-                        </script>
-
-                    </c:if>
                     <sec:authorize access="hasRole('ROLE_TEACHER')">
                         <div class="edit-box btn-group right">
 
@@ -168,12 +90,14 @@
                                     class="btn btn-danger">Delete
                             </button>
 
+
                             <c:if test="${c.isEditable}">
                                 <a data-id="${c.id}" data-courseid="${course.id}"
                                    data-lessonid="${lesson.id}"
                                    class="update-${c.type} btn btn-warning">Edit</a>
                             </c:if>
                         </div>
+
                     </sec:authorize>
                 </div>
             </li>
@@ -202,10 +126,10 @@
                             <li <c:if test="${lesson.hasQuiz}">class="disabled"</c:if>><a href="#"
                                                                                           class="update-Quiz"
                                                                                           data-courseid="${course.id}"
-                                                                                          data-lessonid="${lesson.id}">Quiz</a>
+                                                                                          data-lessonid="${lesson.id}"><i class="icon-edit"></i>&nbsp;Quiz</a>
                             </li>
-                            <!--li class="disabled"><a href="#">Survey</a></li>
-                            <li class="disabled"><a href="#">Hot Potato</a></li>
+                            <li ><a href="<c:url value="/course/${course.id}/lesson/${lesson.id}/add/container" />"><i class="icon-pause"></i>&nbsp;Container</a></li>
+                            <!--li class="disabled"><a href="#">Hot Potato</a></li>
                             <li class="divider"></li>
                             <li class="disabled"><a href="#">Test</a></li-->
                         </ul>
