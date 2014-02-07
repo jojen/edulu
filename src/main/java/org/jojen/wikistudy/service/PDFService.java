@@ -8,6 +8,8 @@ import com.lowagie.text.html.simpleparser.HTMLWorker;
 import com.lowagie.text.html.simpleparser.StyleSheet;
 import com.lowagie.text.pdf.*;
 import org.jojen.wikistudy.entity.*;
+import org.jojen.wikistudy.entity.Container;
+import org.jojen.wikistudy.entity.Image;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -72,53 +74,15 @@ public class PDFService {
 			for (Lesson l : c.getLessons()) {
 				i++;
 				Chapter chapter = new Chapter(new Paragraph(l.getName(), h2), i);
+				if (i != 1) {
+					chapter.setTriggerNewPage(false);
 
+				}
 
 				Section currentSection = null;
-				// TODO das könnte man noch in die einzelnen Module auslagern
+
 				for (Content content : l.getContent()) {
-					Paragraph title = new Paragraph();
-
-					if (content instanceof Text) {
-						if (((Text) content).getName() != null || currentSection == null) {
-							title = new Paragraph(((Text) content).getName(), h3);
-							title.setSpacingAfter(7);
-							title.setSpacingBefore(5);
-							currentSection = chapter.addSection(title);
-						}
-
-						for (Element e : getRichText(((Text) content).getText())) {
-							currentSection.add(e);
-						}
-					}
-					if (currentSection == null) {
-						currentSection = chapter.addSection(title);
-					}
-					if (content instanceof org.jojen.wikistudy.entity.Image && ((org.jojen.wikistudy.entity.Image)content).getShowPdf()) {
-						File file = new File(blobService.get(content.getId()));
-						BufferedImage bufferedImage = ImageIO.read(file);
-						com.lowagie.text.Image pdfimg = com.lowagie.text.Image.getInstance(bufferedImage, null);
-
-						if(pdfimg.getHeight()>300 || pdfimg.getWidth()>580){
-							pdfimg.scaleToFit(300, 580);
-						} else {
-							pdfimg.scaleToFit(pdfimg.getHeight(),pdfimg.getWidth());
-						}
-
-						Paragraph p = new Paragraph();
-						p.add(pdfimg);
-						currentSection.add(p);
-					}
-					if (content instanceof Quiz) {
-						currentSection.add(get2InfoBox("Quiz","Please check online to do the quiz"));
-					}
-
-					if (content instanceof Video) {
-						currentSection.add(get2InfoBox("Video","Please check online to watch the video"));
-					}
-					if (content instanceof Download) {
-						currentSection.add(get2InfoBox("Download","Please check online to download the file"));
-					}
+					currentSection = renderContent(chapter, currentSection, content);
 				}
 				document.add(chapter);
 			}
@@ -132,6 +96,134 @@ public class PDFService {
 		return ret;
 	}
 
+	private Section renderContent(Chapter chapter, Section currentSection, Content content) throws IOException, DocumentException {
+		Paragraph title = new Paragraph();
+		if (content instanceof Text) {
+			title = renderText(content, currentSection, null, chapter);
+		}
+		if (currentSection == null) {
+			currentSection = chapter.addSection(title);
+		}
+		if (content instanceof org.jojen.wikistudy.entity.Image) {
+			renderImage(currentSection, null, content, 300, 580);
+		}
+		if (content instanceof Container) {
+			PdfPTable table = new PdfPTable(2);
+			PdfPCell cellOne = new PdfPCell();
+			Content subcontent = ((Container) content).getFirstContent();
+			if (subcontent != null) {
+				if (subcontent instanceof Text) {
+					renderText(subcontent, null, cellOne, chapter);
+				} else if (subcontent instanceof Image) {
+					renderImage(null, cellOne, subcontent, 200, 300);
+				}
+			}
+
+			PdfPCell cellTwo = new PdfPCell();
+			Content subcontent2 = ((Container) content).getSecondContent();
+			if (subcontent2 != null) {
+				if (subcontent2 instanceof Text) {
+					renderText(subcontent2, null, cellTwo, chapter);
+				} else if (subcontent2 instanceof Image) {
+					renderImage(null, cellTwo, subcontent2, 200, 300);
+				}
+			}
+			cellOne.setBorder(Rectangle.NO_BORDER);
+			cellTwo.setBorder(Rectangle.NO_BORDER);
+			table.addCell(cellOne);
+			table.addCell(cellTwo);
+			currentSection.add(table);
+
+		}
+		if (content instanceof Quiz) {
+			renderQuiz(currentSection, null);
+		}
+
+		if (content instanceof Video) {
+			renderVideo(currentSection, null);
+		}
+		if (content instanceof Download) {
+			renderFile(currentSection, null);
+		}
+
+		return currentSection;
+	}
+
+	private Paragraph renderText(Content content, Section currentSection, PdfPCell cell, Chapter chapter) throws IOException, DocumentException {
+		Paragraph title = null;
+		if ((content).getName() != null || currentSection == null) {
+			if (cell == null) {
+				title = new Paragraph((content).getName(), h3);
+				title.setSpacingAfter(7);
+				title.setSpacingBefore(5);
+				currentSection = chapter.addSection(title);
+			}
+
+		}
+
+		for (Element e : getRichText(((Text) content).getText())) {
+			if (currentSection != null) {
+				currentSection.add(e);
+			} else if (cell != null) {
+				cell.addElement(e);
+			}
+
+		}
+		return title;
+	}
+
+	private void renderImage(Section currentSection, PdfPCell cell, Content content, int height, int width) throws IOException, BadElementException {
+		if (((org.jojen.wikistudy.entity.Image) content).getShowPdf()) {
+			File file = new File(blobService.get(content.getId()));
+			BufferedImage bufferedImage = ImageIO.read(file);
+			com.lowagie.text.Image pdfimg = com.lowagie.text.Image.getInstance(bufferedImage, null);
+
+			if (pdfimg.getHeight() > height || pdfimg.getWidth() > width || cell != null) {
+				pdfimg.scaleToFit(height, width);
+			} else {
+				pdfimg.scaleToFit(pdfimg.getHeight(), pdfimg.getWidth());
+			}
+
+
+			if (currentSection != null) {
+				Paragraph p = new Paragraph();
+				p.add(pdfimg);
+				currentSection.add(p);
+			} else if (cell != null) {
+				cell.addElement(pdfimg);
+			}
+
+		}
+	}
+
+	private void renderFile(Section currentSection, PdfPCell cell) {
+		Element e = get2InfoBox("Download", "Please check online to download the file");
+		if (currentSection != null) {
+			currentSection.add(e);
+		} else if (cell != null) {
+			cell.addElement(e);
+		}
+	}
+
+	private void renderVideo(Section currentSection, PdfPCell cell) {
+		Element e = get2InfoBox("Video", "Please check online to download the file");
+		if (currentSection != null) {
+			currentSection.add(e);
+		} else if (cell != null) {
+			cell.addElement(e);
+		}
+	}
+
+	private void renderQuiz(Section currentSection, PdfPCell cell) {
+		Element e = get2InfoBox("Quiz", "Please check online to download the file");
+		if (currentSection != null) {
+			currentSection.add(e);
+		} else if (cell != null) {
+			cell.addElement(e);
+		}
+	}
+
+
 	private PdfPTable get2InfoBox(String title, String description) {
 		PdfPTable table = new PdfPTable(1);
 
@@ -140,7 +232,7 @@ public class PDFService {
 		cell.setBorderWidthBottom(0);
 		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		cell.setBackgroundColor(new Color(240,240,240));
+		cell.setBackgroundColor(new Color(240, 240, 240));
 
 		table.addCell(cell);
 
@@ -150,7 +242,7 @@ public class PDFService {
 		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setPaddingBottom(10);
-		cell.setBackgroundColor(new Color(240,240,240));
+		cell.setBackgroundColor(new Color(240, 240, 240));
 
 		table.addCell(cell);
 
@@ -231,7 +323,7 @@ public class PDFService {
 			ColumnText.showTextAligned(writer.getDirectContent(),
 											  Element.ALIGN_RIGHT, new Phrase(String.format("%d", pagenumber)),
 											  rect.getRight(), rect.getBottom() - 18, 0);
-			SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");//dd/MM/yyyy
+			SimpleDateFormat sdfDate = new SimpleDateFormat("dd.MM.yyyy");//dd/MM/yyyy
 			Date now = new Date();
 			String strDate = sdfDate.format(now);
 			ColumnText.showTextAligned(writer.getDirectContent(),
@@ -245,6 +337,7 @@ public class PDFService {
 			}
 
 		}
+
 		public void drawLine(PdfContentByte cb, float x1, float x2, float y) {
 			cb.moveTo(x1, y);
 			cb.lineTo(x2, y);
