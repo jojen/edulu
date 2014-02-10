@@ -19,8 +19,7 @@ import javax.inject.Inject;
 @Controller
 public class HomeController {
 
-	protected static final int DEFAULT_PAGE_NUM = 0;
-	protected static final int DEFAULT_PAGE_SIZE = 10;
+
 
 	@Inject
 	protected CourseService courseService;
@@ -32,9 +31,9 @@ public class HomeController {
 	@RequestMapping(value = "/")
 	public String home(@RequestParam(value = "page", required = false) Integer page,
 					   Model model) {
-		int pageNum = page != null ? page : DEFAULT_PAGE_NUM;
-		Page<Course> paging = courseService.findAll(pageNum, DEFAULT_PAGE_SIZE);
-		model.addAttribute("defaultPageSize",DEFAULT_PAGE_SIZE);
+		int pageNum = page != null ? page : 0;
+		Page<Course> paging = courseService.findAll(pageNum, courseService.DEFAULT_PAGE_SIZE);
+		model.addAttribute("defaultPageSize",courseService.DEFAULT_PAGE_SIZE);
 
 
 		model.addAttribute("page", paging);

@@ -3,8 +3,14 @@ package org.jojen.wikistudy.service;
 import org.jojen.wikistudy.entity.Course;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
+
 public interface CourseService {
+	public static final int DEFAULT_PAGE_SIZE = 10;
+
     Page<Course> findAll(int page, int size);
+
+	List<Course> findAll();
 
     Page<Course> findByNameLike(String name, int page, int size);
 
@@ -18,4 +24,7 @@ public interface CourseService {
 
 	void deleteAll();
 
+	int getSize();
+
+	void move(Integer page, Integer from, Integer to);
 }

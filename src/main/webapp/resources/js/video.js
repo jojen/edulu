@@ -2005,4 +2005,4 @@
     $("videojs.autoSetup", u.dc);
     $("videojs.plugin", u.$c);
     $("videojs.createTimeRange", u.tb);
-})();//@ sourceMappingURL=video.js.map
+})();

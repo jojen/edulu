@@ -14,12 +14,14 @@
 
                 </div>
                 <div class="span7">
-                    <div class="row">
+                    <div data-id="${page.number}" data-type="course" class="row <sec:authorize access="hasRole('ROLE_TEACHER')">sortable</sec:authorize>">
                         <c:forEach items="${page.content}" var="course" varStatus="status">
+
                             <div id="course-${course.id}" class="course light-box mini-layout box-shadow">
                                 <div class="row-fluid">
                                     <div class="span1">
                                         <!-- TODO Image -->
+                                         ${course.position}
                                     </div>
                                     <div class="span11">
                                         <a class="right more-margin btn btn-primary"
@@ -73,8 +75,10 @@
                     <c:if test="${page.totalPages > 1}">
                         <div class="pagination">
                             <ul>
-                                <c:set var="link" value="?page=${page.number-1}" />
-                                <li <c:if test="${page.firstPage}">class="disabled"<c:set var="link" value="#" /></c:if>>
+                                <c:set var="link" value="?page=${page.number-1}"/>
+                                <li
+                                        <c:if test="${page.firstPage}">class="disabled"<c:set var="link"
+                                                                                              value="#"/></c:if>>
 
                                     <a href="${link}">&laquo;</a>
 
@@ -88,8 +92,10 @@
                                             ><a href="?page=${index.count -1}">${index.count}</a></li>
 
                                 </c:forEach>
-                                <c:set var="link" value="?page=${page.number+1}" />
-                                <li <c:if test="${page.lastPage}">class="disabled"<c:set var="link" value="#" /></c:if>>
+                                <c:set var="link" value="?page=${page.number+1}"/>
+                                <li
+                                        <c:if test="${page.lastPage}">class="disabled"<c:set var="link"
+                                                                                             value="#"/></c:if>>
                                     <a href="${link}"> &raquo </a>
 
                                 </li>

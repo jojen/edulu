@@ -11,72 +11,80 @@ import java.util.List;
 
 @Entity
 public class Course implements Serializable {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue
-    private Integer id;
-
-
-    @Size(min = 1, max = 50)
-    @NotNull
-    private String name;
+	@Id
+	@GeneratedValue
+	private Integer id;
 
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
+	@Size(min = 1, max = 50)
+	@NotNull
+	private String name;
 
-    @OneToMany
+
+	@Column(columnDefinition = "TEXT")
+	private String description;
+
+	private Integer position;
+
+	@OneToMany
 	@OrderBy("position ASC")
-    private List<Lesson> lessons;
+	private List<Lesson> lessons;
 
-    public Integer getId() {
-        return id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
 
-    public String getDescription() {
-        return description;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public Boolean getHasDraft() {
-        return false;
-    }
+	public Boolean getHasDraft() {
+		return false;
+	}
 
-    public List<Lesson> getLessons() {
-        if (lessons == null) {
-            lessons = new ArrayList();
-        }
-        return lessons;
-    }
+	public List<Lesson> getLessons() {
+		if (lessons == null) {
+			lessons = new ArrayList<Lesson>();
+		}
+		return lessons;
+	}
 
-    public void addLessons(Lesson lesson) {
-		if(lesson != null){
+	public void addLessons(Lesson lesson) {
+		if (lesson != null) {
 			if (lessons == null) {
 				lessons = new ArrayList<Lesson>();
 			}
-			if (lesson != null) {
-				lessons.add(lesson);
-			}
+
+			lessons.add(lesson);
 			lesson.setPosition(lessons.size());
 		}
-    }
+	}
 
+	public Integer getPosition() {
+		return position;
+	}
 
-    @Override
-    public String toString() {
-        return "Course [id=" + id + ", name=" + name + "]";
-    }
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
+
+	@Override
+	public String toString() {
+		return "Course [id=" + id + ", name=" + name + "]";
+	}
 }

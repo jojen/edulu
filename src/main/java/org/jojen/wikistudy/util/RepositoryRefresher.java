@@ -23,6 +23,8 @@ public class RepositoryRefresher {
 		lessonService.deleteAll();
 		contentService.deleteAll();
 
+		/*
+		TODO ist wohl kaputt gegangen
 
 		Course course = new Course();
 		course.setName("Test Course");
@@ -48,6 +50,7 @@ public class RepositoryRefresher {
 		contentService.add(t2, l);
 
 		lessonService.add(l, course);
+		*/
 
 	}
 }

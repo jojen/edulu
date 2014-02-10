@@ -179,12 +179,26 @@ public class CourseController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public String edit(@RequestParam(value = "id", required = false) Integer id, Model model) {
 		if (id == null) {
-			model.addAttribute(new Course());
+			Course c = new Course();
+			model.addAttribute(c);
 		} else {
 			model.addAttribute(courseService.findById(id));
 		}
 
 		return "/course/form";
+	}
+
+	@RequestMapping(value = "/move/course/{page}", method = RequestMethod.GET)
+	public String moveCourse(@PathVariable("page") Integer page,
+							 @RequestParam(value = "from", required = true) Integer from,
+							 @RequestParam(value = "to", required = true) Integer to,
+							 Model model) {
+		if (from != null && to != null) {
+			courseService.move(page, from, to);
+
+		}
+		model.addAttribute("self", true);
+		return "/json/boolean";
 	}
 
 	@RequestMapping(value = "/move/content/{id}", method = RequestMethod.GET)
@@ -209,7 +223,7 @@ public class CourseController {
 		Course course = new Course();
 		return course;
 	}
-
+	/*
 	@RequestMapping(value = "/form", method = RequestMethod.POST)
 	public String createOnSubmit(@Valid Course course,
 								 BindingResult bindingResult, Model model) {
@@ -219,9 +233,11 @@ public class CourseController {
 			model.addAllAttributes(bindingResult.getModel());
 			return "/course/form";
 		}
+
 		courseService.insert(course);
 		return "redirect:/";
 	}
+	*/
 
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST)
@@ -238,15 +254,16 @@ public class CourseController {
 		Course modelCourse;
 		if (id == null) {
 			modelCourse = new Course();
+			modelCourse.setPosition(courseService.getSize() + 1);
 		} else {
 			modelCourse = courseService.findById(id);
 		}
 
-		// TODO hier vielleicht noch ein bisschen reflections
 		modelCourse.setName(course.getName());
 		modelCourse.setDescription(course.getDescription());
 		courseService.update(modelCourse);
-		return "redirect:/";
+		int page = (modelCourse.getPosition()-1) / CourseService.DEFAULT_PAGE_SIZE;
+		return "redirect:/?page="+page;
 	}
 
 	@RequestMapping(value = "/delete/{id}")
@@ -304,27 +321,26 @@ public class CourseController {
 										 Model model) {
 
 		Content content = contentService.findById(contentId);
-		if(!(content instanceof Container)){
+		if (!(content instanceof Container)) {
 			Lesson lesson = lessonService.findById(lid);
 			// zuersteinmal schieben wir es ans ende
-			contentService.move(lesson, content.getPosition()-1, lesson.getContent().size() - 1);
+			contentService.move(lesson, content.getPosition() - 1, lesson.getContent().size() - 1);
 			lesson.getContent().remove(content);
 			lessonService.update(lesson);
 
 			Container container = (Container) contentService.findById(containerId);
 
-			if(place == 1){
+			if (place == 1) {
 				container.setFirstContent(content);
-			}else if(place == 2){
+			} else if (place == 2) {
 				container.setSecondContent(content);
-			} else{
-				throw new RuntimeException("Not valid place in container : ["+container+"]");
+			} else {
+				throw new RuntimeException("Not valid place in container : [" + container + "]");
 			}
 
 
 			contentService.update(container);
 		}
-
 
 
 		return "redirect:/course/" + cid + "/lesson/" + lid + "/#content-" + containerId;
@@ -338,22 +354,22 @@ public class CourseController {
 										  @PathVariable("place") Integer place) {
 		Container container = (Container) contentService.findById(containerId);
 		Content c = null;
-		if(place == 1){
-			c= container.getFirstContent();
+		if (place == 1) {
+			c = container.getFirstContent();
 			container.setFirstContent(null);
-		}else if(place == 2){
+		} else if (place == 2) {
 			c = container.getSecondContent();
 			container.setSecondContent(null);
-		} else{
-			throw new RuntimeException("Not valid place in container : ["+container+"]");
+		} else {
+			throw new RuntimeException("Not valid place in container : [" + container + "]");
 		}
 
 
 		Lesson lesson = lessonService.findById(lid);
 		lesson.getContent().add(c);
-		contentService.add(c,lesson);
+		contentService.add(c, lesson);
 		contentService.update(container);
-		contentService.move(lesson,lesson.getContent().size()-1,container.getPosition());
+		contentService.move(lesson, lesson.getContent().size() - 1, container.getPosition());
 
 		return "redirect:/course/" + cid + "/lesson/" + lid + "/#content-" + containerId;
 	}

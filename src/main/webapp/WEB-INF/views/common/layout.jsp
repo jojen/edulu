@@ -113,7 +113,6 @@
 
     <script type="text/javascript" src="<c:url value='/resources/js/edulu-edit.js' />"></script>
 </sec:authorize>
-<script type="text/javascript" src="<c:url value='/resources/js/edulu.js' />"></script>
 
 </body>
 </html>

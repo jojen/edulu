@@ -169,6 +169,9 @@ input.edit-btn-large {
 
 }
 
+.sortable li:hover, .sortable a:hover, .sortable div:hover {
+    cursor: move;
+}
 
 .btn-warning {
     cursor: pointer !important;
