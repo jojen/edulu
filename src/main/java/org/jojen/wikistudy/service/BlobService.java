@@ -32,7 +32,7 @@ public class BlobService {
 		this.context = context;
 	}
 
-	private String getBasePath() {
+	public String getBasePath() {
 		return context.getRealPath("../../../edulu/store");
 	}
 
@@ -119,64 +119,5 @@ public class BlobService {
 	}
 
 
-	public File getAllBlobsZip() {
-		File tempfile = null;
-		try {
-			byte[] buffer = new byte[1024];
-			tempfile = File.createTempFile("backup.zip", null);
-
-
-			String zipFile = tempfile.getAbsolutePath();
-			FileOutputStream fos = new FileOutputStream(zipFile);
-			ZipOutputStream zos = new ZipOutputStream(fos);
-
-			List<String> fileList = generateFileList(new File(getBasePath()), new ArrayList<String>());
-
-			for (String file : fileList) {
-				ZipEntry ze = new ZipEntry(file);
-				zos.putNextEntry(ze);
-
-				FileInputStream in = new FileInputStream(getBasePath() + File.separator + file);
-
-				int len;
-				while ((len = in.read(buffer)) > 0) {
-					zos.write(buffer, 0, len);
-				}
-
-				in.close();
-			}
-
-			zos.closeEntry();
-			//remember close it
-			zos.close();
-		} catch (Exception e) {
-			// bissle aufräumen wenns geht
-			if (tempfile != null) {
-				tempfile.delete();
-			}
-		}
-		return tempfile;
-	}
-
-	private List<String> generateFileList(File node, List<String> fileList) {
-
-		//add file only
-		if (node.isFile()) {
-			fileList.add(generateZipEntry(node.getAbsoluteFile().toString()));
-		}
-
-		if (node.isDirectory()) {
-			String[] subNote = node.list();
-			for (String filename : subNote) {
-				generateFileList(new File(node, filename), fileList);
-			}
-		}
-		return fileList;
-
-	}
-
-	private String generateZipEntry(String file) {
-		return file.substring(getBasePath().length() + 1, file.length());
-	}
 
 }

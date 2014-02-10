@@ -1,10 +1,7 @@
 package org.jojen.wikistudy.controller;
 
 
-import org.jojen.wikistudy.service.BlobService;
-import org.jojen.wikistudy.service.ContentService;
-import org.jojen.wikistudy.service.CourseService;
-import org.jojen.wikistudy.service.LessonService;
+import org.jojen.wikistudy.service.*;
 import org.jojen.wikistudy.util.RepositoryRefresher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +13,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
@@ -35,6 +31,9 @@ public class AdminController {
 
 	@Inject
 	protected BlobService blobService;
+
+	@Inject
+	protected BackupService backupService;
 
 	@RequestMapping(value = "/refresh", method = RequestMethod.GET)
 	public String refresh() {
@@ -63,11 +62,11 @@ public class AdminController {
 		model.addAttribute("usablespace",blobService.readableFileSize(rootfile.getUsableSpace()));
 		return "static/settings";
 	}
-	@RequestMapping(value = "/blobs.zip", method = RequestMethod.GET)
+	@RequestMapping(value = "/backup.zip", method = RequestMethod.GET)
 	public void getAllBlobsZip(HttpServletResponse response) {
 		File f = null;
 		try {
-			f = blobService.getAllBlobsZip();
+			f = backupService.getBackup();
 			response.setContentType("application/zip");
 			response.setContentLength((int) (f.length() + 0));
 
@@ -81,5 +80,6 @@ public class AdminController {
 		}
 
 	}
+
 
 }

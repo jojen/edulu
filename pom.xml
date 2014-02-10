@@ -333,6 +333,11 @@
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>${org.apache.tomcat.maven.version}</version>
+                <configuration>
+                    <systemProperties>
+                        <PG_HOME>/Applications/Postgres.app/Contents/MacOS</PG_HOME>
+                    </systemProperties>
+                </configuration>
             </plugin>
         </plugins>
     </build>

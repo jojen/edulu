@@ -81,10 +81,10 @@ sudo nano /etc/init.d/tomcat
 
 -----------------------------------------
 #!/bin/bash
-# /etc/init.d/tomcat
+# /etc/init.d/edulu
 
 ### BEGIN INIT INFO
-# Provides:          tomcat
+# Provides:          edulu
 # Required-Start:    $remote_fs $syslog
 # Required-Stop:     $remote_fs $syslog
 # Default-Start:     2 3 4 5
@@ -92,6 +92,8 @@ sudo nano /etc/init.d/tomcat
 # Short-Description: initscript
 # Description:       This service is used to start the servlet container
 ### END INIT INFO
+
+export PG_HOME="/usr/lib/postgresql/9.1/"
  
 
 case "$1" in
