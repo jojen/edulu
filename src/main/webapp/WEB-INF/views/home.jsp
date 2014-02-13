@@ -21,10 +21,10 @@
                                 <div class="row-fluid">
                                     <div class="span1">
                                         <!-- TODO Image -->
-                                         ${course.position}
+
                                     </div>
-                                    <div class="span11">
-                                        <a class="right more-margin btn btn-primary"
+                                    <div class="span10">
+                                        <a class="pull-right more-margin btn btn-primary"
                                            href="<c:url value="/course/${course.id}" />">Start
                                             Course</a>
 
@@ -57,6 +57,7 @@
                                         </sec:authorize>
 
                                     </div>
+
                                 </div>
 
                             </div>

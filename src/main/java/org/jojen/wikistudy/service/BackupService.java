@@ -1,6 +1,7 @@
 package org.jojen.wikistudy.service;
 
 
+import antlr.StringUtils;
 import org.hibernate.internal.SessionImpl;
 import org.springframework.stereotype.Service;
 
@@ -45,9 +46,12 @@ public class BackupService {
 			String dbname = metaData.getURL().split(":")[2];
 			// TODO check if psql
 			File tempFile = new File(blobService.getBasePath() + File.separator + "database.sql");
-			String pg_home = System.getProperties().get("PG_HOME").toString();
+			String pgHome = System.getProperty("PG_HOME");
+			if(pgHome == null || pgHome.equals("")){
+				pgHome = "/usr/lib/postgresql/9.1";
+			}
 
-			ProcessBuilder pb = new ProcessBuilder(pg_home + "/bin/pg_dump", "-f", tempFile.toString(), "-U", username, dbname);
+			ProcessBuilder pb = new ProcessBuilder(pgHome + "/bin/pg_dump", "-f", tempFile.toString(), "-U", username, dbname);
 
 			pb.redirectErrorStream(true);
 			Process p = pb.start();

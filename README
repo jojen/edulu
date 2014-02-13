@@ -77,7 +77,7 @@ sudo tar xvfz apache-tomcat-7.0.50.tar.gz
 sudo ln -s apache-tomcat-7.0.50 tomcat
 
 # Tomcat in Autostart eintragen
-sudo nano /etc/init.d/tomcat
+sudo nano /etc/init.d/edulu
 
 -----------------------------------------
 #!/bin/bash
@@ -93,9 +93,9 @@ sudo nano /etc/init.d/tomcat
 # Description:       This service is used to start the servlet container
 ### END INIT INFO
 
-export PG_HOME="/usr/lib/postgresql/9.1/"
+rm -rf /opt/tomcat/logs
+rm -rf /opt/tomcat/temp
  
-
 case "$1" in
 
 start)
@@ -117,13 +117,24 @@ esac
 exit 0
 -----------------------------------------
 
-sudo chmod 755 /etc/init.d/tomcat
-sudo update-rc.d tomcat defaults
+sudo chmod 755 /etc/init.d/edulu
+sudo update-rc.d edulu defaults
+
+# Environment Variable übergeben
+sudo nano /opt/tomcat/bin/setenv.sh
+
+-----------------------------------------
+#!/bin/bash
+
+export PG_HOME="/usr/lib/postgresql/9.1/"
+
+-----------------------------------------
+
 
 sudo nano /opt/tomcat/conf/tomcat-users.xml
 # add
 <role rolename="manager-gui"/>
-<user username="tomcat" password="s3cret" roles="manager-gui"/>
+<user username="admin" password="tcec05" roles="manager-gui"/>
 
 
 sudo nano /opt/tomcat/conf/server.xml

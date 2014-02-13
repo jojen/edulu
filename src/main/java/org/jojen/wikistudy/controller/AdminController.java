@@ -32,8 +32,7 @@ public class AdminController {
 	@Inject
 	protected BlobService blobService;
 
-	@Inject
-	protected BackupService backupService;
+
 
 	@RequestMapping(value = "/refresh", method = RequestMethod.GET)
 	public String refresh() {
@@ -62,24 +61,7 @@ public class AdminController {
 		model.addAttribute("usablespace",blobService.readableFileSize(rootfile.getUsableSpace()));
 		return "static/settings";
 	}
-	@RequestMapping(value = "/backup.zip", method = RequestMethod.GET)
-	public void getAllBlobsZip(HttpServletResponse response) {
-		File f = null;
-		try {
-			f = backupService.getBackup();
-			response.setContentType("application/zip");
-			response.setContentLength((int) (f.length() + 0));
 
-			FileCopyUtils.copy(new FileInputStream(f), response.getOutputStream());
-		} catch (Exception e) {
-		   // dann gehts nicht
-		} finally {
-			if (f != null) {
-				f.delete();
-			}
-		}
-
-	}
 
 
 }

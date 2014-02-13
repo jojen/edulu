@@ -23,7 +23,7 @@
 
             <div class="row-fluid">
                 Download Backup:
-                <a href="<c:url value="/admin/backup.zip"/>">
+                <a href="<c:url value="/backup.zip"/>">
                     <button class="btn"><i class="icon-download"></i>Download</button>
                 </a>
             </div>

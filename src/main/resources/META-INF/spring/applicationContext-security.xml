@@ -34,7 +34,7 @@
     <security:authentication-manager>
         <security:authentication-provider>
             <security:user-service>
-                <security:user name="admin" password="eduluadm1n" authorities="ROLE_ADMIN, ROLE_TEACHER, ROLE_USER"/>
+                <security:user name="admin" password="tcec05" authorities="ROLE_ADMIN, ROLE_TEACHER, ROLE_USER"/>
                 <security:user name="teacher" password="t34cher" authorities="ROLE_TEACHER, ROLE_USER"/>
                 <security:user name="student" password="student" authorities="ROLE_USER"/>
             </security:user-service>
