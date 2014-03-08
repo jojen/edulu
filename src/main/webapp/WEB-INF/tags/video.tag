@@ -5,8 +5,8 @@
 
 
 <video id="${c.id}" width="770" height="480" class="video-js vjs-default-skin" controls
-       preload="auto"
-       data-setup='{"example_option":true}'>
+       preload="preload"
+       data-setup="{}">
     <source src="${link}"
             type="${c.contentType}">
     Your browser does not support the video tag.
