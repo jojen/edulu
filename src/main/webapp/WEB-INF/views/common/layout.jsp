@@ -99,7 +99,6 @@
     videojs.options.flash.swf = "<c:url value='/resources/etc/video-js.swf' />"
 </script>
 
-
 <sec:authorize access="hasRole('ROLE_TEACHER')">
     <!-- File Upload -->
     <script type="text/javascript" src="<c:url value='/resources/js/jquery-ui-1.10.3.custom.min.js' />"></script>
