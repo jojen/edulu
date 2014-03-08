@@ -40,19 +40,7 @@ public class AdminController {
 		return "redirect:/";
 	}
 
-	@RequestMapping(value = "/shutdown", method = RequestMethod.GET)
-	public String shutdown() {
-		Runtime runtime = Runtime.getRuntime();
-		try {
-			// OS abhängig
-			// Works only on Raspian (Alias)
-			Process proc = runtime.exec("halt");
-		} catch (IOException e) {
 
-		}
-
-		return "redirect:/";
-	}
 	@RequestMapping(value = "/settings", method = RequestMethod.GET)
 	public String getSettings(Model model) {
 		// OS abhängig

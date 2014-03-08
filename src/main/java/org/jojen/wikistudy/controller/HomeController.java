@@ -18,6 +18,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 
 /**
  * Handles requests for the application home page.
@@ -73,6 +74,20 @@ public class HomeController {
 			}
 		}
 
+	}
+
+	@RequestMapping(value = "/shutdown", method = RequestMethod.GET)
+	public String shutdown() {
+		Runtime runtime = Runtime.getRuntime();
+		try {
+			// OS abhängig
+			// Works only on Raspian (Alias)
+			Process proc = runtime.exec("halt");
+		} catch (IOException e) {
+
+		}
+
+		return "redirect:/";
 	}
 
 

@@ -56,7 +56,7 @@
                     </sec:authorize>
                 </p>
                 <ul class="nav">
-                    <!--li><a href="<c:url value="/" />">Courses</a></li-->
+                    <li><a href="/chat">chat</a></li>
 
                     <!--li><a href="<c:url  value="/static/about"/>">About</a></li-->
                 </ul>

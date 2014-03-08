@@ -30,7 +30,7 @@
 
 
             <div class="row-fluid">
-                <a href="<c:url value="/admin/shutdown" />">
+                <a href="<c:url value="/shutdown" />">
                     <button class="btn btn-danger pull-right"><i class="icon-off icon-white"></i>&nbsp;Shutdown</button>
                 </a>
             </div>
